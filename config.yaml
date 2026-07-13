@@ -1,0 +1,118 @@
+# ---- Who the outreach comes from ----
+sender:
+  name: "YOUR NAME"                # <-- edit me
+  company: "Data in Motion"
+  website: "https://datainmotion.co"
+  reply_to: "mktgassistant@datainmotion.co"
+  calendar_link: ""                # e.g. https://calendly.com/you/15min (optional)
+
+# ---- Which job titles count as a match ----
+filters:
+  include_titles:
+    - data analyst
+    - data analytics
+    - analytics analyst
+    - business intelligence
+    - bi analyst
+    - bi developer
+    - reporting analyst
+    - insights analyst
+    - product analyst
+    - marketing analyst
+    - operations analyst
+    - business analyst
+  # Roles whose titles contain any of these are skipped (too senior / not a fit)
+  exclude_titles:
+    - senior
+    - sr.
+    - staff
+    - principal
+    - lead
+    - director
+    - head of
+    - vp
+    - vice president
+    - manager
+    - intern
+  # Optional location substrings (case-insensitive). Empty list = keep all locations.
+  # Example: ["remote", "united states", "us", "new york"]
+  locations: []
+
+# ---- Outreach email template ----
+# Available placeholders: {company}, {roles_sentence}, {openings_phrase},
+# {n_roles}, {job_lines}, {sender_name}, {sender_company}, {website}, {calendar_link}
+outreach:
+  subject: "Vetted data analysts for {openings_phrase}"
+  body: |
+    Hi {company} team,
+
+    I saw you're hiring for {roles_sentence}. Rather than sorting through
+    hundreds of cold applications, I can send you 2-3 candidates who are
+    trained, vetted, and ready to interview.
+
+    I run {sender_company} ({website}), a data analytics training community.
+    Our graduates are job-ready in SQL, Excel, Tableau/Power BI, and Python,
+    and I personally vouch for the people I refer.
+
+    The roles I'm referring to:
+    {job_lines}
+
+    Would you be open to a quick chat? {calendar_link}
+
+    Best,
+    {sender_name}
+    {sender_company} | {website}
+
+# ---- Companies to scan, by ATS ----
+# All slugs below were verified live. Invalid/removed boards are skipped
+# gracefully at runtime, so feel free to add candidates freely.
+# Discover more with: python -m agent.discover <slug> [slug ...]
+companies:
+  greenhouse:
+    - stripe
+    - gitlab
+    - datadog
+    - robinhood
+    - mongodb
+    - cloudflare
+    - affirm
+    - gusto
+    - reddit
+    - airbnb
+    - dropbox
+    - pinterest
+    - databricks
+    - okta
+    - twilio
+    - asana
+    - flexport
+    - brex
+    - sofi
+    - instacart
+    - coinbase
+    - lyft
+    - squarespace
+    - duolingo
+    - hubspot
+    - klaviyo
+    - samsara
+    - chime
+  lever:
+    - palantir
+    - plaid
+    - kraken
+    - voleon
+    - wealthsimple
+    - spotify
+    - mistplay
+    - zoox
+  ashby:
+    - openai
+    - ramp
+    - linear
+    - deel
+    - notion
+    - replit
+    - vercel
+    - supabase
+    - posthog

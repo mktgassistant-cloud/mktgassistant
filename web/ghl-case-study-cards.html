@@ -26,6 +26,7 @@
     modal.name     - optional. Header name for the modal only, when it should
                      differ from the card (e.g. card "Ronnie", modal
                      "Ronnie, eSimplicity"). Omit to reuse name.
+    modal.category - optional. Same idea for the small line under the name.
     modal.headline - bold line at the top of the modal
     modal.subhead  - optional lead line under the headline. Omit to hide.
     modal.stats    - 2 or 4 stat tiles: { value, label }
@@ -33,6 +34,9 @@
     modal.closingQuote - { text, author } shown BELOW the write-up, just above
                      the CTA. Use instead of modal.quote when the testimonial
                      is the closer. Both can be set.
+    modal.images   - optional proof screenshots shown just above the video:
+                     [{ src, alt, caption }]. Upload to the GHL media library
+                     and paste the URLs. An entry with an empty src is skipped.
     modal.wistia   - Wistia media ID only, e.g. "e2jdcz4o5w" (the part after
                      /medias/ in the embed snippet). The player scripts load
                      on first open. Omit to hide the player.
@@ -577,6 +581,32 @@
     font-style: normal;
   }
 
+  /* screenshots, receipts, offer letters: proof that sits above the video */
+  .cs-proof {
+    display: grid;
+    gap: 16px;
+    margin: 30px 0 0;
+  }
+
+  .cs-proof figure {
+    margin: 0;
+  }
+
+  .cs-proof img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--cs-line);
+    border-radius: 10px;
+  }
+
+  .cs-proof figcaption {
+    margin-top: 8px;
+    color: var(--cs-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
   .cs-video {
     position: relative;
     margin: 30px 0 0;
@@ -1020,6 +1050,135 @@
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
       }
+    },
+
+    {
+      id: "jose",
+      name: "Jose M.",
+      category: "15 Years in Sales",
+      avatar: "", // TODO: paste Jose's photo URL from the GHL media library
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "15 Years in Sales \u2192 Senior Business Analyst",
+      statLabel: "Applied Monday. Offered Friday.",
+      summary:
+        "Spent a year looking at programs and never enrolling, held in place " +
+        "by the fear that he was too far into his career to start over. " +
+        "Applied for a Senior Business Analyst role just to see what would " +
+        "happen. Offer in hand 4 days later.",
+      modal: {
+        // TODO: employer not confirmed. Once you have it, make this
+        // "Jose M., <Employer>" the way Ronnie's reads "Ronnie, eSimplicity".
+        name: "Jose M.",
+        category: "15 Years in Sales, Career Changer",
+        headline:
+          "15 Years in Sales to Senior Business Analyst, Offered in 4 Days",
+        stats: [
+          { value: "Senior", label: "Title Level on First Role" },
+          { value: "4 Days", label: "Application to Offer" },
+          { value: "1", label: "Interview" },
+          { value: "15 Years", label: "Prior Career, Zero Tech Background" }
+        ],
+        quote: {
+          text:
+            "You\u2019re really not starting over at a fresh start. " +
+            "You\u2019re starting over with experience.",
+          author: "Jose M., Senior Business Analyst"
+        },
+        images: [
+          {
+            src: "", // TODO: upload the Thursday Slack screenshot, paste URL
+            alt:
+              "Slack message from Jose Martinez: applied for a Senior " +
+              "Business Analyst role on Monday just to see, was called back " +
+              "and interviewed that morning, follow up call tomorrow.",
+            caption: "Posted in the community the day of the interview."
+          },
+          {
+            src: "", // TODO: upload the Friday Slack screenshot, paste URL
+            alt:
+              "Slack message from Jose Martinez: offered the Senior Business " +
+              "Analyst position with a training start date of July 2nd.",
+            caption: "The next morning, 4 days after applying."
+          }
+        ],
+        wistia: "udpai65364",
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>15 years in sales, most of it on the road. Then a bad " +
+              "accident, and the driving that had been the job for 15 years " +
+              "became a question he could not keep avoiding. He needed " +
+              "options and did not have any.</p>" +
+
+              "<p>He spent the following year looking at schools. Not " +
+              "applying, not enrolling. Looking. What kept him in place was " +
+              "not a lack of information.</p>" +
+
+              '<p class="cs-pull">&ldquo;I think with most of us that are ' +
+              "older, one of the big things is it&rsquo;s fear. We&rsquo;re " +
+              "like, man, I&rsquo;m starting all over.&rdquo;</p>" +
+
+              "<p>15 years of sales experience was not an asset he could " +
+              "use. On a resume aimed at data roles it read as 15 years of " +
+              "the wrong thing.</p>" +
+
+              "<p>He chose Data In Motion over the programs he had been " +
+              "circling for a year for 3 reasons: the 1-on-1 mentoring, the " +
+              "fact that the path was laid out end to end instead of handed " +
+              "over as a pile of courses, and the branding work.</p>"
+          },
+          {
+            // TODO [NEEDS YOUR INPUT]: the positioning statement is the
+            // intervention that produced the result, and right now it reads as
+            // a feature rather than as DIM IP. Name it and describe its process
+            // in 2 or 3 lines, then replace the last bullet with that.
+            label: "What we did",
+            html:
+              "<p>The plan was built around the problem he actually had, " +
+              "which was not skills. It was 15 years of experience that read " +
+              "as the wrong 15 years.</p>" +
+
+              "<ul>" +
+                "<li>1-on-1 mentoring with a plan built around his " +
+                "situation</li>" +
+                "<li>A structured path laid out end to end instead of a pile " +
+                "of courses to work through alone</li>" +
+                "<li>The branding module</li>" +
+                "<li><strong>The positioning statement</strong>, which " +
+                "reframed 15 years of sales into a reason to hire him for a " +
+                "data role instead of a reason to pass</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>He applied for 1 Senior Business Analyst role on a Monday. " +
+              "His words: &ldquo;just to see.&rdquo;</p>" +
+
+              "<p>Callback Wednesday. Interview Thursday morning. Offer " +
+              "Friday morning, 4 days after he applied, off a single " +
+              "interview.</p>" +
+
+              "<p>The title matters as much as the speed. Not junior " +
+              "analyst. Not entry level. Senior Business Analyst, on the way " +
+              "in, from a candidate with zero tech background and 15 years " +
+              "in an unrelated field.</p>" +
+
+              "<p>He starts training July 2nd.</p>" +
+
+              "<p>The part worth sitting with is that he applied " +
+              "&ldquo;just to see.&rdquo; He did not think he was ready. His " +
+              "positioning had already made him competitive before he " +
+              "believed he was.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
     }
   ];
 
@@ -1145,7 +1304,7 @@
       '<div class="cs-modal-person">' + avatarHTML(cs) +
         "<div>" +
           '<p class="cs-modal-name">' + esc(m.name || cs.name) + "</p>" +
-          '<p class="cs-cat">' + esc(cs.category) + "</p>" +
+          '<p class="cs-cat">' + esc(m.category || cs.category) + "</p>" +
         "</div>" +
       "</div>";
 
@@ -1153,7 +1312,7 @@
       esc(m.headline || cs.stat + ": " + cs.name) + "</h2>";
 
     /* order: headline, subhead, stat tiles, opening quote, write-up,
-       closing quote, video, CTA, disclaimer */
+       closing quote, proof images, video, CTA, disclaimer */
     if (m.subhead) {
       html += '<p class="cs-subhead">' + esc(m.subhead) + "</p>";
     }
@@ -1180,6 +1339,19 @@
 
     if (m.closingQuote && m.closingQuote.text) {
       html += quoteHTML(m.closingQuote, "is-closing");
+    }
+
+    /* entries with no src yet are skipped, so a TODO placeholder never
+       renders as a broken image */
+    var imgs = (m.images || []).filter(function (im) { return im && im.src; });
+
+    if (imgs.length) {
+      html += '<div class="cs-proof">' + imgs.map(function (im) {
+        return "<figure><img src=\"" + esc(im.src) + '" alt="' +
+          esc(im.alt || "") + '" loading="lazy" decoding="async">' +
+          (im.caption ? "<figcaption>" + esc(im.caption) + "</figcaption>" : "") +
+          "</figure>";
+      }).join("") + "</div>";
     }
 
     if (m.wistia) {

@@ -1,6 +1,6 @@
 <!--
   ============================================================================
-  CASE STUDY CARDS + MODAL  —  paste-into-GoHighLevel block
+  CASE STUDY CARDS + MODAL: paste-into-GoHighLevel block
   ============================================================================
   HOW TO USE
     1. In the GHL funnel/page builder add a "Custom Code" (or "Code") element,
@@ -21,14 +21,20 @@
     stat      - the big headline number on the card
     statLabel - small grey line under it
     summary   - 2-3 sentence card blurb
+    modal.name     - optional. Header name for the modal only, when it should
+                     differ from the card (e.g. card "Ronnie", modal
+                     "Ronnie, eSimplicity"). Omit to reuse name.
     modal.headline - bold line at the top of the modal
     modal.stats    - 2 or 4 stat tiles: { value, label }
-    modal.quote    - { text, author } — omit the whole key to hide the quote
+    modal.quote    - { text, author }. Omit the whole key to hide the quote.
     modal.video    - full EMBED url, e.g. https://www.youtube.com/embed/XXXX
                      omit to hide the player (no empty black box)
-    modal.sections - [{ label, html }] — label renders as the small gold
+    modal.sections - [{ label, html }]. label renders as the small gold
                      all-caps heading. Empty html is skipped automatically.
-    modal.cta      - { text, href } — button at the bottom. Omit to hide.
+                     Inside html, use <p class="cs-pull"> for a short quote
+                     set into the body copy.
+    modal.cta      - { text, href }. Button at the bottom. Omit to hide.
+    modal.disclaimer - small grey print under the CTA. Omit to hide.
 
   NOTES
     * All CSS is namespaced under .cs-wrap / .cs-* so it cannot collide with
@@ -204,9 +210,15 @@
     letter-spacing: -0.5px;
   }
 
-  /* keeps "3× → 5.6× ROAS" from wrapping into four lines */
+  /* text headlines like "Laid Off to $90K Remote" need to step down so they
+     don't wrap into three or four lines */
   .cs-stat.is-long {
-    font-size: 23px;
+    font-size: 24px;
+  }
+
+  .cs-stat.is-xlong {
+    font-size: 21px;
+    letter-spacing: -0.2px;
   }
 
   .cs-statlab {
@@ -402,6 +414,30 @@
     font-size: 22px;
   }
 
+  /* the .cs-nav display:flex above outranks the UA [hidden] rule, so the
+     prev/next buttons need this to actually disappear for a single card */
+  .cs-nav[hidden],
+  .cs-close[hidden] {
+    display: none;
+  }
+
+  /* scrim so body copy fades out under the sticky controls instead of
+     colliding with them */
+  .cs-topbar::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 0;
+    left: 0;
+    height: 62px;
+    background: linear-gradient(
+      to bottom,
+      var(--cs-modal-bg) 40%,
+      rgba(28, 27, 32, 0)
+    );
+    pointer-events: none;
+  }
+
   .cs-nav:hover,
   .cs-close:hover {
     color: #fff;
@@ -539,6 +575,24 @@
     color: #fff;
   }
 
+  /* short quotes set inside a section's body copy */
+  .cs-sec .cs-pull {
+    margin: 18px 0;
+    padding-left: 16px;
+    color: #fff;
+    border-left: 2px solid color-mix(in srgb, var(--cs-a) 65%, transparent);
+    font-size: 15.5px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .cs-disclaimer {
+    margin: 24px 0 0;
+    color: var(--cs-muted);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+
   .cs-cta {
     display: inline-block;
     margin-top: 28px;
@@ -652,84 +706,122 @@
   };
 
   /* ==========================================================================
-     2. YOUR CASE STUDIES  —  the only thing you need to edit
+     2. YOUR CASE STUDIES: the only thing you need to edit
      ========================================================================== */
   var CASE_STUDIES = [
     {
-      id: "tyler",
-      name: "Tyler R. (TJR)",
-      category: "Day Trading & Crypto Education",
-      avatar: "", // TODO: paste avatar URL
+      id: "ronnie",
+      name: "Ronnie",
+      category: "Data and Business Analytics, Laid Off at Accenture",
+      avatar: "", // TODO: paste Ronnie's photo URL from the GHL media library
       accent: "#22b8f5",
-      accent2: "#7c5cff",
-      stat: "$11.7M",
-      statLabel: "Contracted Revenue · Annual",
+      accent2: "#5b7cfa",
+      stat: "Laid Off to $90K Remote",
+      statLabel: "30 Days From Program Start \u00b7 Offer Before Graduation",
       summary:
-        "55% YoY revenue growth by transitioning cohort to evergreen. " +
-        "$1M challenge week on first run · 4.6× ROAS on paid ads.",
+        "Hundreds of applications a week and zero final interviews. Thirty " +
+        "days after starting DIM: eight to ten phone screens weekly, three " +
+        "to four final rounds, and a $90K fully remote offer.",
       modal: {
+        // shown only in the modal header; the card stays "Ronnie"
+        name: "Ronnie, eSimplicity",
         headline:
-          "$11.7M Contracted · 55% YoY Growth · $1M Challenge Week on First Try",
+          "Laid Off at Accenture to a $90K Fully Remote Offer in 30 Days",
         stats: [
-          { value: "$11.7M", label: "Annual Contracted Revenue" },
-          { value: "55% YoY", label: "Revenue Growth" },
-          { value: "$1M Week", label: "Challenge Funnel (First Run)" },
-          { value: "4.6× ROAS", label: "Paid Ads Cash Return" }
+          { value: "$90K", label: "Offer Salary, Fully Remote" },
+          { value: "30 Days", label: "Program Start to Offer" },
+          { value: "1-2 to 8-10", label: "Phone Screens Per Week" },
+          { value: "0 to 3-4", label: "Final Round Interviews Per Week" }
         ],
         quote: {
           text:
-            "We did 55% more revenue than the prior year. That was definitely " +
-            "from the feedback on shifting to Evergreen — that was the huge " +
-            "game changer, moving away from the cohort model more than anything.",
-          author: "Adrian P., Director of Operations, TJR Trades"
+            "I got that final offer in about thirty days. I was relieved. " +
+            "I could end my search.",
+          author: "Ronnie, Data Analyst at eSimplicity"
         },
-        // video: "https://www.youtube.com/embed/VIDEO_ID",  // TODO: add if you have one
+        // video: "https://www.youtube.com/embed/VIDEO_ID",  // TODO: add if there is one
         sections: [
           {
-            label: "The business",
+            label: "Their path before DIM",
             html:
-              "<p><strong>TJR Trades</strong> is the education brand of Tyler " +
-              "Riches — one of the most-recognized trading personalities online. " +
-              "TJR is widely known as the biggest TikTok day trader and crypto " +
-              "creator, a top-5 YouTube trading personality, and commands an " +
-              "Instagram following known for its die-hard engagement. The " +
-              "business sells premium trading education: a structured coaching " +
-              "program with pre-recorded coursework, live group coaching calls, " +
-              "and community access — offered at two price points, $4,000 " +
-              "(coaches-only) and $7,000 (adds access to TJR's personal calls). " +
-              "Day-to-day operations are run by Director of Operations Adrian " +
-              "Paleka; Tyler drives content and all organic acquisition.</p>"
+              "<p>Three years at Accenture in data and business analytics, " +
+              "then the tech layoffs hit. Ronnie was not a beginner. He had " +
+              "the title, the firm, and the experience. What he did not have " +
+              "was a job, and the market did not care about his resume.</p>" +
+
+              "<p>Job searching became the job. LinkedIn every morning, " +
+              "roughly 200 applications a week, plus cold outreach to " +
+              "everyone in his network. The return was about two phone " +
+              "screens per hundred applications, and some weeks nothing at " +
+              "all. Zero final rounds. Zero offers.</p>" +
+
+              '<p class="cs-pull">&ldquo;It honestly became a full time job ' +
+              "at that point looking for a job.&rdquo;</p>" +
+
+              "<p>He assumed the market was the whole problem, until he " +
+              "started considering that his strategy might be the other " +
+              "half of it.</p>" +
+
+              '<p class="cs-pull">&ldquo;What I&rsquo;m doing clearly ' +
+              "isn&rsquo;t bringing in any success right now.&rdquo;</p>"
           },
           {
-            label: "Before scaling with systems",
+            label: "What we did",
             html:
-              "<p>When TJR joined, they were running a cohort-based launch " +
-              "model — selling in windows, going dark between cycles, and " +
-              "generating strong organic demand that had nowhere to scale. The " +
-              "offer was a single $3K price point with no ascension path. All " +
-              "fulfillment relied on Tyler personally doing multiple coaching " +
-              "calls per week. Sales were managed by Tyler's brother with a " +
-              "door-to-door background and no info-product experience, and show " +
-              "rates were stuck at 50–55%. There was no back-end revenue, no " +
-              "formal testing framework, and no data infrastructure to " +
-              "confidently move pricing or structure.</p>"
+              "<p>Paired him with a 1-on-1 mentor who built the plan around " +
+              "his actual constraint, which was cash and not curriculum. The " +
+              "goal was not to make him a better analyst. It was to get an " +
+              "offer fast.</p>" +
+
+              "<ul>" +
+                "<li>Repositioned the resume so three years of Accenture " +
+                "work read as outcomes rather than duties</li>" +
+                "<li>Restructured application volume into a daily system: " +
+                "80 to 100 per day instead of 200 per week</li>" +
+                "<li>Rebuilt interview answers around specific lived " +
+                "experience and depth instead of textbook responses</li>" +
+                "<li>Upgraded the portfolio from projects that demonstrate " +
+                "tools to projects that answer complex business questions " +
+                "and lead with the recommendation</li>" +
+                "<li>Plugged him into the private community for peer " +
+                "accountability and unlisted job leads</li>" +
+              "</ul>"
           },
           {
-            label: "What we built",
-            html: "" // TODO: the system you installed, change by change
-          },
-          {
-            label: "The results",
-            html: "" // TODO: tie each change to a number
+            label: "Results",
+            html:
+              "<p>Weekly phone screens went from one or two, sometimes zero, " +
+              "to eight to ten. Of those, three to four per week reached " +
+              "final rounds, a stage he had not reached once before the " +
+              "program.</p>" +
+
+              "<p>Application volume went up roughly 2.5 times, but the " +
+              "response rate also more than doubled, from about 0.75 percent " +
+              "to 1.8 percent. Both levers moved.</p>" +
+
+              "<p>Thirty days after starting, he accepted a $90K fully " +
+              "remote offer from eSimplicity, before the program ended.</p>" +
+
+              "<p>The change he flags as the real one:</p>" +
+
+              '<p class="cs-pull">&ldquo;I kinda know the strategy that I ' +
+              "have to take from end to end, from applying all the way to " +
+              "that final interview and offer.&rdquo;</p>" +
+
+              "<p>He did not just get a job. He stopped depending on luck to " +
+              "get the next one.</p>"
           }
         ],
-        cta: { text: "Get the same system built for you", href: "#book" }
+        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
       }
     }
   ];
 
   /* ==========================================================================
-     3. ENGINE  —  no need to touch anything below this line
+     3. ENGINE: no need to touch anything below this line
      ========================================================================== */
   var wrap = document.getElementById("cs-wrap");
   var grid = document.getElementById("cs-grid");
@@ -777,7 +869,8 @@
     if (CASE_STUDIES.length < 4) wrap.className += " cs-n" + CASE_STUDIES.length;
 
     grid.innerHTML = CASE_STUDIES.map(function (cs, i) {
-      var longStat = String(cs.stat).length > 11 ? " is-long" : "";
+      var len = String(cs.stat).length;
+      var longStat = len > 18 ? " is-xlong" : len > 11 ? " is-long" : "";
 
       return (
         '<li>' +
@@ -816,13 +909,13 @@
     html +=
       '<div class="cs-modal-person">' + avatarHTML(cs) +
         "<div>" +
-          '<p class="cs-modal-name">' + esc(cs.name) + "</p>" +
+          '<p class="cs-modal-name">' + esc(m.name || cs.name) + "</p>" +
           '<p class="cs-cat">' + esc(cs.category) + "</p>" +
         "</div>" +
       "</div>";
 
     html += '<h2 class="cs-headline" id="cs-headline">' +
-      esc(m.headline || cs.stat + " — " + cs.name) + "</h2>";
+      esc(m.headline || cs.stat + ": " + cs.name) + "</h2>";
 
     if (m.stats && m.stats.length) {
       html += '<ul class="cs-stats">' + m.stats.map(function (s) {
@@ -834,7 +927,7 @@
     if (m.quote && m.quote.text) {
       html += '<blockquote class="cs-quote">&ldquo;' + esc(m.quote.text) +
         "&rdquo;" +
-        (m.quote.author ? "<footer>— " + esc(m.quote.author) + "</footer>" : "") +
+        (m.quote.author ? "<footer>" + esc(m.quote.author) + "</footer>" : "") +
         "</blockquote>";
     }
 
@@ -861,6 +954,10 @@
         esc(m.cta.text) + "</a>";
     }
 
+    if (m.disclaimer) {
+      html += '<p class="cs-disclaimer">' + esc(m.disclaimer) + "</p>";
+    }
+
     if (CONFIG.showCount && CASE_STUDIES.length > 1) {
       html += '<p class="cs-count">Case study ' + (i + 1) + " of " +
         CASE_STUDIES.length + "</p>";
@@ -876,7 +973,7 @@
     if (CONFIG.deepLink && cs.id) {
       try {
         history.replaceState(null, "", "#case=" + cs.id);
-      } catch (e) { /* file:// or blocked history — harmless */ }
+      } catch (e) { /* file:// or blocked history, harmless */ }
     }
   }
 

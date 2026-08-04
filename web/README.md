@@ -1,16 +1,12 @@
 # Case study cards + modal (GoHighLevel embed)
 
 `ghl-case-study-cards.html` is a single self-contained block — HTML, CSS and JS
-in one file, no build step, no external dependencies — that renders the
-clickable case-study card grid and the full case-study modal.
+in one file, no build step, no external dependencies. It renders two states:
+the card as it sits in the grid, and the full case study that opens when the
+card is clicked.
 
-**Currently loaded with one card (Tyler R. / TJR) so the first one can be
-dialed in before the rest go live.** The other 7 case-study objects are parked
-in `remaining-case-studies.js`; paste them into the `CASE_STUDIES` array when
-card #1 is approved. The layout adapts on its own — 1 card renders centered at
-400px, 2 or 3 stay centered, 4+ becomes the 4-column grid — and the modal's
-prev/next arrows and "Case study 1 of 8" line appear only once there is more
-than one.
+Currently loaded with one card: **Ronnie, laid off at Accenture to a $90K fully
+remote offer in 30 days.**
 
 ## Install in GHL
 
@@ -18,54 +14,72 @@ than one.
    accounts it's called *Code*). Put it in a full-width section/row.
 2. Paste the entire contents of `ghl-case-study-cards.html` into the code box.
 3. Save, then **preview the live page** — the builder canvas often refuses to
-   run `<script>`, so cards can look missing inside the editor while working
+   run `<script>`, so the card can look missing inside the editor while working
    perfectly on the published page.
 
-If your account's code element strips `<script>`, put the `<style>`+HTML in the
-code element and paste the `<script>` block into
+If your account's code element strips `<script>`, put the `<style>` + HTML in
+the code element and paste the `<script>` block into
 **Settings → Tracking Code → Footer** instead. Nothing else changes.
 
-## Editing content
+## Adding the next student
 
 Everything renders from the `CASE_STUDIES` array near the top of the `<script>`.
-Cards and their modals are generated from the same object, so they can't drift
-apart. Each entry documents itself in the comment block at the top of the file;
-search for `TODO` to find every field still needing real copy:
+Card and full case study come from the same object, so they can't drift apart.
+Copy the Ronnie block, change the values, give it a new `id`. The comment block
+at the top of the file documents every field.
 
-- avatar URLs (upload to the GHL media library, paste the URL into `avatar` —
-  an empty string falls back to the person's initials)
-- `modal.quote` for the 7 case studies that don't have one yet
-- `modal.sections[].html` bodies — an empty section is skipped, so partially
-  filled case studies still look finished
-- `modal.video` — omit the key entirely and no player is rendered
-- `modal.cta.href` — currently `#book`; point it at your booking section/URL
+The layout adjusts to the count on its own, no CSS edits:
 
-Only the stats already visible on the live site's cards are pre-filled, plus
-Tyler's quote and first two modal sections. Nothing else was invented.
+| Cards | Desktop | Tablet | Phone |
+|---|---|---|---|
+| 1 | centered, 400px | centered | full width |
+| 2–3 | centered row | 2 columns | 1 column |
+| 4+ | 4 columns | 2 columns | 1 column |
+
+The modal's ‹ › arrows, arrow-key navigation, and the "Case study 1 of N"
+counter appear automatically once there is more than one card.
+
+## Still TODO on Ronnie's card
+
+- `avatar` — his photo URL from the GHL media library. Empty falls back to the
+  initial in a gold ring.
+- `modal.cta.href` — currently `#book`, needs the real booking link.
+- `modal.video` — omit the key entirely if there's no clip; nothing renders.
+- `accent` / `accent2` — the blue used for the top bar and the big card line.
+  Two hex values, change to match DIM brand.
+
+## Copy conventions baked in
+
+- **No em dashes anywhere.** Verified zero in the file, including the code
+  comments. The quote attribution renders as a plain line with no leading dash,
+  and the only place an em dash could have appeared (an unused headline
+  fallback) now uses a colon.
+- Section headings render uppercase from sentence case in the data, so write
+  `"Their path before DIM"` and the page shows `THEIR PATH BEFORE DIM`.
+- Short quotes inside body copy use `<p class="cs-pull">` for the indented
+  italic treatment. Use `&ldquo;` `&rdquo;` `&rsquo;` for curly punctuation.
+- `modal.disclaimer` renders the small grey results disclaimer under the CTA.
 
 ## Preview locally
 
 Open `ghl-case-study-cards.html` directly in a browser — it renders standalone.
-For a dark page background matching the live site, wrap it in a scratch file
-with `body{background:#0d0c0f}`.
+For the dark page background, wrap it in a scratch file with
+`body{background:#0d0c0f}`.
 
-## What differs from a stock ChatGPT version
+## Implementation notes
 
-- One data array drives cards **and** modals (no duplicated markup to keep in
-  sync; adding a 9th case study is one object).
+- One data object drives card + modal, so numbers can't disagree between them.
 - The modal is relocated to `<body>` at runtime. GHL sections routinely use
   `overflow:hidden` and CSS transforms, which clip or trap a `position:fixed`
-  modal — this is the single most common reason DIY GHL modals appear cut off
-  or stuck behind the header.
+  modal — the most common reason DIY GHL modals appear cut off or stuck behind
+  the header.
 - Real dialog semantics: `aria-modal`, labelled by the headline, Esc to close,
-  focus trapped inside while open and returned to the originating card on
-  close, scroll lock that compensates for the scrollbar so the page doesn't
-  shift.
-- ‹ › buttons and ←/→ keys move between case studies without closing.
-- Per-card two-tone accent gradient, initials avatar fallback, automatic
-  font-size step-down for long values like `3× → 5.6× ROAS`.
-- Optional pieces are truly optional: missing video, quote, CTA or section body
-  render nothing instead of an empty black iframe or a dangling heading.
-- `#case=<id>` deep links open a specific case study on page load.
-- All selectors namespaced `cs-*`, design tokens in one CSS variable block, JS
-  wrapped in an IIFE with no globals.
+  focus trapped while open and returned to the card on close, scroll lock that
+  compensates for scrollbar width so the page doesn't shift.
+- Optional pieces are truly optional: missing video, quote, CTA, disclaimer or
+  section body renders nothing rather than an empty box or dangling heading.
+- Long card headlines step down in two tiers so text values like
+  "Laid Off to $90K Remote" stay on one line.
+- `#case=ronnie` deep links open the case study on page load.
+- Selectors namespaced `cs-*`, design tokens in one CSS variable block, JS in
+  an IIFE with no globals.

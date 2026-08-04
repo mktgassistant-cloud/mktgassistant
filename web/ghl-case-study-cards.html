@@ -1,0 +1,1192 @@
+<!--
+  ============================================================================
+  CASE STUDY CARDS + MODAL  —  paste-into-GoHighLevel block
+  ============================================================================
+  HOW TO USE
+    1. In the GHL funnel/page builder add a "Custom Code" (or "Code") element,
+       full page width, and paste this ENTIRE file into it.
+    2. Edit only the CASE_STUDIES array below. Everything (cards + modals) is
+       generated from it, so a card and its detail view can never drift apart.
+    3. Search for "TODO" to find every spot that still needs your copy,
+       avatar URL, quote, or video.
+
+  WHAT TO EDIT PER CASE STUDY
+    id        - short slug, used for the #case=<id> deep link. Keep unique.
+    name      - name shown on the card and in the modal header
+    category  - small gold line under the name
+    avatar    - square image URL (use the GHL media library). Leave "" and the
+                card falls back to the person's initials.
+    accent    - main color: the big number + left half of the top bar
+    accent2   - right half of the top bar gradient (omit to reuse accent)
+    stat      - the big headline number on the card
+    statLabel - small grey line under it
+    summary   - 2-3 sentence card blurb
+    modal.headline - bold line at the top of the modal
+    modal.stats    - 2 or 4 stat tiles: { value, label }
+    modal.quote    - { text, author } — omit the whole key to hide the quote
+    modal.video    - full EMBED url, e.g. https://www.youtube.com/embed/XXXX
+                     omit to hide the player (no empty black box)
+    modal.sections - [{ label, html }] — label renders as the small gold
+                     all-caps heading. Empty html is skipped automatically.
+    modal.cta      - { text, href } — button at the bottom. Omit to hide.
+
+  NOTES
+    * All CSS is namespaced under .cs-wrap / .cs-* so it cannot collide with
+      GHL's own styles, and the JS lives in one IIFE (no globals leaked).
+    * On load the modal is moved to <body> so GHL sections with overflow or
+      transforms can't break position:fixed. This is the #1 reason DIY GHL
+      modals appear clipped or behind other elements.
+    * Fully keyboard accessible: Tab reaches each card's button, Esc closes,
+      focus is trapped in the dialog and returned to the card on close.
+    * Arrow keys / the ‹ › buttons move between case studies inside the modal.
+  ============================================================================
+-->
+
+<style>
+  /* Design tokens live on BOTH roots: the modal is relocated to <body> at
+     runtime, so it can't inherit variables from .cs-wrap. */
+  .cs-wrap,
+  .cs-modal {
+    /* ---- brand knobs: change these 9 lines to restyle the whole block ---- */
+    --cs-gold: #e7b92f;
+    --cs-gold-soft: #d2a72a;
+    --cs-card-bg: #17161a;
+    --cs-modal-bg: #1c1b20;
+    --cs-tile-bg: #232127;
+    --cs-line: #2e2c33;
+    --cs-text: #ffffff;
+    --cs-body: #ded9d4;
+    --cs-muted: #a7a19b;
+
+    --cs-gap: 18px;
+    --cs-max: 1240px;
+    --cs-radius: 16px;
+  }
+
+  .cs-wrap {
+    --cs-cols: 4;
+
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 8px 0;
+    color: var(--cs-text);
+    font-family: var(--cs-font, inherit);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .cs-wrap *,
+  .cs-wrap *::before,
+  .cs-wrap *::after {
+    box-sizing: border-box;
+  }
+
+  /* ---------------------------------------------------------------- grid -- */
+  .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cs-cols), minmax(0, 1fr));
+    gap: var(--cs-gap);
+    width: 100%;
+    max-width: var(--cs-max);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* --------------------------------------------------------------- card -- */
+  .cs-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 26px 22px 22px;
+    overflow: hidden;
+    text-align: left;
+    background: var(--cs-card-bg);
+    border: 1px solid var(--cs-line);
+    border-radius: var(--cs-radius);
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease,
+      border-color 0.22s ease;
+  }
+
+  /* two-tone accent bar across the top of every card */
+  .cs-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cs-a), var(--cs-b));
+  }
+
+  .cs-card:hover,
+  .cs-card:focus-within {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--cs-a) 45%, var(--cs-line));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .cs-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .cs-avatar {
+    display: flex;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--cs-gold);
+    background: #262429;
+    border: 2px solid color-mix(in srgb, var(--cs-gold) 70%, transparent);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .cs-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .cs-name {
+    margin: 0 0 3px;
+    color: var(--cs-text);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .cs-cat {
+    margin: 0;
+    color: var(--cs-gold);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .cs-stat {
+    margin: 0 0 6px;
+    color: var(--cs-a);
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+  }
+
+  /* keeps "3× → 5.6× ROAS" from wrapping into four lines */
+  .cs-stat.is-long {
+    font-size: 23px;
+  }
+
+  .cs-statlab {
+    margin: 0 0 16px;
+    color: var(--cs-muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .cs-sum {
+    margin: 0 0 22px;
+    color: var(--cs-body);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .cs-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 2px 0;
+    color: var(--cs-gold-soft);
+    background: none;
+    border: 0;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cs-more span {
+    transition: transform 0.2s ease;
+  }
+
+  .cs-card:hover .cs-more,
+  .cs-more:hover {
+    color: #f4d16a;
+  }
+
+  .cs-card:hover .cs-more span {
+    transform: translateX(4px);
+  }
+
+  .cs-more:focus-visible,
+  .cs-nav:focus-visible,
+  .cs-close:focus-visible,
+  .cs-cta:focus-visible {
+    outline: 2px solid var(--cs-gold);
+    outline-offset: 3px;
+  }
+
+  .cs-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* -------------------------------------------------------------- modal -- */
+  .cs-modal {
+    position: fixed;
+    z-index: 2147483000; /* above GHL headers, chat widgets and sticky bars */
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 20px;
+    font-family: var(--cs-font, inherit);
+  }
+
+  .cs-modal.is-open {
+    display: flex;
+  }
+
+  .cs-modal *,
+  .cs-modal *::before,
+  .cs-modal *::after {
+    box-sizing: border-box;
+  }
+
+  .cs-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    animation: cs-fade 0.2s ease both;
+  }
+
+  .cs-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(780px, 100%);
+    max-height: min(88vh, 900px);
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    color: var(--cs-text);
+    background: var(--cs-modal-bg);
+    border: 1px solid var(--cs-line);
+    border-radius: 20px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+    animation: cs-rise 0.24s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+    scrollbar-width: thin;
+  }
+
+  .cs-dialog::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cs-a), var(--cs-b));
+  }
+
+  @keyframes cs-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes cs-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.985);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-card,
+    .cs-more span,
+    .cs-overlay,
+    .cs-dialog {
+      transition: none;
+      animation: none;
+    }
+
+    .cs-card:hover {
+      transform: none;
+    }
+  }
+
+  .cs-inner {
+    padding: 56px 34px 34px;
+  }
+
+  /* zero-height sticky row: the controls float over the content and stay put
+     while the dialog scrolls, without reserving layout space */
+  .cs-topbar {
+    position: sticky;
+    top: 4px;
+    z-index: 3;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 8px;
+    height: 0;
+    padding: 0 16px;
+    pointer-events: none;
+  }
+
+  .cs-nav,
+  .cs-close {
+    margin-top: 14px;
+    pointer-events: auto;
+    display: flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0;
+    color: #cfcac4;
+    background: rgba(38, 36, 41, 0.92);
+    border: 1px solid var(--cs-line);
+    border-radius: 50%;
+    font: inherit;
+    font-size: 17px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.18s ease, background 0.18s ease;
+  }
+
+  .cs-close {
+    font-size: 22px;
+  }
+
+  .cs-nav:hover,
+  .cs-close:hover {
+    color: #fff;
+    background: #34313a;
+  }
+
+  .cs-modal-person {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 0 0 22px;
+  }
+
+  .cs-modal-name {
+    margin: 0 0 3px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .cs-headline {
+    margin: 0 0 22px;
+    font-size: clamp(21px, 2.5vw, 27px);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
+  }
+
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs-tile {
+    padding: 18px 12px;
+    text-align: center;
+    background: var(--cs-tile-bg);
+    border: 1px solid var(--cs-line);
+    border-radius: 12px;
+  }
+
+  .cs-tile-v {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .cs-tile-l {
+    display: block;
+    margin-top: 5px;
+    color: var(--cs-muted);
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+
+  .cs-quote {
+    margin: 0 0 26px;
+    padding: 18px 20px;
+    color: #efece8;
+    background: var(--cs-tile-bg);
+    border: 0;
+    border-left: 3px solid var(--cs-a);
+    border-radius: 10px;
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.65;
+  }
+
+  .cs-quote footer {
+    margin-top: 10px;
+    color: var(--cs-muted);
+    font-size: 13px;
+    font-style: normal;
+  }
+
+  .cs-video {
+    position: relative;
+    margin: 0 0 26px;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background: #000;
+    border-radius: 12px;
+  }
+
+  .cs-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .cs-body {
+    color: var(--cs-body);
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  .cs-sec-label {
+    margin: 0 0 8px;
+    color: var(--cs-gold);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+
+  .cs-sec + .cs-sec {
+    margin-top: 24px;
+  }
+
+  .cs-sec p {
+    margin: 0 0 12px;
+  }
+
+  .cs-sec p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cs-sec ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+
+  .cs-sec li {
+    margin-bottom: 7px;
+  }
+
+  .cs-sec strong {
+    color: #fff;
+  }
+
+  .cs-cta {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 14px 28px;
+    color: #17161a;
+    background: var(--cs-gold);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: filter 0.18s ease;
+  }
+
+  .cs-cta:hover {
+    filter: brightness(1.08);
+  }
+
+  .cs-count {
+    margin: 26px 0 0;
+    color: var(--cs-muted);
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  /* --------------------------------------------------------- responsive -- */
+  @media (max-width: 1080px) {
+    .cs-wrap {
+      --cs-cols: 2;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .cs-wrap {
+      --cs-cols: 1;
+      --cs-gap: 14px;
+    }
+
+    .cs-card {
+      padding: 24px 20px 20px;
+    }
+
+    /* full-height sheet on phones */
+    .cs-modal {
+      padding: 0;
+    }
+
+    .cs-dialog {
+      width: 100%;
+      max-height: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .cs-inner {
+      padding: 54px 20px 44px;
+    }
+
+    .cs-stats {
+      gap: 10px;
+    }
+
+    .cs-tile {
+      padding: 14px 8px;
+    }
+
+    .cs-tile-v {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<section class="cs-wrap" id="cs-wrap">
+  <ul class="cs-grid" id="cs-grid"><!-- cards render here --></ul>
+</section>
+
+<div class="cs-modal" id="cs-modal" hidden>
+  <div class="cs-overlay" data-cs-close></div>
+
+  <div
+    class="cs-dialog"
+    id="cs-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cs-headline"
+    tabindex="-1"
+  >
+    <div class="cs-topbar">
+      <button class="cs-nav" type="button" id="cs-prev" aria-label="Previous case study">&#8249;</button>
+      <button class="cs-nav" type="button" id="cs-next" aria-label="Next case study">&#8250;</button>
+      <button class="cs-close" type="button" data-cs-close aria-label="Close case study">&times;</button>
+    </div>
+
+    <div class="cs-inner" id="cs-inner"><!-- detail renders here --></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ==========================================================================
+     1. CONFIG
+     ========================================================================== */
+  var CONFIG = {
+    deepLink: true,   // support /page#case=tyler and update the hash on open
+    showCount: true,  // "Case study 1 of 8" line at the bottom of the modal
+    arrowKeys: true   // ← / → move between case studies while the modal is open
+  };
+
+  /* ==========================================================================
+     2. YOUR CASE STUDIES  —  the only thing you need to edit
+     ========================================================================== */
+  var CASE_STUDIES = [
+    {
+      id: "tyler",
+      name: "Tyler R. (TJR)",
+      category: "Day Trading & Crypto Education",
+      avatar: "", // TODO: paste avatar URL
+      accent: "#22b8f5",
+      accent2: "#7c5cff",
+      stat: "$11.7M",
+      statLabel: "Contracted Revenue · Annual",
+      summary:
+        "55% YoY revenue growth by transitioning cohort to evergreen. " +
+        "$1M challenge week on first run · 4.6× ROAS on paid ads.",
+      modal: {
+        headline:
+          "$11.7M Contracted · 55% YoY Growth · $1M Challenge Week on First Try",
+        stats: [
+          { value: "$11.7M", label: "Annual Contracted Revenue" },
+          { value: "55% YoY", label: "Revenue Growth" },
+          { value: "$1M Week", label: "Challenge Funnel (First Run)" },
+          { value: "4.6× ROAS", label: "Paid Ads Cash Return" }
+        ],
+        quote: {
+          text:
+            "We did 55% more revenue than the prior year. That was definitely " +
+            "from the feedback on shifting to Evergreen — that was the huge " +
+            "game changer, moving away from the cohort model more than anything.",
+          author: "Adrian P., Director of Operations, TJR Trades"
+        },
+        // video: "https://www.youtube.com/embed/VIDEO_ID",  // TODO: add if you have one
+        sections: [
+          {
+            label: "The business",
+            html:
+              "<p><strong>TJR Trades</strong> is the education brand of Tyler " +
+              "Riches — one of the most-recognized trading personalities online. " +
+              "TJR is widely known as the biggest TikTok day trader and crypto " +
+              "creator, a top-5 YouTube trading personality, and commands an " +
+              "Instagram following known for its die-hard engagement. The " +
+              "business sells premium trading education: a structured coaching " +
+              "program with pre-recorded coursework, live group coaching calls, " +
+              "and community access — offered at two price points, $4,000 " +
+              "(coaches-only) and $7,000 (adds access to TJR's personal calls). " +
+              "Day-to-day operations are run by Director of Operations Adrian " +
+              "Paleka; Tyler drives content and all organic acquisition.</p>"
+          },
+          {
+            label: "Before scaling with systems",
+            html:
+              "<p>When TJR joined, they were running a cohort-based launch " +
+              "model — selling in windows, going dark between cycles, and " +
+              "generating strong organic demand that had nowhere to scale. The " +
+              "offer was a single $3K price point with no ascension path. All " +
+              "fulfillment relied on Tyler personally doing multiple coaching " +
+              "calls per week. Sales were managed by Tyler's brother with a " +
+              "door-to-door background and no info-product experience, and show " +
+              "rates were stuck at 50–55%. There was no back-end revenue, no " +
+              "formal testing framework, and no data infrastructure to " +
+              "confidently move pricing or structure.</p>"
+          },
+          {
+            label: "What we built",
+            html: "" // TODO: the system you installed, change by change
+          },
+          {
+            label: "The results",
+            html: "" // TODO: tie each change to a number
+          }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "jeremy",
+      name: "Jeremy Miner",
+      category: "Sales Training (NEPQ)",
+      avatar: "", // TODO
+      accent: "#ff7a1a",
+      accent2: "#ffb03a",
+      stat: "$200/Qualified Call",
+      statLabel: "Best VSL Show Rate Ever · Top-3 Funnel",
+      summary:
+        "Tried to crack cold VSL for months. Finally cracked it — now their " +
+        "#1 show-rate funnel and top-3 for quality calls across a $500K+/mo " +
+        "ad portfolio. No custom ads run yet.",
+      modal: {
+        headline:
+          "$200 Per Qualified Call and the Best VSL Show Rate in the Company's History",
+        stats: [
+          { value: "$200", label: "Cost Per Qualified Call" },
+          { value: "#1", label: "Show Rate of Any Funnel" },
+          { value: "Top 3", label: "Call Quality Across All Funnels" },
+          { value: "$500K+/mo", label: "Ad Portfolio It Runs Inside" }
+        ],
+        // quote: { text: "TODO", author: "TODO" },
+        sections: [
+          { label: "The business", html: "" },       // TODO
+          { label: "Before scaling with systems", html: "" }, // TODO
+          { label: "What we built", html: "" },      // TODO
+          { label: "The results", html: "" }         // TODO
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "richard",
+      name: "Richard Y.",
+      category: "Online Coaching & Consulting",
+      avatar: "", // TODO
+      accent: "#8b5cf6",
+      accent2: "#4f7bff",
+      stat: "$0 → $500K+/Mo",
+      statLabel: "Monthly Revenue · 79% Margin",
+      summary:
+        "4 failed businesses to $500K/month at 79% profit margin. $570K cash " +
+        "collected in 24 days from just $2,500 in ad spend.",
+      modal: {
+        headline: "From Four Failed Businesses to $500K/Month at a 79% Profit Margin",
+        stats: [
+          { value: "$500K+/mo", label: "Monthly Revenue" },
+          { value: "79%", label: "Profit Margin" },
+          { value: "$570K", label: "Cash Collected in 24 Days" },
+          { value: "$2,500", label: "Ad Spend Behind It" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "joey",
+      name: "Joey D.",
+      category: "Podcast Agency",
+      avatar: "", // TODO
+      accent: "#22c55e",
+      accent2: "#7ee08a",
+      stat: "3× → 5.6× ROAS",
+      statLabel: "Return on Ad Spend · 28 Days",
+      summary:
+        "10% → 22% close rate. $92/booked call. One funnel switch doubled the " +
+        "close rate and nearly doubled ROAS in 28 days.",
+      modal: {
+        headline: "One Funnel Switch: 3× to 5.6× ROAS and a Doubled Close Rate in 28 Days",
+        stats: [
+          { value: "5.6× ROAS", label: "Up From 3× in 28 Days" },
+          { value: "10% → 22%", label: "Close Rate" },
+          { value: "$92", label: "Cost Per Booked Call" },
+          { value: "28 Days", label: "Time to Result" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "lauren",
+      name: "Lauren H.",
+      category: "Matchmaking",
+      avatar: "", // TODO
+      accent: "#ec4899",
+      accent2: "#f97362",
+      stat: "$286K",
+      statLabel: "Collected in First 17 Days · Organic Only",
+      summary:
+        "$80K/month to $286K in 17 days. VSL funnel, $28K ticket, dedicated " +
+        "salesperson — $663K+ in 4 months with zero paid ads.",
+      modal: {
+        headline: "$80K/Month to $286K in 17 Days — With Zero Paid Ads",
+        stats: [
+          { value: "$286K", label: "Collected in First 17 Days" },
+          { value: "$663K+", label: "In the First 4 Months" },
+          { value: "$28K", label: "Ticket Price" },
+          { value: "$0", label: "Spent on Paid Ads" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "michael",
+      name: "Michael O.",
+      category: "Tax Credit Firm",
+      avatar: "", // TODO
+      accent: "#38bdf8",
+      accent2: "#22d3ee",
+      stat: "$639K",
+      statLabel: "ERC Commissions · Jun 2023",
+      summary:
+        "9,000+ booked calls generated. Full marketing, sales & fulfillment " +
+        "system built from scratch. $2.5M+ in commissions.",
+      modal: {
+        headline: "$639K in a Single Month and $2.5M+ in Commissions From a System Built From Scratch",
+        stats: [
+          { value: "$639K", label: "Commissions in Jun 2023" },
+          { value: "$2.5M+", label: "Total Commissions" },
+          { value: "9,000+", label: "Booked Calls Generated" },
+          { value: "From Scratch", label: "Marketing, Sales & Fulfillment" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "randy",
+      name: "Randy L.",
+      category: "Legal Nurse Consulting",
+      avatar: "", // TODO
+      accent: "#a3e635",
+      accent2: "#facc15",
+      stat: "$23K → $120K+",
+      statLabel: "420% revenue growth · 52× ROAS · 90 days",
+      summary:
+        "Was personally sitting on every sales call. Built a 3-closer team " +
+        "hitting 50–60% close rates — stepped out permanently while revenue " +
+        "grew 420%.",
+      modal: {
+        headline: "$23K to $120K+/Month in 90 Days — and Off Every Sales Call Permanently",
+        stats: [
+          { value: "420%", label: "Revenue Growth" },
+          { value: "52× ROAS", label: "Return on Ad Spend" },
+          { value: "50–60%", label: "Close Rate (3-Closer Team)" },
+          { value: "90 Days", label: "Time to Result" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    },
+
+    {
+      id: "danny",
+      name: "Danny C.",
+      category: "Real Estate Development Education",
+      avatar: "", // TODO
+      accent: "#d946ef",
+      accent2: "#f472b6",
+      stat: "$635K",
+      statLabel: "Record Month · $112K in a Single Day",
+      summary:
+        "$162K to $635K/month with a setter booking 14 calls/day. Closed " +
+        "$112,000 in a single day · 4× revenue growth.",
+      modal: {
+        headline: "$162K to a $635K Record Month — Including $112K Closed in One Day",
+        stats: [
+          { value: "$635K", label: "Record Month" },
+          { value: "4×", label: "Revenue Growth" },
+          { value: "$112K", label: "Closed in a Single Day" },
+          { value: "14/day", label: "Calls Booked by One Setter" }
+        ],
+        sections: [
+          { label: "The business", html: "" },
+          { label: "Before scaling with systems", html: "" },
+          { label: "What we built", html: "" },
+          { label: "The results", html: "" }
+        ],
+        cta: { text: "Get the same system built for you", href: "#book" }
+      }
+    }
+  ];
+
+  /* ==========================================================================
+     3. ENGINE  —  no need to touch anything below this line
+     ========================================================================== */
+  var grid = document.getElementById("cs-grid");
+  var modal = document.getElementById("cs-modal");
+  var dialog = document.getElementById("cs-dialog");
+  var inner = document.getElementById("cs-inner");
+  var prevBtn = document.getElementById("cs-prev");
+  var nextBtn = document.getElementById("cs-next");
+
+  if (!grid || !modal) return;
+
+  var current = -1;
+  var lastFocus = null;
+  var scrollLocked = false;
+
+  function esc(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function initials(name) {
+    return String(name || "")
+      .replace(/\(.*?\)/g, "")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (w) { return w.charAt(0).toUpperCase(); })
+      .join("");
+  }
+
+  function avatarHTML(cs) {
+    if (cs.avatar) {
+      return '<span class="cs-avatar"><img src="' + esc(cs.avatar) +
+        '" alt="" loading="lazy" decoding="async"></span>';
+    }
+    return '<span class="cs-avatar" aria-hidden="true">' +
+      esc(initials(cs.name)) + "</span>";
+  }
+
+  /* ---------------------------------------------------------------- cards -- */
+  function renderCards() {
+    grid.innerHTML = CASE_STUDIES.map(function (cs, i) {
+      var longStat = String(cs.stat).length > 11 ? " is-long" : "";
+
+      return (
+        '<li>' +
+          '<article class="cs-card" data-cs-index="' + i + '" style="--cs-a:' +
+            esc(cs.accent) + ";--cs-b:" + esc(cs.accent2 || cs.accent) + '">' +
+            '<div class="cs-person">' +
+              avatarHTML(cs) +
+              "<div>" +
+                '<h3 class="cs-name">' + esc(cs.name) + "</h3>" +
+                '<p class="cs-cat">' + esc(cs.category) + "</p>" +
+              "</div>" +
+            "</div>" +
+            '<p class="cs-stat' + longStat + '">' + esc(cs.stat) + "</p>" +
+            '<p class="cs-statlab">' + esc(cs.statLabel) + "</p>" +
+            '<p class="cs-sum">' + esc(cs.summary) + "</p>" +
+            '<button class="cs-more" type="button" aria-haspopup="dialog">' +
+              "Full case study" +
+              '<span aria-hidden="true">&rarr;</span>' +
+              '<span class="cs-sr"> about ' + esc(cs.name) + "</span>" +
+            "</button>" +
+          "</article>" +
+        "</li>"
+      );
+    }).join("");
+  }
+
+  /* ---------------------------------------------------------------- modal -- */
+  function renderModal(i) {
+    var cs = CASE_STUDIES[i];
+    var m = cs.modal || {};
+    var html = "";
+
+    dialog.style.setProperty("--cs-a", cs.accent);
+    dialog.style.setProperty("--cs-b", cs.accent2 || cs.accent);
+
+    html +=
+      '<div class="cs-modal-person">' + avatarHTML(cs) +
+        "<div>" +
+          '<p class="cs-modal-name">' + esc(cs.name) + "</p>" +
+          '<p class="cs-cat">' + esc(cs.category) + "</p>" +
+        "</div>" +
+      "</div>";
+
+    html += '<h2 class="cs-headline" id="cs-headline">' +
+      esc(m.headline || cs.stat + " — " + cs.name) + "</h2>";
+
+    if (m.stats && m.stats.length) {
+      html += '<ul class="cs-stats">' + m.stats.map(function (s) {
+        return '<li class="cs-tile"><span class="cs-tile-v">' + esc(s.value) +
+          '</span><span class="cs-tile-l">' + esc(s.label) + "</span></li>";
+      }).join("") + "</ul>";
+    }
+
+    if (m.quote && m.quote.text) {
+      html += '<blockquote class="cs-quote">&ldquo;' + esc(m.quote.text) +
+        "&rdquo;" +
+        (m.quote.author ? "<footer>— " + esc(m.quote.author) + "</footer>" : "") +
+        "</blockquote>";
+    }
+
+    if (m.video) {
+      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
+        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
+        'allow="autoplay; fullscreen; picture-in-picture" ' +
+        "allowfullscreen></iframe></div>";
+    }
+
+    var secs = (m.sections || []).filter(function (s) {
+      return s && s.html && s.html.trim();
+    });
+
+    if (secs.length) {
+      html += '<div class="cs-body">' + secs.map(function (s) {
+        return '<div class="cs-sec"><p class="cs-sec-label">' + esc(s.label) +
+          "</p>" + s.html + "</div>";
+      }).join("") + "</div>";
+    }
+
+    if (m.cta && m.cta.text) {
+      html += '<a class="cs-cta" href="' + esc(m.cta.href || "#") + '">' +
+        esc(m.cta.text) + "</a>";
+    }
+
+    if (CONFIG.showCount) {
+      html += '<p class="cs-count">Case study ' + (i + 1) + " of " +
+        CASE_STUDIES.length + "</p>";
+    }
+
+    inner.innerHTML = html;
+    current = i;
+
+    var multiple = CASE_STUDIES.length > 1;
+    prevBtn.hidden = !multiple;
+    nextBtn.hidden = !multiple;
+
+    if (CONFIG.deepLink && cs.id) {
+      try {
+        history.replaceState(null, "", "#case=" + cs.id);
+      } catch (e) { /* file:// or blocked history — harmless */ }
+    }
+  }
+
+  function lockScroll() {
+    if (scrollLocked) return;
+    var bar = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.overflow = "hidden";
+    if (bar > 0) document.body.style.paddingRight = bar + "px";
+    scrollLocked = true;
+  }
+
+  function unlockScroll() {
+    if (!scrollLocked) return;
+    document.documentElement.style.overflow = "";
+    document.body.style.paddingRight = "";
+    scrollLocked = false;
+  }
+
+  function open(i) {
+    if (i < 0 || i >= CASE_STUDIES.length) return;
+    lastFocus = document.activeElement;
+    renderModal(i);
+    modal.hidden = false;
+    modal.classList.add("is-open");
+    lockScroll();
+    dialog.scrollTop = 0;
+    dialog.focus();
+  }
+
+  function close() {
+    if (!modal.classList.contains("is-open")) return;
+    modal.classList.remove("is-open");
+    modal.hidden = true;
+    inner.innerHTML = ""; // kills any playing iframe
+    unlockScroll();
+    current = -1;
+
+    if (CONFIG.deepLink && /#case=/.test(location.hash)) {
+      try {
+        history.replaceState(null, "", location.pathname + location.search);
+      } catch (e) { /* noop */ }
+    }
+
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function step(delta) {
+    if (current < 0) return;
+    var n = CASE_STUDIES.length;
+    var i = ((current + delta) % n + n) % n;
+    renderModal(i);
+    dialog.scrollTop = 0;
+    dialog.focus();
+  }
+
+  /* ---------------------------------------------------------------- events -- */
+  grid.addEventListener("click", function (e) {
+    var card = e.target.closest ? e.target.closest("[data-cs-index]") : null;
+    if (!card) return;
+    // let real links inside a card behave normally
+    if (e.target.closest("a")) return;
+    open(Number(card.getAttribute("data-cs-index")));
+  });
+
+  modal.addEventListener("click", function (e) {
+    if (e.target.closest("[data-cs-close]")) close();
+  });
+
+  prevBtn.addEventListener("click", function () { step(-1); });
+  nextBtn.addEventListener("click", function () { step(1); });
+
+  document.addEventListener("keydown", function (e) {
+    if (!modal.classList.contains("is-open")) return;
+
+    if (e.key === "Escape") {
+      close();
+      return;
+    }
+
+    if (CONFIG.arrowKeys && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) {
+      if (e.key === "ArrowLeft") { step(-1); return; }
+      if (e.key === "ArrowRight") { step(1); return; }
+    }
+
+    if (e.key !== "Tab") return;
+
+    // focus trap
+    var f = dialog.querySelectorAll(
+      'a[href], button:not([disabled]):not([hidden]), iframe, [tabindex]:not([tabindex="-1"])'
+    );
+    var list = Array.prototype.filter.call(f, function (el) {
+      return el.offsetParent !== null || el === dialog;
+    });
+    if (!list.length) return;
+
+    var first = list[0];
+    var last = list[list.length - 1];
+
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
+  /* ------------------------------------------------------------------ boot -- */
+  renderCards();
+
+  // Move the modal to <body> so GHL wrappers with overflow/transform can't
+  // clip it or trap it behind other page elements.
+  if (modal.parentNode !== document.body) document.body.appendChild(modal);
+
+  if (CONFIG.deepLink) {
+    var match = /#case=([\w-]+)/.exec(location.hash);
+    if (match) {
+      var idx = CASE_STUDIES.map(function (c) { return c.id; }).indexOf(match[1]);
+      if (idx > -1) open(idx);
+    }
+  }
+})();
+</script>

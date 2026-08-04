@@ -579,7 +579,7 @@
 
   .cs-video {
     position: relative;
-    margin: 0 0 24px;
+    margin: 30px 0 0;
     padding-top: 56.25%;
     overflow: hidden;
     background: #000;
@@ -1152,24 +1152,10 @@
     html += '<h2 class="cs-headline" id="cs-headline">' +
       esc(m.headline || cs.stat + ": " + cs.name) + "</h2>";
 
-    /* order: headline, subhead, video, stat tiles, opening quote, write-up,
-       closing quote, CTA, disclaimer */
+    /* order: headline, subhead, stat tiles, opening quote, write-up,
+       closing quote, video, CTA, disclaimer */
     if (m.subhead) {
       html += '<p class="cs-subhead">' + esc(m.subhead) + "</p>";
-    }
-
-    if (m.wistia) {
-      ensureWistia(m.wistia);
-      html += '<div class="cs-video is-wistia">' +
-        '<wistia-player media-id="' + esc(m.wistia) +
-        '" aspect="1.7777777777777777" style="--cs-swatch:url(' +
-        "'https://fast.wistia.com/embed/medias/" + esc(m.wistia) +
-        "/swatch')\"></wistia-player></div>";
-    } else if (m.video) {
-      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
-        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
-        'allow="autoplay; fullscreen; picture-in-picture" ' +
-        "allowfullscreen></iframe></div>";
     }
 
     if (m.stats && m.stats.length) {
@@ -1194,6 +1180,20 @@
 
     if (m.closingQuote && m.closingQuote.text) {
       html += quoteHTML(m.closingQuote, "is-closing");
+    }
+
+    if (m.wistia) {
+      ensureWistia(m.wistia);
+      html += '<div class="cs-video is-wistia">' +
+        '<wistia-player media-id="' + esc(m.wistia) +
+        '" aspect="1.7777777777777777" style="--cs-swatch:url(' +
+        "'https://fast.wistia.com/embed/medias/" + esc(m.wistia) +
+        "/swatch')\"></wistia-player></div>";
+    } else if (m.video) {
+      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
+        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
+        'allow="autoplay; fullscreen; picture-in-picture" ' +
+        "allowfullscreen></iframe></div>";
     }
 
     if (m.cta && m.cta.text) {

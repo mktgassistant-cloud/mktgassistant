@@ -4,6 +4,14 @@
 in one file, no build step, no external dependencies — that renders the
 clickable case-study card grid and the full case-study modal.
 
+**Currently loaded with one card (Tyler R. / TJR) so the first one can be
+dialed in before the rest go live.** The other 7 case-study objects are parked
+in `remaining-case-studies.js`; paste them into the `CASE_STUDIES` array when
+card #1 is approved. The layout adapts on its own — 1 card renders centered at
+400px, 2 or 3 stay centered, 4+ becomes the 4-column grid — and the modal's
+prev/next arrows and "Case study 1 of 8" line appear only once there is more
+than one.
+
 ## Install in GHL
 
 1. Funnel/page builder → add an **element** → **Custom Code** (in some
@@ -32,8 +40,8 @@ search for `TODO` to find every field still needing real copy:
 - `modal.video` — omit the key entirely and no player is rendered
 - `modal.cta.href` — currently `#book`; point it at your booking section/URL
 
-Only the stats already visible on the cards are pre-filled. Nothing else was
-invented.
+Only the stats already visible on the live site's cards are pre-filled, plus
+Tyler's quote and first two modal sections. Nothing else was invented.
 
 ## Preview locally
 

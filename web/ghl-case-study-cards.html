@@ -27,10 +27,18 @@
                      differ from the card (e.g. card "Ronnie", modal
                      "Ronnie, eSimplicity"). Omit to reuse name.
     modal.headline - bold line at the top of the modal
+    modal.subhead  - optional lead line under the headline. Omit to hide.
     modal.stats    - 2 or 4 stat tiles: { value, label }
-    modal.quote    - { text, author }. Omit the whole key to hide the quote.
-    modal.video    - full EMBED url, e.g. https://www.youtube.com/embed/XXXX
-                     omit to hide the player (no empty black box)
+    modal.quote    - { text, author } shown ABOVE the write-up. Omit to hide.
+    modal.closingQuote - { text, author } shown BELOW the write-up, just above
+                     the CTA. Use instead of modal.quote when the testimonial
+                     is the closer. Both can be set.
+    modal.wistia   - Wistia media ID only, e.g. "e2jdcz4o5w" (the part after
+                     /medias/ in the embed snippet). The player scripts load
+                     on first open. Omit to hide the player.
+    modal.video    - alternative to modal.wistia for any other host: a full
+                     EMBED url, e.g. https://www.youtube.com/embed/XXXX.
+                     Ignored when modal.wistia is set.
     modal.sections - [{ label, html }]. label renders as the small coral
                      all-caps heading. Empty html is skipped automatically.
                      Inside html, use <p class="cs-pull"> for a short quote
@@ -41,6 +49,9 @@
   COPY RULES
     * No em dashes anywhere.
     * Numerals, not words: 30 days, not thirty days. 8 to 10, not eight to ten.
+    * headline / subhead / stat / summary / quote text are escaped, so type
+      real characters there (\u2019 \u201c \u2192), NOT HTML entities. Inside
+      modal.sections html it is the reverse: use &rsquo; &ldquo; &rarr;.
     * Rows are 3 cards across on desktop, 2 on tablet, 1 on phone.
 
   NOTES
@@ -501,6 +512,14 @@
     letter-spacing: -0.4px;
   }
 
+  /* lead line under the headline */
+  .cs-subhead {
+    margin: -8px 0 24px;
+    color: var(--cs-body);
+    font-size: 16.5px;
+    line-height: 1.55;
+  }
+
   .cs-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -546,6 +565,11 @@
     line-height: 1.65;
   }
 
+  /* same block, but sitting after the write-up instead of before it */
+  .cs-quote.is-closing {
+    margin: 30px 0 0;
+  }
+
   .cs-quote footer {
     margin-top: 10px;
     color: var(--cs-muted);
@@ -555,7 +579,7 @@
 
   .cs-video {
     position: relative;
-    margin: 0 0 26px;
+    margin: 0 0 24px;
     padding-top: 56.25%;
     overflow: hidden;
     background: #000;
@@ -568,6 +592,21 @@
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+  /* the Wistia web component sizes itself from its aspect attribute, so it
+     does not need the padding-top ratio box an iframe does */
+  .cs-video.is-wistia {
+    padding-top: 0;
+  }
+
+  /* blurred poster frame while the player scripts are still loading, which is
+     what Wistia's own :not(:defined) rule does */
+  .cs-video wistia-player:not(:defined) {
+    display: block;
+    padding-top: 56.25%;
+    background: center / contain no-repeat var(--cs-swatch, none);
+    filter: blur(5px);
   }
 
   .cs-body {
@@ -776,7 +815,7 @@
             "I could end my search.",
           author: "Ronnie, Data Analyst at eSimplicity"
         },
-        // video: "https://www.youtube.com/embed/VIDEO_ID",  // TODO: add if there is one
+        wistia: "e2jdcz4o5w",
         sections: [
           {
             label: "Their path before DIM",
@@ -859,123 +898,123 @@
     {
       id: "thomas",
       name: "Thomas",
-      category: "Data Analytics, 6-Figure Offer",
+      // TODO [NEEDS CONFIRMATION]: his previous career is not in the transcript.
+      // Once confirmed it belongs here, the way Ronnie's card says "Laid Off at
+      // Accenture", and in the headline as a "X \u2192 Y" hook.
+      category: "Data Analytics, Six-Figure Offer",
       avatar: "", // TODO: paste Thomas's photo URL from the GHL media library
       accent: "#0038ff",
       accent2: "#ff6240",
-      stat: "3 Months \u2192 6-Figure Offer",
+      stat: "\u201cJust Trust Me\u201d \u2192 Six-Figure Offer",
       summary:
-        "His first interviews after the program went nowhere because he " +
-        "talked about his projects instead of showing them. He started " +
-        "sharing the Tableau dashboards on screen and walking through the " +
-        "key insights. That interview became the offer.",
+        "Thomas had the skills. What he didn\u2019t have was proof anyone " +
+        "could look at. He landed interviews and lost them, describing " +
+        "projects instead of putting them on the screen. 6-figure offer " +
+        "within 3 months of finishing.",
       modal: {
-        name: "Thomas Johannes",
-        headline: "3 Months of Real Projects to a 6-Figure Data Analytics Offer",
+        name: "Thomas J.",
+        // TODO [NEEDS CONFIRMATION]: he says "six figure offer" and never a
+        // number. A specific figure and his job title both belong in this
+        // headline once you have them on file.
+        headline: "From \u201cJust Trust Me\u201d to a Six-Figure Offer in 3 Months",
+        subhead:
+          "Thomas had the skills. What he didn\u2019t have was proof anyone " +
+          "could look at.",
         stats: [
           { value: "6 Figures", label: "Offer Salary" },
-          { value: "3 Months", label: "Time in the Program" },
-          { value: "2 to 1 Page", label: "Resume Rebuilt Around Results" },
+          { value: "3 Months", label: "Program Finish to Offer" },
+          { value: "2 \u2192 1 Page", label: "Resume, Results-First" },
           { value: "VP Level", label: "Interview Round Reached" }
         ],
-        quote: {
-          text:
-            "The most important thing were the mentors. They really helped " +
-            "more than the topics itself, more than the projects. It was " +
-            "actually the people that helped.",
-          author: "Thomas Johannes, Data in Motion graduate"
-        },
-        // video: "https://www.youtube.com/embed/VIDEO_ID",  // TODO: the interview clip
+        wistia: "ukjdvqw75m",
         sections: [
           {
-            label: "What he needed",
+            label: "Their path before Data in Motion",
             html:
-              "<p>Thomas did not need one piece fixed. He needed the whole " +
-              "job search working at once: the LinkedIn profile, the resume, " +
-              "a portfolio site, and the skills underneath all of it. His own " +
-              "framing of why that mattered:</p>" +
+              "<p>Thomas wasn&rsquo;t starting from zero on skills. He was " +
+              "starting from zero on evidence.</p>" +
 
-              '<p class="cs-pull">&ldquo;If you wanna fix your LinkedIn, it ' +
-              "can help with that. If you wanna fix your resume, it can help " +
-              "with that. If you want to start a portfolio website, it could " +
-              "also help with that. If you just want skills, like if you just " +
-              "wanna learn SQL and Tableau, Python, or just get an " +
-              "introduction into data engineering, it also helps with " +
-              "that.&rdquo;</p>" +
+              "<p>His resume was 2 pages of recycled job-description " +
+              "language, the kind every data analyst applicant submits, with " +
+              "nothing on it that separated him from the stack.</p>" +
 
-              "<p>Combine all of it, he says, and 3 months is enough to " +
-              "become a candidate who actually gets interviews.</p>"
+              "<p>He landed interviews and lost them. Not because he " +
+              "couldn&rsquo;t do the work, but because he sat there " +
+              "describing projects instead of putting them on the screen.</p>" +
+
+              "<p>And he had no way to prove any of it held up:</p>" +
+
+              "<ul>" +
+                "<li>2-page resume built on responsibilities, not results</li>" +
+                "<li>No portfolio a hiring manager could open</li>" +
+                "<li>Interview answers about work nobody could see</li>" +
+                "<li>No feedback loop telling him what was actually " +
+                "broken</li>" +
+              "</ul>" +
+
+              '<p class="cs-pull">&ldquo;It&rsquo;s easy to say you did this ' +
+              "and that on your resume, but if you don&rsquo;t have any " +
+              "proof, it&rsquo;s hard for people to trust you. It&rsquo;s all " +
+              "about trust at the end of the day.&rdquo;</p>"
           },
           {
             label: "What we did",
             html:
               "<p><strong>Rebuilt the resume around results.</strong> His " +
-              "first mentor session with Dahun cut the resume from 2 pages " +
-              "to 1 and replaced job-description duties with outcomes.</p>" +
+              "first mentorship session with Dahun cut it from 2 pages to 1 " +
+              "and stripped out every line lifted from a job description. " +
+              "Every bullet became an outcome.</p>" +
 
-              '<p class="cs-pull">&ldquo;He went through my resume, said ' +
-              "okay, this is not gonna work. This is gonna work. We have to " +
-              "lower it from 2 pages to 1 page. We gotta make sure that we " +
-              "don&rsquo;t just add just random parts of a job description. " +
-              "Let&rsquo;s make sure we focus on results.&rdquo;</p>" +
+              "<p><strong>Built projects with real depth.</strong> Not one " +
+              "chart on a dashboard. Full Tableau builds with calculated " +
+              "fields, LODs, interactivity, and an actual story running " +
+              "through them.</p>" +
 
-              "<p><strong>Mentors who came to him.</strong> Kadisha checked " +
-              "in over LinkedIn and Slack, and other mentors reached out at " +
-              "different stages of the program on top of open office " +
-              "hours.</p>" +
+              "<p><strong>Made the work public.</strong> Every project posted " +
+              "to LinkedIn, so the proof was already visible before a " +
+              "recruiter ever asked for it.</p>" +
+
+              "<p><strong>Ran real interview reps.</strong> Mock interviews " +
+              "with direct feedback, which he carried into conversations with " +
+              "recruiters, hiring managers, and a VP.</p>" +
+
+              "<p><strong>Stayed in his corner the whole way.</strong> " +
+              "Mentors reached out mid-program without waiting for him to ask " +
+              "for help.</p>" +
 
               '<p class="cs-pull">&ldquo;They always reach out to you even ' +
-              "if you don&rsquo;t reach out to them during office hours. " +
-              "They&rsquo;ll reach out to you in the middle of different " +
-              "stages of the program just to see how you&rsquo;re doing or " +
-              "if you need any help.&rdquo;</p>" +
-
-              "<p><strong>Projects with real depth.</strong> The Tableau " +
-              "track ran from basic charts through dashboard storytelling to " +
-              "level of detail expressions, calculated fields and " +
-              "interactivity, with creative direction left to him and every " +
-              "finished piece posted publicly on LinkedIn.</p>" +
-
-              "<p><strong>Interview reps with feedback.</strong> Mock " +
-              "interviews and coaching that he then used on recruiters, " +
-              "hiring managers, and a vice president.</p>"
-          },
-          {
-            label: "The turn that landed the offer",
-            html:
-              "<p>The first interviews after the program did not convert. " +
-              "The projects were strong, but he was describing them out " +
-              "loud instead of putting them on screen. He changed one thing " +
-              "and the next interview became the job.</p>" +
-
-              '<p class="cs-pull">&ldquo;They didn&rsquo;t go well because I ' +
-              "was talking about the projects as opposed to showing them. So " +
-              "I said, okay, let me try something a little different. Let me " +
-              "just show them the project and then they can actually look at " +
-              "it and I&rsquo;ll just talk about the key insights. And yeah, " +
-              "that was the job I got.&rdquo;</p>" +
-
-              "<p>Asked whether he would have been hired with no portfolio " +
-              "at all, he was blunt about why proof beats claims:</p>" +
-
-              '<p class="cs-pull">&ldquo;Nowadays it&rsquo;s easy to just ' +
-              "say you did this and that on your resume, but if you " +
-              "don&rsquo;t have any proof, it&rsquo;s hard for people to " +
-              "trust you. And it&rsquo;s all about trust at the end of the " +
-              "day.&rdquo;</p>"
+              "if you don&rsquo;t reach out to them.&rdquo;</p>"
           },
           {
             label: "Results",
             html:
-              "<p>A 6-figure data analytics offer, signed within 2 to 3 " +
-              "months of finishing the program, after interview rounds that " +
-              "went as high as a vice president.</p>" +
+              "<p><strong>6-figure offer within 3 months of finishing the " +
+              "program.</strong></p>" +
 
-              "<p>Asked what mattered most out of the curriculum, the " +
-              "projects, and the people, he did not pick the curriculum. He " +
-              "picked the mentors.</p>"
+              "<ul>" +
+                "<li>Resume: 2 pages &rarr; 1 page, results-first</li>" +
+                "<li>Interviews: talking about projects &rarr; showing " +
+                "them</li>" +
+                "<li>The change that closed it: he stopped explaining his " +
+                "work and started opening it</li>" +
+              "</ul>" +
+
+              '<p class="cs-pull">&ldquo;I said, okay, let me try something ' +
+              "different. Let me just show them the project and talk about " +
+              "the key insights. And yeah, that was the job I got.&rdquo;</p>" +
+
+              "<p>Would he have been hired without the projects?</p>" +
+
+              '<p class="cs-pull">&ldquo;No.&rdquo;</p>'
           }
         ],
+        closingQuote: {
+          text:
+            "The most important thing were the mentors. They helped more " +
+            "than the topics, more than the projects. It was actually the " +
+            "people that helped.",
+          author: "Thomas J., Data in Motion grad"
+        },
         cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
@@ -1026,6 +1065,33 @@
     }
     return '<span class="cs-avatar" aria-hidden="true">' +
       esc(initials(cs.name)) + "</span>";
+  }
+
+  /* Wistia is a web component, not an iframe: it needs player.js plus a small
+     per-media module. Both are injected once, the first time a card that uses
+     them is opened, so they cost nothing on page load. */
+  function addScript(src, isModule) {
+    if (document.querySelector(
+      'script[data-cs-src="' + src + '"], script[src="' + src + '"]'
+    )) return;
+    var el = document.createElement("script");
+    el.src = src;
+    el.async = true;
+    el.setAttribute("data-cs-src", src);
+    if (isModule) el.type = "module";
+    document.head.appendChild(el);
+  }
+
+  function ensureWistia(id) {
+    addScript("https://fast.wistia.com/player.js", false);
+    addScript("https://fast.wistia.com/embed/" + id + ".js", true);
+  }
+
+  function quoteHTML(q, extraClass) {
+    return '<blockquote class="cs-quote' + (extraClass ? " " + extraClass : "") +
+      '">&ldquo;' + esc(q.text) + "&rdquo;" +
+      (q.author ? "<footer>" + esc(q.author) + "</footer>" : "") +
+      "</blockquote>";
   }
 
   /* ---------------------------------------------------------------- cards -- */
@@ -1086,6 +1152,26 @@
     html += '<h2 class="cs-headline" id="cs-headline">' +
       esc(m.headline || cs.stat + ": " + cs.name) + "</h2>";
 
+    /* order: headline, subhead, video, stat tiles, opening quote, write-up,
+       closing quote, CTA, disclaimer */
+    if (m.subhead) {
+      html += '<p class="cs-subhead">' + esc(m.subhead) + "</p>";
+    }
+
+    if (m.wistia) {
+      ensureWistia(m.wistia);
+      html += '<div class="cs-video is-wistia">' +
+        '<wistia-player media-id="' + esc(m.wistia) +
+        '" aspect="1.7777777777777777" style="--cs-swatch:url(' +
+        "'https://fast.wistia.com/embed/medias/" + esc(m.wistia) +
+        "/swatch')\"></wistia-player></div>";
+    } else if (m.video) {
+      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
+        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
+        'allow="autoplay; fullscreen; picture-in-picture" ' +
+        "allowfullscreen></iframe></div>";
+    }
+
     if (m.stats && m.stats.length) {
       html += '<ul class="cs-stats">' + m.stats.map(function (s) {
         return '<li class="cs-tile"><span class="cs-tile-v">' + esc(s.value) +
@@ -1093,19 +1179,7 @@
       }).join("") + "</ul>";
     }
 
-    if (m.quote && m.quote.text) {
-      html += '<blockquote class="cs-quote">&ldquo;' + esc(m.quote.text) +
-        "&rdquo;" +
-        (m.quote.author ? "<footer>" + esc(m.quote.author) + "</footer>" : "") +
-        "</blockquote>";
-    }
-
-    if (m.video) {
-      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
-        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
-        'allow="autoplay; fullscreen; picture-in-picture" ' +
-        "allowfullscreen></iframe></div>";
-    }
+    if (m.quote && m.quote.text) html += quoteHTML(m.quote, "");
 
     var secs = (m.sections || []).filter(function (s) {
       return s && s.html && s.html.trim();
@@ -1116,6 +1190,10 @@
         return '<div class="cs-sec"><p class="cs-sec-label">' + esc(s.label) +
           "</p>" + s.html + "</div>";
       }).join("") + "</div>";
+    }
+
+    if (m.closingQuote && m.closingQuote.text) {
+      html += quoteHTML(m.closingQuote, "is-closing");
     }
 
     if (m.cta && m.cta.text) {

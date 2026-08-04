@@ -42,7 +42,7 @@ counter appear automatically once there is more than one card.
 ## Still TODO on Ronnie's card
 
 - `avatar` — his photo URL from the GHL media library. Empty falls back to the
-  initial in a gold ring.
+  initial in a blue ring.
 - `modal.cta.href` — currently `#book`, needs the real booking link.
 - `modal.video` — omit the key entirely if there's no clip; nothing renders.
 - `accent` / `accent2` — set to DIM blue `#0038FF` and coral `#FF6240`, which

@@ -5,8 +5,10 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with one card: **Ronnie, laid off at Accenture to a $90K fully
-remote offer in 30 days.**
+Currently loaded with two cards:
+
+1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
+2. **Thomas Johannes**, 3 months of projects to a 6-figure offer.
 
 ## Install in GHL
 
@@ -33,21 +35,27 @@ The layout adjusts to the count on its own, no CSS edits:
 | Cards | Desktop | Tablet | Phone |
 |---|---|---|---|
 | 1 | centered, 400px | centered | full width |
-| 2–3 | centered row | 2 columns | 1 column |
-| 4+ | 4 columns | 2 columns | 1 column |
+| 2 | centered pair | 2 columns | 1 column |
+| 3+ | 3 columns | 2 columns | 1 column |
+
+Rows are 3 across, so 6 cards make 2 clean rows, 9 make 3.
 
 The modal's ‹ › arrows, arrow-key navigation, and the "Case study 1 of N"
 counter appear automatically once there is more than one card.
 
-## Still TODO on Ronnie's card
+## Still TODO
 
-- `avatar` — his photo URL from the GHL media library. Empty falls back to the
-  initial in a blue ring.
-- `modal.cta.href` — currently `#book`, needs the real booking link.
-- `modal.video` — omit the key entirely if there's no clip; nothing renders.
-- `accent` / `accent2` — set to DIM blue `#0038FF` and coral `#FF6240`, which
-  together draw the top bar gradient. Change per student if you want each card
-  to read differently.
+- `avatar` on both cards — photo URLs from the GHL media library. Empty falls
+  back to the person's initial in a blue ring.
+- `modal.cta.href` — currently `#book` on both, needs the real booking link.
+- `modal.video` on Thomas — the interview clip this case study came from. Omit
+  the key entirely and no player renders.
+- Thomas's current job title and employer are not in the transcript, so the
+  card says "Data Analytics, 6-Figure Offer" and the quote is attributed to
+  "Data in Motion graduate". Swap in the real title when you have it.
+- `accent` / `accent2` — both set to DIM blue `#0038FF` and coral `#FF6240`,
+  which together draw the top bar gradient. Vary per card if you want them to
+  read differently.
 
 ## Brand
 
@@ -75,7 +83,14 @@ the whole block by editing that one token list.
 ## Copy conventions baked in
 
 - **No em dashes anywhere.** Verified zero in the file, including the code
-  comments. The quote attribution renders as a plain line with no leading dash,
+  comments.
+- **Numerals, not words**: 30 days, not thirty days. 8 to 10, not eight to ten.
+  Applied inside quotes too, where a spoken number becomes a numeral.
+- `statLabel` is optional and currently unused; omit it and the headline gets
+  its own spacing before the summary.
+- The big card line uses a real arrow (`\u2192` in the data) rather than "to",
+  e.g. `Laid Off \u2192 $90K Fully-Remote Job in 30 Days`. Font size steps down
+  in 3 tiers as the line gets longer, so long headlines stay to 2 lines. The quote attribution renders as a plain line with no leading dash,
   and the only place an em dash could have appeared (an unused headline
   fallback) now uses a colon.
 - Section headings render uppercase from sentence case in the data, so write

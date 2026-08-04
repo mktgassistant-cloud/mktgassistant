@@ -45,8 +45,32 @@ counter appear automatically once there is more than one card.
   initial in a gold ring.
 - `modal.cta.href` — currently `#book`, needs the real booking link.
 - `modal.video` — omit the key entirely if there's no clip; nothing renders.
-- `accent` / `accent2` — the blue used for the top bar and the big card line.
-  Two hex values, change to match DIM brand.
+- `accent` / `accent2` — set to DIM blue `#0038FF` and coral `#FF6240`, which
+  together draw the top bar gradient. Change per student if you want each card
+  to read differently.
+
+## Brand
+
+Font is Inter, loaded from the same Google Fonts URL the site itself requests
+(`wght@300..900`), so it resolves from cache. `--cs-font` at the top of the
+stylesheet overrides it.
+
+Palette is lifted from datacareerblueprint.com's own CSS variables:
+
+| Token | Value | Role |
+|---|---|---|
+| `--cs-blue` | `#0038FF` | primary, CTA button |
+| `--cs-blue-lift` | `#4D7BFF` | blue that stays legible as text on navy |
+| `--cs-coral` | `#FF6240` | section labels, "Full case study" link |
+| `--cs-card-bg` / `--cs-card-bg-2` | `#0D1336` / `#0A0E29` | card gradient |
+| `--cs-modal-bg` | `#080C26` | dialog surface |
+| `--cs-tile-bg` | `#131A3C` | stat tiles, quote block |
+| `--cs-text` / `--cs-body` / `--cs-muted` | `#F6F6FF` / `#C9D8E0` / `#8893A8` | type |
+
+The page background is `#000321`, so every surface sits just above it. The big
+card number is `color-mix(--cs-a 58%, white)` because raw `#0038FF` is too dark
+to read as text on navy; the same lift is applied to the quote rules. Restyle
+the whole block by editing that one token list.
 
 ## Copy conventions baked in
 

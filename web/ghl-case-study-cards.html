@@ -13,7 +13,7 @@
   WHAT TO EDIT PER CASE STUDY
     id        - short slug, used for the #case=<id> deep link. Keep unique.
     name      - name shown on the card and in the modal header
-    category  - small gold line under the name
+    category  - small coral line under the name
     avatar    - square image URL (use the GHL media library). Leave "" and the
                 card falls back to the person's initials.
     accent    - main color: the big number + left half of the top bar
@@ -29,7 +29,7 @@
     modal.quote    - { text, author }. Omit the whole key to hide the quote.
     modal.video    - full EMBED url, e.g. https://www.youtube.com/embed/XXXX
                      omit to hide the player (no empty black box)
-    modal.sections - [{ label, html }]. label renders as the small gold
+    modal.sections - [{ label, html }]. label renders as the small coral
                      all-caps heading. Empty html is skipped automatically.
                      Inside html, use <p class="cs-pull"> for a short quote
                      set into the body copy.
@@ -48,21 +48,38 @@
   ============================================================================
 -->
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+>
+
 <style>
   /* Design tokens live on BOTH roots: the modal is relocated to <body> at
      runtime, so it can't inherit variables from .cs-wrap. */
   .cs-wrap,
   .cs-modal {
-    /* ---- brand knobs: change these 9 lines to restyle the whole block ---- */
-    --cs-gold: #e7b92f;
-    --cs-gold-soft: #d2a72a;
-    --cs-card-bg: #17161a;
-    --cs-modal-bg: #1c1b20;
-    --cs-tile-bg: #232127;
-    --cs-line: #2e2c33;
-    --cs-text: #ffffff;
-    --cs-body: #ded9d4;
-    --cs-muted: #a7a19b;
+    /* ---- DIM brand palette, taken from datacareerblueprint.com ----------
+       --cs-blue   #0038FF  primary (the GET INSTANT ACCESS button)
+       --cs-coral  #FF6240  accent  (labels, links)
+       page background is #000321, so the surfaces below sit just above it */
+    --cs-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif;
+
+    --cs-blue: #0038ff;
+    --cs-blue-lift: #4d7bff; /* blue that stays legible as text on navy */
+    --cs-coral: #ff6240;
+    --cs-coral-soft: #ff8163;
+
+    --cs-card-bg: #0d1336;
+    --cs-card-bg-2: #0a0e29; /* bottom of the card's vertical gradient */
+    --cs-modal-bg: #080c26;
+    --cs-tile-bg: #131a3c;
+    --cs-line: #232c5e;
+    --cs-text: #f6f6ff;
+    --cs-body: #c9d8e0;
+    --cs-muted: #8893a8;
 
     --cs-gap: 18px;
     --cs-max: 1240px;
@@ -128,7 +145,7 @@
     padding: 26px 22px 22px;
     overflow: hidden;
     text-align: left;
-    background: var(--cs-card-bg);
+    background: linear-gradient(180deg, var(--cs-card-bg), var(--cs-card-bg-2));
     border: 1px solid var(--cs-line);
     border-radius: var(--cs-radius);
     cursor: pointer;
@@ -150,8 +167,9 @@
   .cs-card:hover,
   .cs-card:focus-within {
     transform: translateY(-6px);
-    border-color: color-mix(in srgb, var(--cs-a) 45%, var(--cs-line));
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    border-color: color-mix(in srgb, var(--cs-a) 55%, var(--cs-line));
+    box-shadow: 0 18px 44px rgba(0, 12, 60, 0.75),
+      0 0 0 1px color-mix(in srgb, var(--cs-a) 22%, transparent);
   }
 
   .cs-person {
@@ -169,9 +187,9 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: var(--cs-gold);
-    background: #262429;
-    border: 2px solid color-mix(in srgb, var(--cs-gold) 70%, transparent);
+    color: var(--cs-blue-lift);
+    background: #151d45;
+    border: 2px solid color-mix(in srgb, var(--cs-a) 65%, #6f7cb0);
     border-radius: 50%;
     font-size: 14px;
     font-weight: 700;
@@ -195,7 +213,7 @@
 
   .cs-cat {
     margin: 0;
-    color: var(--cs-gold);
+    color: var(--cs-muted);
     font-size: 12px;
     font-weight: 500;
     line-height: 1.35;
@@ -203,7 +221,10 @@
 
   .cs-stat {
     margin: 0 0 6px;
+    /* the raw brand blue is too dark to read on navy, so mix it toward white.
+       The first declaration is the fallback where color-mix is unsupported. */
     color: var(--cs-a);
+    color: color-mix(in srgb, var(--cs-a) 58%, #ffffff);
     font-size: 30px;
     font-weight: 800;
     line-height: 1.12;
@@ -242,7 +263,7 @@
     align-self: flex-start;
     margin-top: auto;
     padding: 2px 0;
-    color: var(--cs-gold-soft);
+    color: var(--cs-coral-soft);
     background: none;
     border: 0;
     border-radius: 4px;
@@ -258,7 +279,7 @@
 
   .cs-card:hover .cs-more,
   .cs-more:hover {
-    color: #f4d16a;
+    color: #ffa48f;
   }
 
   .cs-card:hover .cs-more span {
@@ -269,7 +290,7 @@
   .cs-nav:focus-visible,
   .cs-close:focus-visible,
   .cs-cta:focus-visible {
-    outline: 2px solid var(--cs-gold);
+    outline: 2px solid var(--cs-coral);
     outline-offset: 3px;
   }
 
@@ -310,7 +331,7 @@
   .cs-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.82);
+    background: rgba(0, 3, 33, 0.86);
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     animation: cs-fade 0.2s ease both;
@@ -328,7 +349,7 @@
     background: var(--cs-modal-bg);
     border: 1px solid var(--cs-line);
     border-radius: 20px;
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
     animation: cs-rise 0.24s cubic-bezier(0.2, 0.8, 0.3, 1) both;
     scrollbar-width: thin;
   }
@@ -399,8 +420,8 @@
     justify-content: center;
     flex: 0 0 auto;
     padding: 0;
-    color: #cfcac4;
-    background: rgba(38, 36, 41, 0.92);
+    color: #c9d8e0;
+    background: rgba(19, 26, 60, 0.94);
     border: 1px solid var(--cs-line);
     border-radius: 50%;
     font: inherit;
@@ -433,7 +454,7 @@
     background: linear-gradient(
       to bottom,
       var(--cs-modal-bg) 40%,
-      rgba(28, 27, 32, 0)
+      rgba(8, 12, 38, 0)
     );
     pointer-events: none;
   }
@@ -441,7 +462,7 @@
   .cs-nav:hover,
   .cs-close:hover {
     color: #fff;
-    background: #34313a;
+    background: #1e2650;
   }
 
   .cs-modal-person {
@@ -501,10 +522,10 @@
   .cs-quote {
     margin: 0 0 26px;
     padding: 18px 20px;
-    color: #efece8;
+    color: #eef2ff;
     background: var(--cs-tile-bg);
     border: 0;
-    border-left: 3px solid var(--cs-a);
+    border-left: 3px solid color-mix(in srgb, var(--cs-a) 55%, #ffffff);
     border-radius: 10px;
     font-size: 15px;
     font-style: italic;
@@ -543,7 +564,7 @@
 
   .cs-sec-label {
     margin: 0 0 8px;
-    color: var(--cs-gold);
+    color: var(--cs-coral);
     font-size: 11.5px;
     font-weight: 700;
     letter-spacing: 1.4px;
@@ -580,7 +601,7 @@
     margin: 18px 0;
     padding-left: 16px;
     color: #fff;
-    border-left: 2px solid color-mix(in srgb, var(--cs-a) 65%, transparent);
+    border-left: 2px solid color-mix(in srgb, var(--cs-a) 50%, #ffffff);
     font-size: 15.5px;
     font-style: italic;
     line-height: 1.6;
@@ -597,17 +618,20 @@
     display: inline-block;
     margin-top: 28px;
     padding: 14px 28px;
-    color: #17161a;
-    background: var(--cs-gold);
+    color: #ffffff;
+    background: var(--cs-blue);
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
+    letter-spacing: 0.2px;
     text-decoration: none;
-    transition: filter 0.18s ease;
+    box-shadow: 0 10px 26px rgba(0, 56, 255, 0.35);
+    transition: filter 0.18s ease, transform 0.18s ease;
   }
 
   .cs-cta:hover {
-    filter: brightness(1.08);
+    filter: brightness(1.12);
+    transform: translateY(-2px);
   }
 
   .cs-count {
@@ -714,8 +738,8 @@
       name: "Ronnie",
       category: "Data and Business Analytics, Laid Off at Accenture",
       avatar: "", // TODO: paste Ronnie's photo URL from the GHL media library
-      accent: "#22b8f5",
-      accent2: "#5b7cfa",
+      accent: "#0038ff",  // DIM primary blue
+      accent2: "#ff6240", // DIM coral: together they make the top bar gradient
       stat: "Laid Off to $90K Remote",
       statLabel: "30 Days From Program Start \u00b7 Offer Before Graduation",
       summary:

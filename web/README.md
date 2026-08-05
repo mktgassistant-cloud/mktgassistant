@@ -52,8 +52,9 @@ counter appear automatically once there is more than one card.
 - `avatar` on all five cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
 - `modal.cta.href` — `#book` on all five, needs the real booking link.
-- Jose's two `images[].src` — the Slack screenshots. An entry with an empty
-  `src` is skipped, so nothing broken renders until they are uploaded.
+- `images[].src` uploads: Jose's two Slack screenshots and Hakeem's LinkedIn
+  profile screenshot. An entry with an empty `src` is skipped, so nothing
+  broken renders until they are uploaded.
 - Jose's employer, and Thomas's job title, employer, and actual salary figure.
   None are in their transcripts, so none were invented.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to

@@ -5,10 +5,13 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with two cards:
+Currently loaded with four cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
-2. **Thomas Johannes**, 3 months of projects to a 6-figure offer.
+2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
+3. **Jose M.**, 15 years in sales to Senior Business Analyst, offered in 4 days.
+4. **Will K.**, hundreds of applications to an offer off a single LinkedIn
+   message.
 
 ## Install in GHL
 
@@ -45,17 +48,33 @@ counter appear automatically once there is more than one card.
 
 ## Still TODO
 
-- `avatar` on both cards — photo URLs from the GHL media library. Empty falls
-  back to the person's initial in a blue ring.
-- `modal.cta.href` — currently `#book` on both, needs the real booking link.
-- `modal.video` on Thomas — the interview clip this case study came from. Omit
-  the key entirely and no player renders.
-- Thomas's current job title and employer are not in the transcript, so the
-  card says "Data Analytics, 6-Figure Offer" and the quote is attributed to
-  "Data in Motion graduate". Swap in the real title when you have it.
-- `accent` / `accent2` — both set to DIM blue `#0038FF` and coral `#FF6240`,
+- `avatar` on all four cards — photo URLs from the GHL media library. Empty
+  falls back to the person's initials in a blue ring.
+- `modal.cta.href` — `#book` on all four, needs the real booking link.
+- Jose's two `images[].src` — the Slack screenshots. An entry with an empty
+  `src` is skipped, so nothing broken renders until they are uploaded.
+- Jose's employer, and Thomas's job title, employer, and actual salary figure.
+  None are in their transcripts, so none were invented.
+- Jose's positioning-statement writeup, flagged in a code comment: it needs to
+  read as DIM IP rather than as a feature bullet.
+- `wistia` for Will, if there is a clip. Ronnie `e2jdcz4o5w`, Thomas
+  `ukjdvqw75m`, Jose `udpai65364` are wired.
+- `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,
   which together draw the top bar gradient. Vary per card if you want them to
   read differently.
+
+## Fields a case study can use
+
+Card: `id`, `name`, `category`, `avatar`, `accent`, `accent2`, `stat`,
+`statLabel` (optional), `summary`.
+
+Modal: `name` and `category` (optional overrides), `headline`, `subhead`
+(optional), `stats`, `quote` (above the write-up), `closingQuote` (below it),
+`images` (proof screenshots, above the video), `wistia` (media ID) or `video`
+(embed URL), `sections`, `cta`, `disclaimer`. Anything omitted renders nothing.
+
+Modal order: headline, subhead, stat tiles, opening quote, write-up, closing
+quote, proof images, video, CTA, disclaimer.
 
 ## Brand
 

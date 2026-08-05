@@ -277,6 +277,16 @@
     padding: 0 2px;
   }
 
+  /* a parenthetical in a card headline is a qualifier, not part of the claim,
+     so it steps down in size and weight instead of competing with it */
+  .cs-qual {
+    display: inline-block;
+    color: var(--cs-body);
+    font-size: 0.74em;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
   /* statLabel is optional; without it the headline needs its own breathing
      room before the summary copy */
   .cs-stat.is-solo {
@@ -1200,8 +1210,10 @@
       avatar: "", // TODO: paste Will's photo URL from the GHL media library
       accent: "#0038ff",
       accent2: "#ff6240",
-      stat: "Hundreds of Rejections \u2192 1 Offer From 1 Message",
-      statLabel: "No portfolio. No experience. 4 months.",
+      stat:
+        "100s of Rejections \u2192 1 Offer from 1 Message " +
+        "(NO portfolio, no experience)",
+      statLabel: "4 Months From Program Start",
       summary:
         "Competing against 200 applicants per posting who held the same " +
         "degree and listed the same skills. 4 months later he sent a single " +
@@ -1222,7 +1234,7 @@
             "They all knew the same skills as me and they all had degrees.",
           author: "Will K."
         },
-        // TODO: add wistia: "MEDIA_ID" if there is an interview clip for Will
+        wistia: "5qmf872wnj",
         sections: [
           {
             label: "Their path before DIM",
@@ -1317,6 +1329,90 @@
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
       }
+    },
+
+    {
+      id: "hakeem",
+      name: "Hakeem L.",
+      category: "Sales, Zero Tech Background",
+      avatar: "", // TODO: paste Hakeem's photo URL from the GHL media library
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Sales \u2192 Senior Analytics Consultant at phData",
+      statLabel: "Zero Tech Background \u00b7 Learned in Public",
+      summary:
+        "He worked through Data In Motion\u2019s SQL, coding, and analysis " +
+        "challenges one at a time and posted every rep publicly. 3 of those " +
+        "challenge projects now sit in his LinkedIn Featured section with " +
+        "hundreds of reactions each. His learning became his proof.",
+      modal: {
+        name: "Hakeem L., phData",
+        headline:
+          "Sales to Senior Analytics Consultant, Built Entirely in Public",
+        stats: [
+          { value: "Senior", label: "Title Level at phData" },
+          { value: "0", label: "Tech Background at Start" },
+          { value: "3", label: "Challenge Projects Now in His Featured Section" },
+          { value: "8,800+", label: "LinkedIn Followers Built While Learning" }
+        ],
+        // TODO: add wistia: "MEDIA_ID" if there is an interview clip for Hakeem
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>Hakeem came from sales. No technical background, no data " +
+              "work, nothing to point to. The problem was not that he lacked " +
+              "ambition. It was that he had no way to prove he could do work " +
+              "he had never been paid to do.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Gave him reps instead of lectures, and made every rep " +
+              "visible.</p>" +
+
+              "<ul>" +
+                "<li>Ran him through the challenge library one at a time: " +
+                "SQL challenges, coding challenges, data analysis " +
+                "challenges, piece by piece</li>" +
+                "<li>Had him post progress publicly on LinkedIn and inside " +
+                "the community from the beginning, before he felt ready</li>" +
+                "<li>Put him in direct contact with people already working " +
+                "in the field and with people transitioning alongside him, " +
+                "so every challenge came back with feedback and direction " +
+                "rather than silence</li>" +
+                "<li>Turned finished challenges into published portfolio " +
+                "pieces rather than exercises that die in a folder</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>3 of the challenges he worked through are now the Featured " +
+              "section of his LinkedIn profile: a COVID data analysis, a " +
+              "Maryland crime dashboard, and a freight transportation " +
+              "mockup. Each one carries hundreds of reactions.</p>" +
+
+              "<p>He built an audience of more than 8,800 followers while he " +
+              "was still learning, and his profile now reads Analytics " +
+              "Engineer across data analytics, data engineering, and data " +
+              "strategy.</p>" +
+
+              "<p>He is a Senior Analytics Consultant at phData.</p>" +
+
+              "<p>The mechanism is worth stating plainly. He did not build a " +
+              "portfolio after learning the skills. The learning was the " +
+              "portfolio. Every challenge he completed became public " +
+              "evidence, and by the time he was interviewing, the evidence " +
+              "had been accumulating in front of an audience for " +
+              "months.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
     }
   ];
 
@@ -1390,6 +1486,14 @@
     return safeHTML.replace(/\u2192/g, '<span class="cs-arrow">\u2192</span>');
   }
 
+  /* card headline: coral arrows plus a quieter parenthetical */
+  function statHTML(safeHTML) {
+    return arrows(safeHTML).replace(
+      /\(([^)]*)\)/g,
+      '<span class="cs-qual">($1)</span>'
+    );
+  }
+
   function quoteHTML(q, extraClass) {
     return '<blockquote class="cs-quote' + (extraClass ? " " + extraClass : "") +
       '">&ldquo;' + esc(q.text) + "&rdquo;" +
@@ -1419,7 +1523,7 @@
                 '<p class="cs-cat">' + esc(cs.category) + "</p>" +
               "</div>" +
             "</div>" +
-            '<p class="cs-stat' + longStat + '">' + arrows(esc(cs.stat)) +
+            '<p class="cs-stat' + longStat + '">' + statHTML(esc(cs.stat)) +
               "</p>" +
             (cs.statLabel
               ? '<p class="cs-statlab">' + esc(cs.statLabel) + "</p>"

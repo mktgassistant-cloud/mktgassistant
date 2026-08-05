@@ -5,13 +5,14 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with four cards:
+Currently loaded with five cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
 2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
 3. **Jose M.**, 15 years in sales to Senior Business Analyst, offered in 4 days.
-4. **Will K.**, hundreds of applications to an offer off a single LinkedIn
-   message.
+4. **Will K.**, 100s of rejections to an offer off a single LinkedIn message.
+5. **Hakeem L.**, sales to Senior Analytics Consultant at phData, built in
+   public.
 
 ## Install in GHL
 
@@ -48,17 +49,18 @@ counter appear automatically once there is more than one card.
 
 ## Still TODO
 
-- `avatar` on all four cards — photo URLs from the GHL media library. Empty
+- `avatar` on all five cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all four, needs the real booking link.
+- `modal.cta.href` — `#book` on all five, needs the real booking link.
 - Jose's two `images[].src` — the Slack screenshots. An entry with an empty
   `src` is skipped, so nothing broken renders until they are uploaded.
 - Jose's employer, and Thomas's job title, employer, and actual salary figure.
   None are in their transcripts, so none were invented.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
-- `wistia` for Will, if there is a clip. Ronnie `e2jdcz4o5w`, Thomas
-  `ukjdvqw75m`, Jose `udpai65364` are wired.
+- `wistia` for Hakeem, if there is a clip. Wired: Ronnie `e2jdcz4o5w`, Thomas
+  `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
+- Hakeem has no pull quote in the source copy, so his modal has no quote block.
 - `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,
   which together draw the top bar gradient. Vary per card if you want them to
   read differently.
@@ -105,8 +107,11 @@ the whole block by editing that one token list.
   comments.
 - **Numerals, not words**: 30 days, not thirty days. 8 to 10, not eight to ten.
   Applied inside quotes too, where a spoken number becomes a numeral.
-- `statLabel` is optional and currently unused; omit it and the headline gets
-  its own spacing before the summary.
+- `statLabel` is optional; omit it and the headline gets its own spacing before
+  the summary.
+- A `( ... )` parenthetical inside a card headline renders smaller and lighter
+  than the claim itself, so qualifiers can sit in the headline without
+  competing with it.
 - The big card line uses a real arrow (`\u2192` in the data) rather than "to",
   e.g. `Laid Off \u2192 $90K Fully-Remote Job in 30 Days`. Font size steps down
   in 3 tiers as the line gets longer, so long headlines stay to 2 lines. The quote attribution renders as a plain line with no leading dash,

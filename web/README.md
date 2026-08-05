@@ -5,7 +5,7 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with five cards:
+Currently loaded with six cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
 2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
@@ -13,6 +13,7 @@ Currently loaded with five cards:
 4. **Will K.**, 100s of rejections to an offer off a single LinkedIn message.
 5. **Hakeem L.**, sales to Senior Analytics Consultant at phData, built in
    public.
+6. **LaRita W.**, 5 senior analyst offers in under 60 days, chose Roku.
 
 ## Install in GHL
 
@@ -49,17 +50,21 @@ counter appear automatically once there is more than one card.
 
 ## Still TODO
 
-- `avatar` on all five cards — photo URLs from the GHL media library. Empty
+- **LaRita's two blocking sections.** "Their path before DIM" and "What we did"
+  are empty and therefore skipped, so her modal currently runs stats → Results.
+  Needs 1 or 2 sentences on her prior role/industry/search, plus confirmation
+  that her LinkedIn positioning was the intervention.
+- `avatar` on all six cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all five, needs the real booking link.
-- `images[].src` uploads: Jose's two Slack screenshots and Hakeem's LinkedIn
-  profile screenshot. An entry with an empty `src` is skipped, so nothing
-  broken renders until they are uploaded.
+- `modal.cta.href` — `#book` on all six, needs the real booking link.
+- `images[].src` uploads: Jose's two Slack screenshots, Hakeem's LinkedIn
+  profile screenshot, LaRita's LinkedIn profile screenshot. An entry with an
+  empty `src` is skipped, so nothing broken renders until they are uploaded.
 - Jose's employer, and Thomas's job title, employer, and actual salary figure.
   None are in their transcripts, so none were invented.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
-- `wistia` for Hakeem, if there is a clip. Wired: Ronnie `e2jdcz4o5w`, Thomas
+- `wistia` for Hakeem and LaRita, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
   `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
 - Hakeem has no pull quote in the source copy, so his modal has no quote block.
 - `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,

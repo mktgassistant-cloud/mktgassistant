@@ -13,7 +13,7 @@ Currently loaded with six cards:
 4. **Will K.**, 100s of rejections to an offer off a single LinkedIn message.
 5. **Hakeem L.**, sales to Senior Analytics Consultant at phData, built in
    public.
-6. **LaRita W.**, 5 senior analyst offers in under 60 days, chose Roku.
+6. **LaRita W.**, laid-off teacher to Sr. People Analyst at Roku, 5 offers.
 
 ## Install in GHL
 
@@ -50,10 +50,6 @@ counter appear automatically once there is more than one card.
 
 ## Still TODO
 
-- **LaRita's two blocking sections.** "Their path before DIM" and "What we did"
-  are empty and therefore skipped, so her modal currently runs stats → Results.
-  Needs 1 or 2 sentences on her prior role/industry/search, plus confirmation
-  that her LinkedIn positioning was the intervention.
 - `avatar` on all six cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
 - `modal.cta.href` — `#book` on all six, needs the real booking link.

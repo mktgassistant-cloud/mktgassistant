@@ -265,6 +265,18 @@
     letter-spacing: -0.1px;
   }
 
+  /* the arrow is the whole point of a before/after line, so it gets the
+     accent color instead of blending into the phrase */
+  .cs-arrow {
+    color: var(--cs-coral);
+    padding: 0 3px;
+    font-weight: 700;
+  }
+
+  .cs-tile-v .cs-arrow {
+    padding: 0 2px;
+  }
+
   /* statLabel is optional; without it the headline needs its own breathing
      room before the summary copy */
   .cs-stat.is-solo {
@@ -1372,6 +1384,12 @@
     addScript("https://fast.wistia.com/embed/" + id + ".js", true);
   }
 
+  /* esc() output is already safe HTML, so swapping the arrow glyph for a
+     styled span here cannot introduce markup from the data */
+  function arrows(safeHTML) {
+    return safeHTML.replace(/\u2192/g, '<span class="cs-arrow">\u2192</span>');
+  }
+
   function quoteHTML(q, extraClass) {
     return '<blockquote class="cs-quote' + (extraClass ? " " + extraClass : "") +
       '">&ldquo;' + esc(q.text) + "&rdquo;" +
@@ -1401,7 +1419,8 @@
                 '<p class="cs-cat">' + esc(cs.category) + "</p>" +
               "</div>" +
             "</div>" +
-            '<p class="cs-stat' + longStat + '">' + esc(cs.stat) + "</p>" +
+            '<p class="cs-stat' + longStat + '">' + arrows(esc(cs.stat)) +
+              "</p>" +
             (cs.statLabel
               ? '<p class="cs-statlab">' + esc(cs.statLabel) + "</p>"
               : "") +
@@ -1445,8 +1464,9 @@
 
     if (m.stats && m.stats.length) {
       html += '<ul class="cs-stats">' + m.stats.map(function (s) {
-        return '<li class="cs-tile"><span class="cs-tile-v">' + esc(s.value) +
-          '</span><span class="cs-tile-l">' + esc(s.label) + "</span></li>";
+        return '<li class="cs-tile"><span class="cs-tile-v">' +
+          arrows(esc(s.value)) + '</span><span class="cs-tile-l">' +
+          esc(s.label) + "</span></li>";
       }).join("") + "</ul>";
     }
 

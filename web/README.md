@@ -51,8 +51,8 @@ The layout adjusts to the count on its own, no CSS edits:
 
 Rows are 3 across. At the current 10 cards the last row holds 1; an 11th and 12th fill it out.
 
-The modal's ‹ › arrows, arrow-key navigation, and the "Case study 1 of N"
-counter appear automatically once there is more than one card.
+The modal's ‹ › arrows and arrow-key navigation appear automatically once there
+is more than one card.
 
 ## Still TODO
 

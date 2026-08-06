@@ -739,13 +739,6 @@
     transform: translateY(-2px);
   }
 
-  .cs-count {
-    margin: 26px 0 0;
-    color: var(--cs-muted);
-    font-size: 12px;
-    letter-spacing: 0.4px;
-  }
-
   /* --------------------------------------------------------- responsive -- */
   @media (max-width: 1080px) {
     .cs-wrap.cs-wrap {
@@ -829,9 +822,8 @@
      1. CONFIG
      ========================================================================== */
   var CONFIG = {
-    deepLink: true,   // support /page#case=ronnie and update the hash on open
-    showCount: true,  // "Case study 1 of N" line, only shows with 2+ cards
-    arrowKeys: true   // ← / → move between case studies while the modal is open
+    deepLink: true,  // support /page#case=ronnie and update the hash on open
+    arrowKeys: true  // ← / → move between case studies while the modal is open
   };
 
   /* ==========================================================================
@@ -2130,11 +2122,6 @@
 
     if (m.disclaimer) {
       html += '<p class="cs-disclaimer">' + esc(m.disclaimer) + "</p>";
-    }
-
-    if (CONFIG.showCount && CASE_STUDIES.length > 1) {
-      html += '<p class="cs-count">Case study ' + (i + 1) + " of " +
-        CASE_STUDIES.length + "</p>";
     }
 
     inner.innerHTML = html;

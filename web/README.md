@@ -5,7 +5,7 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with seven cards:
+Currently loaded with eight cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
 2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
@@ -15,6 +15,7 @@ Currently loaded with seven cards:
    public.
 6. **LaRita W.**, laid-off teacher to Sr. People Analyst at Roku, 5 offers.
 7. **Caitlin U.**, math teacher to finance analyst without ever applying.
+8. **Tanya C.**, beginner to a $20K internal promotion in 4 months.
 
 ## Install in GHL
 
@@ -44,16 +45,16 @@ The layout adjusts to the count on its own, no CSS edits:
 | 2 | centered pair | 2 columns | 1 column |
 | 3+ | 3 columns | 2 columns | 1 column |
 
-Rows are 3 across, so 6 cards make 2 clean rows and 9 make 3. At 7 the last row holds 1.
+Rows are 3 across: 6 or 9 cards fill their rows exactly. At 8 the last row holds 2.
 
 The modal's ‹ › arrows, arrow-key navigation, and the "Case study 1 of N"
 counter appear automatically once there is more than one card.
 
 ## Still TODO
 
-- `avatar` on all seven cards — photo URLs from the GHL media library. Empty
+- `avatar` on all eight cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all seven, needs the real booking link.
+- `modal.cta.href` — `#book` on all eight, needs the real booking link.
 - `images[].src` uploads: Jose's two Slack screenshots, Hakeem's LinkedIn
   profile screenshot, LaRita's LinkedIn profile screenshot. An entry with an
   empty `src` is skipped, so nothing broken renders until they are uploaded.
@@ -61,9 +62,10 @@ counter appear automatically once there is more than one card.
   None are in their transcripts, so none were invented.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
-- `wistia` for Hakeem, LaRita, and Caitlin, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
+- `wistia` for Hakeem, LaRita, Caitlin, and Tanya, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
   `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
-- Hakeem has no pull quote in the source copy, so his modal has no quote block.
+- Hakeem and Tanya have no pull quote in their source copy, so their modals
+  have no quote block.
 - `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,
   which together draw the top bar gradient. Vary per card if you want them to
   read differently.

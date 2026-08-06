@@ -1634,6 +1634,75 @@
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
       }
+    },
+
+    {
+      id: "tanya",
+      name: "Tanya C.",
+      category: "Promoted Internally, No Job Search",
+      avatar: "", // TODO: paste Tanya's photo URL from the GHL media library
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Beginner \u2192 +$20K Promotion",
+      statLabel: "4 Months \u00b7 Zero Applications Sent",
+      summary:
+        "She started close to beginner on Excel, analysis, and SQL. 4 months " +
+        "later she was promoted at the company she already worked for, with " +
+        "more than $20,000 added to her salary. She never applied anywhere.",
+      modal: {
+        headline:
+          "Beginner \u2192 A $20K Promotion in 4 Months, Without Applying " +
+          "Anywhere",
+        stats: [
+          { value: "+$20K", label: "Salary Increase" },
+          { value: "4 Months", label: "Program Start to Promotion" },
+          { value: "0", label: "Job Applications Sent" },
+          { value: "Beginner", label: "Data Skill Level at Start" }
+        ],
+        // TODO: add wistia: "MEDIA_ID" if there is a clip, and an images entry
+        // if you have a screenshot of the promotion announcement
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>Tanya was already employed and had no intention of " +
+              "leaving. What she did not have were the skills to move up " +
+              "where she was. She came in close to the beginning on Excel, " +
+              "on analysis, and on SQL.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Built the skills from the ground up and put mentoring at " +
+              "the center of it.</p>" +
+
+              "<ul>" +
+                "<li>Excel first, then analysis, then SQL, in that " +
+                "order</li>" +
+                "<li>1-on-1 mentoring sessions she used consistently, which " +
+                "is what moved her faster than the coursework alone would " +
+                "have</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>4 months after starting, Tanya was promoted at the company " +
+              "she already worked for, with a salary increase of more than " +
+              "$20,000.</p>" +
+
+              "<p>She sent zero applications. No portfolio submitted to " +
+              "strangers, no phone screens, no interview rounds, no " +
+              "negotiating with a company that did not know her. The skills " +
+              "went in and the raise came out of the job she already " +
+              "had.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
     }
   ];
 
@@ -1779,7 +1848,7 @@
       "</div>";
 
     html += '<h2 class="cs-headline" id="cs-headline">' +
-      esc(m.headline || cs.stat + ": " + cs.name) + "</h2>";
+      arrows(esc(m.headline || cs.stat + ": " + cs.name)) + "</h2>";
 
     /* order: headline, subhead, stat tiles, opening quote, write-up,
        closing quote, proof images, video, CTA, disclaimer */

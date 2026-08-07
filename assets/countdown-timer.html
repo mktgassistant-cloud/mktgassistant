@@ -1,0 +1,169 @@
+<!-- ============================================================
+     24-HOUR REPLAY COUNTDOWN
+     Paste this whole block into the "Custom HTML/Javascript" element.
+
+     - Counts down 24 hours from each visitor's FIRST view
+     - Survives page refresh (deadline saved in the browser)
+     - Optional: pass ?exp=<epoch-ms or ISO date> in the link to set
+       a fixed deadline for everyone (overrides the per-visitor clock)
+     ============================================================ -->
+
+<div class="rpc" role="timer" aria-label="Time remaining until this replay expires">
+  <div class="rpc__clock" data-rpc-clock>
+    <div class="rpc__unit">
+      <span class="rpc__num" data-rpc-hours>00</span>
+      <span class="rpc__label">Hours</span>
+    </div>
+    <span class="rpc__sep" aria-hidden="true">:</span>
+    <div class="rpc__unit">
+      <span class="rpc__num" data-rpc-minutes>00</span>
+      <span class="rpc__label">Minutes</span>
+    </div>
+    <span class="rpc__sep" aria-hidden="true">:</span>
+    <div class="rpc__unit">
+      <span class="rpc__num" data-rpc-seconds>00</span>
+      <span class="rpc__label">Seconds</span>
+    </div>
+  </div>
+  <div class="rpc__expired" data-rpc-expired hidden>This replay has expired.</div>
+</div>
+
+<style>
+  .rpc {
+    /* --- EDIT THESE THREE LINES TO RESTYLE --- */
+    --rpc-text: #ffffff;      /* digit color (use #111 on a light page) */
+    --rpc-accent: #ff4d4d;    /* separator + expired-message color */
+    --rpc-label: #9aa0aa;     /* small caption color */
+
+    text-align: center;
+    font-family: inherit;
+    line-height: 1;
+  }
+  /* An author `display` rule beats the [hidden] attribute, so restore it here.
+     Without this the clock stays on screen after it expires. */
+  .rpc [hidden] { display: none !important; }
+  .rpc__clock {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(8px, 2vw, 20px);
+  }
+  .rpc__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: clamp(56px, 12vw, 104px);
+  }
+  .rpc__num {
+    font-size: clamp(2.6rem, 9vw, 5.2rem);
+    font-weight: 800;
+    color: var(--rpc-text);
+    /* keeps the digits from jiggling as the numbers change */
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  .rpc__label {
+    font-size: clamp(0.65rem, 1.6vw, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rpc-label);
+  }
+  .rpc__sep {
+    font-size: clamp(2rem, 7vw, 4rem);
+    font-weight: 800;
+    color: var(--rpc-accent);
+    /* nudge the colon up so it optically centers on the digits */
+    line-height: 1.15;
+  }
+  .rpc__expired {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 800;
+    color: var(--rpc-accent);
+  }
+</style>
+
+<script>
+(function () {
+  var CONFIG = {
+    hours: 24,                               // length of the countdown window
+    storageKey: "replay_deadline_v1",        // bump the v1 to restart everyone's clock
+    expiredText: "This replay has expired.",
+    redirectUrl: ""                          // e.g. "https://yoursite.com/offer-closed"
+  };
+
+  var root = document.querySelector(".rpc");
+  if (!root) return;
+
+  var clockEl   = root.querySelector("[data-rpc-clock]");
+  var expiredEl = root.querySelector("[data-rpc-expired]");
+  var hoursEl   = root.querySelector("[data-rpc-hours]");
+  var minutesEl = root.querySelector("[data-rpc-minutes]");
+  var secondsEl = root.querySelector("[data-rpc-seconds]");
+
+  // localStorage throws in some private-browsing modes, so every access is guarded.
+  function readStored() {
+    try { return parseInt(window.localStorage.getItem(CONFIG.storageKey), 10) || 0; }
+    catch (e) { return 0; }
+  }
+  function writeStored(ts) {
+    try { window.localStorage.setItem(CONFIG.storageKey, String(ts)); }
+    catch (e) { /* countdown still works, it just resets on refresh */ }
+  }
+
+  // A fixed deadline in the URL (?exp=...) wins over the per-visitor one.
+  function deadlineFromUrl() {
+    var raw = new URLSearchParams(window.location.search).get("exp");
+    if (!raw) return 0;
+    var asNumber = Number(raw);
+    var ts = isNaN(asNumber) ? Date.parse(raw) : asNumber;
+    return isNaN(ts) ? 0 : ts;
+  }
+
+  function resolveDeadline() {
+    var fromUrl = deadlineFromUrl();
+    if (fromUrl) return fromUrl;
+
+    var stored = readStored();
+    if (stored) return stored;
+
+    var fresh = Date.now() + CONFIG.hours * 60 * 60 * 1000;
+    writeStored(fresh);
+    return fresh;
+  }
+
+  var deadline = resolveDeadline();
+  var timerId = null;
+
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+  function showExpired() {
+    if (timerId) { clearInterval(timerId); timerId = null; }
+    if (clockEl) clockEl.hidden = true;
+    if (expiredEl) {
+      expiredEl.textContent = CONFIG.expiredText;
+      expiredEl.hidden = false;
+    }
+    if (CONFIG.redirectUrl) window.location.href = CONFIG.redirectUrl;
+  }
+
+  function tick() {
+    var remaining = deadline - Date.now();
+    if (remaining <= 0) { showExpired(); return; }
+
+    var totalSeconds = Math.floor(remaining / 1000);
+    hoursEl.textContent   = pad(Math.floor(totalSeconds / 3600));
+    minutesEl.textContent = pad(Math.floor(totalSeconds / 60) % 60);
+    secondsEl.textContent = pad(totalSeconds % 60);
+  }
+
+  tick();
+  // Recomputed from an absolute timestamp every 250ms, so it never drifts and
+  // catches up instantly when a throttled background tab comes back to focus.
+  timerId = setInterval(tick, 250);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) tick();
+  });
+})();
+</script>

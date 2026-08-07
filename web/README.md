@@ -5,7 +5,7 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with fourteen cards:
+Currently loaded with fifteen cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
 2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
@@ -27,6 +27,8 @@ Currently loaded with fourteen cards:
     27 days, the fastest placement on record.
 14. **Shantel W.**, no bachelor's degree to a software engineering role at
     Microsoft.
+15. **Rachel**, 20 years teaching high school math to business intelligence
+    analyst, hired by a company that had already rejected her.
 
 ## Install in GHL
 
@@ -56,16 +58,16 @@ The layout adjusts to the count on its own, no CSS edits:
 | 2 | centered pair | 2 columns | 1 column |
 | 3+ | 3 columns | 2 columns | 1 column |
 
-Rows are 3 across. At the current 14 cards the last row holds 2; a 15th fills it out.
+Rows are 3 across. At the current 15 cards all 5 rows are full.
 
 The modal's ‹ › arrows and arrow-key navigation appear automatically once there
 is more than one card.
 
 ## Still TODO
 
-- `avatar` on all fourteen cards — photo URLs from the GHL media library. Empty
+- `avatar` on all fifteen cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all fourteen, needs the real booking link.
+- `modal.cta.href` — `#book` on all fifteen, needs the real booking link.
 - `images[].src` uploads: Jose's two Slack screenshots, Hakeem's LinkedIn
   profile screenshot, LaRita's LinkedIn profile screenshot. An entry with an
   empty `src` is skipped, so nothing broken renders until they are uploaded.
@@ -74,7 +76,7 @@ is more than one card.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
 - `wistia` for Hakeem, LaRita, Caitlin, Tanya, Elleni, Robby, Amanda, Jacinda,
-  Katherine, and Shantel, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
+  Katherine, Shantel, and Rachel, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
   `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
 - Hakeem, Tanya, Elleni, Amanda, Jacinda, and Shantel have no pull quote in
   their source copy, so their modals have no quote block.

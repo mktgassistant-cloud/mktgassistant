@@ -5,7 +5,7 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with eleven cards:
+Currently loaded with twelve cards:
 
 1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
 2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
@@ -22,6 +22,7 @@ Currently loaded with eleven cards:
     offer.
 11. **Amanda L.**, teacher to academic research analyst, staying inside
     education.
+12. **Jacinda L.**, CDL A truck driver to a Data Analyst profile in 90 days.
 
 ## Install in GHL
 
@@ -51,16 +52,16 @@ The layout adjusts to the count on its own, no CSS edits:
 | 2 | centered pair | 2 columns | 1 column |
 | 3+ | 3 columns | 2 columns | 1 column |
 
-Rows are 3 across. At the current 11 cards the last row holds 2; a 12th fills it out.
+Rows are 3 across. At the current 12 cards all 4 rows are full.
 
 The modal's ‹ › arrows and arrow-key navigation appear automatically once there
 is more than one card.
 
 ## Still TODO
 
-- `avatar` on all eleven cards — photo URLs from the GHL media library. Empty
+- `avatar` on all twelve cards — photo URLs from the GHL media library. Empty
   falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all eleven, needs the real booking link.
+- `modal.cta.href` — `#book` on all twelve, needs the real booking link.
 - `images[].src` uploads: Jose's two Slack screenshots, Hakeem's LinkedIn
   profile screenshot, LaRita's LinkedIn profile screenshot. An entry with an
   empty `src` is skipped, so nothing broken renders until they are uploaded.
@@ -68,13 +69,16 @@ is more than one card.
   None are in their transcripts, so none were invented.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
-- `wistia` for Hakeem, LaRita, Caitlin, Tanya, Elleni, Robby, and Amanda, if
-  there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
+- `wistia` for Hakeem, LaRita, Caitlin, Tanya, Elleni, Robby, Amanda, and
+  Jacinda, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
   `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
-- Hakeem, Tanya, Elleni, and Amanda have no pull quote in their source copy, so
-  their modals have no quote block.
+- Hakeem, Tanya, Elleni, Amanda, and Jacinda have no pull quote in their source
+  copy, so their modals have no quote block.
 - Amanda's LinkedIn profile screenshot, if you want proof of the headline and
-  Featured section the write-up describes.
+  Featured section the write-up describes. Same for Jacinda's profile, where a
+  before and after of the FedEx bullet would carry the whole point.
+- Jacinda's location: the copy has her in Troy, Alabama and driving out of
+  Brooklyn. Both are kept as written, flagged in a code comment.
 - `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,
   which together draw the top bar gradient. Vary per card if you want them to
   read differently.

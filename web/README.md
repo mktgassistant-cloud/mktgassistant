@@ -5,30 +5,37 @@ in one file, no build step, no external dependencies. It renders two states:
 the card as it sits in the grid, and the full case study that opens when the
 card is clicked.
 
-Currently loaded with fifteen cards:
+Currently loaded with fifteen cards, ordered strongest testimonial first. The
+order lives in the `CASE_STUDIES` array and nothing else depends on it, so
+resequencing is a matter of moving one object.
 
-1. **Ronnie**, laid off at Accenture to a $90K fully-remote job in 30 days.
-2. **Thomas J.**, "just trust me" to a six-figure offer in 3 months.
-3. **Jose M.**, 15 years in sales to Senior Business Analyst, offered in 4 days.
-4. **Will K.**, 100s of rejections to an offer off a single LinkedIn message.
-5. **Hakeem L.**, sales to Senior Analytics Consultant at phData, built in
-   public.
-6. **LaRita W.**, laid-off teacher to Sr. People Analyst at Roku, 5 offers.
-7. **Caitlin U.**, math teacher to finance analyst without ever applying.
-8. **Tanya C.**, beginner to a $20K internal promotion in 4 months.
-9. **Elleni T.**, accounting to government data analyst at the DC OCFO in
-   5 months.
-10. **Robby**, experienced analyst stuck at a 1 to 2 percent response rate to an
-    offer.
-11. **Amanda L.**, teacher to academic research analyst, staying inside
-    education.
-12. **Jacinda L.**, CDL A truck driver to a Data Analyst profile in 90 days.
-13. **Katherine L.**, healthcare operations to healthcare data analyst in
-    27 days, the fastest placement on record.
-14. **Shantel W.**, no bachelor's degree to a software engineering role at
-    Microsoft.
-15. **Rachel**, 20 years teaching high school math to business intelligence
-    analyst, hired by a company that had already rejected her.
+1. **LaRita W.**, laid-off teacher already self-teaching and still stuck. Exact
+   ICP, 5 offers, Roku, student to mentor, complete and verifiable.
+2. **Caitlin U.**, zero applications, recruiter found her. Publicly checkable
+   profile, post, and reaction counts.
+3. **Katherine L.**, 27 days, fastest placement on record, told in her own
+   voice throughout.
+4. **Jose M.**, dated Slack screenshots proving 4 days from application to
+   offer. Hardest evidence on the grid.
+5. **Jacinda L.**, truck driver to data analyst in 90 days. Best hook by
+   distance travelled. Analyst employer still unverified.
+6. **Shantel W.**, no degree to Microsoft. Biggest brand. Held back by the SWE
+   mismatch and the consent question.
+7. **Ronnie**, the only hard salary figure and a clean 30 days. Wrong ICP caps
+   it.
+8. **Thomas J.**, "just trust me" to a six-figure offer in 3 months. Has a
+   video and a timeline, but no title, employer, or exact figure. Placement is
+   an estimate, not from the ranked list.
+9. **Hakeem L.**, externally auditable, clearest demonstration of the challenge
+   library. No timeline.
+10. **Rachel**, weakest numbers, highest strategic value.
+11. **Will K.**, only recent-grad coverage and a complete causal chain, but no
+    title, employer, salary, or hard outcome number.
+12. **Elleni T.**, strong skills-get-tested angle and an ignored market. Thin
+    evidence, no quote.
+13. **Amanda L.**, good lesson, no timeline, employer, or salary.
+14. **Robby**, weak arrow, and reads as risky next to the beginners.
+15. **Tanya C.**, unique strategy, hollow middle.
 
 ## Install in GHL
 
@@ -47,7 +54,8 @@ the code element and paste the `<script>` block into
 
 Everything renders from the `CASE_STUDIES` array near the top of the `<script>`.
 Card and full case study come from the same object, so they can't drift apart.
-Copy the Ronnie block, change the values, give it a new `id`. The comment block
+Copy any existing block, change the values, give it a new `id`. Position in the
+array is position on the page, so insert it where its strength puts it. The comment block
 at the top of the file documents every field.
 
 The layout adjusts to the count on its own, no CSS edits:

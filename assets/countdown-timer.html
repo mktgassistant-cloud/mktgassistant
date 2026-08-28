@@ -5,7 +5,7 @@
      Set MODE below to one of:
        "fixed"   – one hard close date for everyone   (this launch)
        "weekly"  – auto-rolls to the next weekday+time (evergreen, zero edits)
-       "rolling" – 24h from each visitor's first view  (evergreen replay)
+       "rolling" – per-visitor window from their first view
 
      Deadlines are anchored to a real timezone, so every visitor sees the
      same close time no matter where they are or what their clock says.
@@ -87,7 +87,8 @@
   }
 </style>
 
-<script>
+<script id="rpc-code">
+window.__rpcRan = true;
 (function () {
   var CONFIG = {
     /* ===== 1. PICK YOUR MODE ===== */
@@ -111,8 +112,6 @@
     },
 
     // "rolling": each visitor gets their own window, kept across refreshes.
-    // For persistence across devices too, link with ?start= or ?exp= (see notes
-    // at the bottom of this file).
     rolling: {
       hours: 32,
       storageKey: "replay_deadline_v1"   // bump v1 to restart everyone's clock
@@ -121,24 +120,13 @@
     /* ===== 3. OPTIONAL DISPLAY CAP =====
        0 = off, so the clock always shows the true time left and is always
        ticking. Set a number only if you publish the page well before the
-       campaign starts and don't want early visitors seeing a bigger number
-       (it holds there instead of counting down until the real close comes
-       inside the window). */
+       campaign starts and don't want early visitors seeing a bigger number. */
     maxHours: 0,
 
     /* ===== 4. WHAT HAPPENS AT ZERO ===== */
     expiredText: "This replay has expired.",
     redirectUrl: ""                   // e.g. "https://yoursite.com/offer-closed"
   };
-
-  var root = document.querySelector(".rpc");
-  if (!root) return;
-
-  var clockEl   = root.querySelector("[data-rpc-clock]");
-  var expiredEl = root.querySelector("[data-rpc-expired]");
-  var hoursEl   = root.querySelector("[data-rpc-hours]");
-  var minutesEl = root.querySelector("[data-rpc-minutes]");
-  var secondsEl = root.querySelector("[data-rpc-seconds]");
 
   /* ---------- timezone helpers ----------
      A visitor in Tokyo and a visitor in LA must see the same close time, so
@@ -206,8 +194,6 @@
     return now; // unreachable in practice
   }
 
-  /* ---------- persistence ---------- */
-
   // localStorage throws in some private-browsing modes, so guard every access.
   function readStored(key) {
     try { return parseInt(window.localStorage.getItem(key), 10) || 0; }
@@ -234,20 +220,12 @@
     return num < 1e11 ? num * 1000 : num;
   }
 
-  // ?exp= is an absolute deadline. ?start= is when their window opened
-  // (e.g. GHL's {{contact.date_created}}), and we add the window to it.
-  function deadlineFromUrl(windowHours) {
-    var exp = parseTs(urlParam("exp"));
-    if (exp) return exp;
-    var start = parseTs(urlParam("start"));
-    if (start) return start + windowHours * 60 * 60 * 1000;
-    return 0;
-  }
-
   function rollingDeadline(cfg) {
     // A deadline carried in the link is the contact's real one, so it wins and
     // gets saved — that way later visits without the link keep the same clock.
-    var fromUrl = deadlineFromUrl(cfg.hours);
+    var exp = parseTs(urlParam("exp"));
+    var start = parseTs(urlParam("start"));
+    var fromUrl = exp || (start ? start + cfg.hours * 3600000 : 0);
     if (fromUrl) {
       if (readStored(cfg.storageKey) !== fromUrl) writeStored(cfg.storageKey, fromUrl);
       return fromUrl;
@@ -256,7 +234,7 @@
     var stored = readStored(cfg.storageKey);
     if (stored) return stored;
 
-    var fresh = Date.now() + cfg.hours * 60 * 60 * 1000;
+    var fresh = Date.now() + cfg.hours * 3600000;
     writeStored(cfg.storageKey, fresh);
     return fresh;
   }
@@ -275,44 +253,81 @@
 
   /* ---------- the clock ---------- */
 
-  var deadline = resolveDeadline();
-  var timerId = null;
-
   function pad(n) { return n < 10 ? "0" + n : String(n); }
 
-  function showExpired() {
-    if (timerId) { clearInterval(timerId); timerId = null; }
-    if (clockEl) clockEl.hidden = true;
-    if (expiredEl) {
-      expiredEl.textContent = CONFIG.expiredText;
-      expiredEl.hidden = false;
+  function start(root) {
+    root.setAttribute("data-rpc-started", "1");
+
+    var clockEl   = root.querySelector("[data-rpc-clock]");
+    var expiredEl = root.querySelector("[data-rpc-expired]");
+    var hoursEl   = root.querySelector("[data-rpc-hours]");
+    var minutesEl = root.querySelector("[data-rpc-minutes]");
+    var secondsEl = root.querySelector("[data-rpc-seconds]");
+    if (!hoursEl || !minutesEl || !secondsEl) return;
+
+    var deadline = resolveDeadline();
+    var maxMs = (CONFIG.maxHours || 0) * 3600000;
+    var timerId = null;
+
+    function showExpired() {
+      if (timerId) { clearInterval(timerId); timerId = null; }
+      if (clockEl) clockEl.hidden = true;
+      if (expiredEl) {
+        expiredEl.textContent = CONFIG.expiredText;
+        expiredEl.hidden = false;
+      }
+      if (CONFIG.redirectUrl) window.location.href = CONFIG.redirectUrl;
     }
-    if (CONFIG.redirectUrl) window.location.href = CONFIG.redirectUrl;
+
+    function tick() {
+      var remaining = deadline - Date.now();
+      if (remaining <= 0) { showExpired(); return; }
+      // Hold at the cap until the real close comes inside the window.
+      if (maxMs && remaining > maxMs) remaining = maxMs;
+
+      var totalSeconds = Math.floor(remaining / 1000);
+      hoursEl.textContent   = pad(Math.floor(totalSeconds / 3600));
+      minutesEl.textContent = pad(Math.floor(totalSeconds / 60) % 60);
+      secondsEl.textContent = pad(totalSeconds % 60);
+    }
+
+    tick();
+    // Recomputed from an absolute timestamp every 250ms, so it never drifts and
+    // catches up instantly when a throttled background tab returns to focus.
+    timerId = setInterval(tick, 250);
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) tick();
+    });
   }
 
-  var maxMs = (CONFIG.maxHours || 0) * 60 * 60 * 1000;
+  /* ---------- boot ----------
+     Page builders sometimes run custom JS before the markup it belongs to
+     exists, so don't give up if the element isn't there on the first try. */
 
-  function tick() {
-    var remaining = deadline - Date.now();
-    if (remaining <= 0) { showExpired(); return; }
-    // Hold at the cap until the real close comes inside the window.
-    if (maxMs && remaining > maxMs) remaining = maxMs;
-
-    var totalSeconds = Math.floor(remaining / 1000);
-    hoursEl.textContent   = pad(Math.floor(totalSeconds / 3600));
-    minutesEl.textContent = pad(Math.floor(totalSeconds / 60) % 60);
-    secondsEl.textContent = pad(totalSeconds % 60);
+  function boot() {
+    var pending = document.querySelector(".rpc:not([data-rpc-started])");
+    if (pending) { start(pending); return true; }
+    // No unstarted timer: either we already booted, or markup isn't parsed yet.
+    return document.querySelectorAll(".rpc").length > 0;
   }
 
-  tick();
-  // Recomputed from an absolute timestamp every 250ms, so it never drifts and
-  // catches up instantly when a throttled background tab comes back to focus.
-  timerId = setInterval(tick, 250);
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) tick();
-  });
+  if (!boot()) {
+    document.addEventListener("DOMContentLoaded", boot);
+    var tries = 0;
+    var poll = setInterval(function () {
+      if (boot() || ++tries > 40) clearInterval(poll);   // stop after ~10s
+    }, 250);
+  }
 })();
 </script>
+
+<!-- Some page builders (GHL included) insert this block using innerHTML, and
+     browsers will not execute a <script> tag added that way — styles apply but
+     the clock sits at 00:00:00. An inline handler still fires, so if the script
+     above never ran, re-inject it as a real script element, which does run. -->
+<img src="data:," alt="" aria-hidden="true" width="0" height="0"
+     style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"
+     onerror="if(!window.__rpcRan){var c=document.getElementById('rpc-code');if(c){var s=document.createElement('script');s.text=c.textContent;document.head.appendChild(s);}}">
 
 <!-- ============================================================
      HOW THE DEADLINE BEHAVES
@@ -330,8 +345,7 @@
      "weekly" does the same thing but retargets the next matching weekday
      automatically, so a recurring launch needs no edits at all.
 
-     "rolling" is the opposite behavior, kept here in case it's ever
-     wanted: each visitor gets their own window from their first view,
+     "rolling" gives each visitor their own window from their first view,
      saved in their browser. Link with ?start={{contact.date_created}} to
      tie that window to the contact rather than the browser.
      ============================================================ -->

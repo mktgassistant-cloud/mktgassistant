@@ -115,7 +115,12 @@
       storageKey: "replay_deadline_v1"   // bump v1 to restart everyone's clock
     },
 
-    /* ===== 3. WHAT HAPPENS AT ZERO ===== */
+    /* ===== 3. NEVER SHOW MORE THAN THIS MANY HOURS =====
+       Keeps the clock honest if someone lands on the page before the
+       campaign starts. 0 turns the cap off. */
+    maxHours: 32,
+
+    /* ===== 4. WHAT HAPPENS AT ZERO ===== */
     expiredText: "This replay has expired.",
     redirectUrl: ""                   // e.g. "https://yoursite.com/offer-closed"
   };
@@ -242,9 +247,13 @@
     if (CONFIG.redirectUrl) window.location.href = CONFIG.redirectUrl;
   }
 
+  var maxMs = (CONFIG.maxHours || 0) * 60 * 60 * 1000;
+
   function tick() {
     var remaining = deadline - Date.now();
     if (remaining <= 0) { showExpired(); return; }
+    // Hold at the cap until the real close comes inside the window.
+    if (maxMs && remaining > maxMs) remaining = maxMs;
 
     var totalSeconds = Math.floor(remaining / 1000);
     hoursEl.textContent   = pad(Math.floor(totalSeconds / 3600));

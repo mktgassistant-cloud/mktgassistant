@@ -1,14 +1,17 @@
 <!-- ============================================================
-     24-HOUR REPLAY COUNTDOWN
-     Paste this whole block into the "Custom HTML/Javascript" element.
+     LAUNCH COUNTDOWN — hours : minutes : seconds
+     Paste this whole block into a GHL "Custom HTML/Javascript" element.
 
-     - Counts down 24 hours from each visitor's FIRST view
-     - Survives page refresh (deadline saved in the browser)
-     - Optional: pass ?exp=<epoch-ms or ISO date> in the link to set
-       a fixed deadline for everyone (overrides the per-visitor clock)
+     Set MODE below to one of:
+       "fixed"   – one hard close date for everyone   (this launch)
+       "weekly"  – auto-rolls to the next weekday+time (evergreen, zero edits)
+       "rolling" – 24h from each visitor's first view  (evergreen replay)
+
+     Deadlines are anchored to a real timezone, so every visitor sees the
+     same close time no matter where they are or what their clock says.
      ============================================================ -->
 
-<div class="rpc" role="timer" aria-label="Time remaining until this replay expires">
+<div class="rpc" role="timer" aria-label="Time remaining until this offer closes">
   <div class="rpc__clock" data-rpc-clock>
     <div class="rpc__unit">
       <span class="rpc__num" data-rpc-hours>00</span>
@@ -87,10 +90,34 @@
 <script>
 (function () {
   var CONFIG = {
-    hours: 24,                               // length of the countdown window
-    storageKey: "replay_deadline_v1",        // bump the v1 to restart everyone's clock
+    /* ===== 1. PICK YOUR MODE ===== */
+    mode: "fixed",
+
+    /* ===== 2. CONFIGURE THAT MODE ===== */
+
+    // "fixed": one hard close for everyone. Change `date` each launch.
+    fixed: {
+      date: "2026-08-30",             // YYYY-MM-DD
+      time: "23:59",                  // 24h clock, e.g. "00:00" = midnight
+      zone: "America/New_York"        // your close is in ET
+    },
+
+    // "weekly": never edit again. Auto-targets the next matching weekday.
+    weekly: {
+      weekday: 0,                     // 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+      time: "23:59",
+      zone: "America/New_York"
+    },
+
+    // "rolling": each visitor gets their own window from first view.
+    rolling: {
+      hours: 24,
+      storageKey: "replay_deadline_v1"   // bump v1 to restart everyone's clock
+    },
+
+    /* ===== 3. WHAT HAPPENS AT ZERO ===== */
     expiredText: "This replay has expired.",
-    redirectUrl: ""                          // e.g. "https://yoursite.com/offer-closed"
+    redirectUrl: ""                   // e.g. "https://yoursite.com/offer-closed"
   };
 
   var root = document.querySelector(".rpc");
@@ -102,36 +129,103 @@
   var minutesEl = root.querySelector("[data-rpc-minutes]");
   var secondsEl = root.querySelector("[data-rpc-seconds]");
 
-  // localStorage throws in some private-browsing modes, so every access is guarded.
-  function readStored() {
-    try { return parseInt(window.localStorage.getItem(CONFIG.storageKey), 10) || 0; }
-    catch (e) { return 0; }
-  }
-  function writeStored(ts) {
-    try { window.localStorage.setItem(CONFIG.storageKey, String(ts)); }
-    catch (e) { /* countdown still works, it just resets on refresh */ }
+  /* ---------- timezone helpers ----------
+     A visitor in Tokyo and a visitor in LA must see the same close time, so
+     the deadline is built from wall-clock time in YOUR zone, not theirs. */
+
+  // How far the named zone sits from UTC at a given instant (handles DST).
+  function zoneOffsetMs(ts, zone) {
+    var dtf = new Intl.DateTimeFormat("en-US", {
+      timeZone: zone, hour12: false,
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    });
+    var p = {};
+    dtf.formatToParts(new Date(ts)).forEach(function (part) { p[part.type] = part.value; });
+    // Some engines render midnight as hour "24"; normalize it.
+    var asUTC = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+    return asUTC - ts;
   }
 
-  // A fixed deadline in the URL (?exp=...) wins over the per-visitor one.
-  function deadlineFromUrl() {
+  // Wall-clock time in `zone` -> real UTC timestamp. Resolved twice so a
+  // deadline that lands near a DST switch settles on the correct offset.
+  function zonedTimeToTs(y, mo, d, h, mi, zone) {
+    var target = Date.UTC(y, mo - 1, d, h, mi, 0);
+    var ts = target;
+    for (var i = 0; i < 2; i++) ts = target - zoneOffsetMs(ts, zone);
+    return ts;
+  }
+
+  // Today's calendar date as seen in `zone`.
+  function todayInZone(zone) {
+    var p = {};
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit"
+    }).formatToParts(new Date()).forEach(function (part) { p[part.type] = part.value; });
+    return { y: +p.year, mo: +p.month, d: +p.day };
+  }
+
+  function parseHM(str) {
+    var bits = String(str).split(":");
+    return { h: +bits[0] || 0, mi: +bits[1] || 0 };
+  }
+
+  /* ---------- deadline resolution ---------- */
+
+  function fixedDeadline(cfg) {
+    var ymd = String(cfg.date).split("-");
+    var hm = parseHM(cfg.time);
+    return zonedTimeToTs(+ymd[0], +ymd[1], +ymd[2], hm.h, hm.mi, cfg.zone);
+  }
+
+  function weeklyDeadline(cfg) {
+    var today = todayInZone(cfg.zone);
+    var hm = parseHM(cfg.time);
+    var now = Date.now();
+    for (var add = 0; add <= 14; add++) {
+      // Date.UTC rolls month/year over for us, so d + add is always safe.
+      var wall = new Date(Date.UTC(today.y, today.mo - 1, today.d + add));
+      if (wall.getUTCDay() !== cfg.weekday) continue;
+      var ts = zonedTimeToTs(
+        wall.getUTCFullYear(), wall.getUTCMonth() + 1, wall.getUTCDate(),
+        hm.h, hm.mi, cfg.zone
+      );
+      if (ts > now) return ts;
+    }
+    return now; // unreachable in practice
+  }
+
+  // localStorage throws in some private-browsing modes, so guard every access.
+  function rollingDeadline(cfg) {
+    var stored = 0;
+    try { stored = parseInt(window.localStorage.getItem(cfg.storageKey), 10) || 0; }
+    catch (e) { stored = 0; }
+    if (stored) return stored;
+
+    var fresh = Date.now() + cfg.hours * 60 * 60 * 1000;
+    try { window.localStorage.setItem(cfg.storageKey, String(fresh)); }
+    catch (e) { /* countdown still works, it just resets on refresh */ }
+    return fresh;
+  }
+
+  // A deadline in the link (?exp=<epoch-ms or ISO date>) overrides everything.
+  function urlDeadline() {
     var raw = new URLSearchParams(window.location.search).get("exp");
     if (!raw) return 0;
-    var asNumber = Number(raw);
-    var ts = isNaN(asNumber) ? Date.parse(raw) : asNumber;
+    var num = Number(raw);
+    var ts = isNaN(num) ? Date.parse(raw) : num;
     return isNaN(ts) ? 0 : ts;
   }
 
   function resolveDeadline() {
-    var fromUrl = deadlineFromUrl();
+    var fromUrl = urlDeadline();
     if (fromUrl) return fromUrl;
-
-    var stored = readStored();
-    if (stored) return stored;
-
-    var fresh = Date.now() + CONFIG.hours * 60 * 60 * 1000;
-    writeStored(fresh);
-    return fresh;
+    if (CONFIG.mode === "weekly")  return weeklyDeadline(CONFIG.weekly);
+    if (CONFIG.mode === "rolling") return rollingDeadline(CONFIG.rolling);
+    return fixedDeadline(CONFIG.fixed);
   }
+
+  /* ---------- the clock ---------- */
 
   var deadline = resolveDeadline();
   var timerId = null;

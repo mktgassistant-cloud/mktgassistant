@@ -95,10 +95,11 @@
 
     /* ===== 2. CONFIGURE THAT MODE ===== */
 
-    // "fixed": one hard close for everyone. Change `date` each launch.
+    // "fixed": ONE close for everyone. Every visitor sees the same clock
+    // ticking toward this moment. Change `date` each launch.
     fixed: {
       date: "2026-08-30",             // YYYY-MM-DD
-      time: "23:59",                  // 24h clock, e.g. "00:00" = midnight
+      time: "00:00",                  // 24h clock — "00:00" = midnight Sat night
       zone: "America/New_York"        // your close is in ET
     },
 
@@ -109,16 +110,21 @@
       zone: "America/New_York"
     },
 
-    // "rolling": each visitor gets their own window from first view.
+    // "rolling": each visitor gets their own window, kept across refreshes.
+    // For persistence across devices too, link with ?start= or ?exp= (see notes
+    // at the bottom of this file).
     rolling: {
-      hours: 24,
+      hours: 32,
       storageKey: "replay_deadline_v1"   // bump v1 to restart everyone's clock
     },
 
-    /* ===== 3. NEVER SHOW MORE THAN THIS MANY HOURS =====
-       Keeps the clock honest if someone lands on the page before the
-       campaign starts. 0 turns the cap off. */
-    maxHours: 32,
+    /* ===== 3. OPTIONAL DISPLAY CAP =====
+       0 = off, so the clock always shows the true time left and is always
+       ticking. Set a number only if you publish the page well before the
+       campaign starts and don't want early visitors seeing a bigger number
+       (it holds there instead of counting down until the real close comes
+       inside the window). */
+    maxHours: 0,
 
     /* ===== 4. WHAT HAPPENS AT ZERO ===== */
     expiredText: "This replay has expired.",
@@ -200,33 +206,70 @@
     return now; // unreachable in practice
   }
 
+  /* ---------- persistence ---------- */
+
   // localStorage throws in some private-browsing modes, so guard every access.
+  function readStored(key) {
+    try { return parseInt(window.localStorage.getItem(key), 10) || 0; }
+    catch (e) { return 0; }
+  }
+  function writeStored(key, ts) {
+    try { window.localStorage.setItem(key, String(ts)); }
+    catch (e) { /* countdown still works, it just resets on refresh */ }
+  }
+
+  function urlParam(name) {
+    return new URLSearchParams(window.location.search).get(name);
+  }
+
+  // Accepts an ISO date, epoch milliseconds, or epoch seconds.
+  function parseTs(raw) {
+    if (!raw) return 0;
+    var num = Number(raw);
+    if (isNaN(num)) {
+      var parsed = Date.parse(raw);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    // Epoch seconds are ~1e9; milliseconds are ~1e12.
+    return num < 1e11 ? num * 1000 : num;
+  }
+
+  // ?exp= is an absolute deadline. ?start= is when their window opened
+  // (e.g. GHL's {{contact.date_created}}), and we add the window to it.
+  function deadlineFromUrl(windowHours) {
+    var exp = parseTs(urlParam("exp"));
+    if (exp) return exp;
+    var start = parseTs(urlParam("start"));
+    if (start) return start + windowHours * 60 * 60 * 1000;
+    return 0;
+  }
+
   function rollingDeadline(cfg) {
-    var stored = 0;
-    try { stored = parseInt(window.localStorage.getItem(cfg.storageKey), 10) || 0; }
-    catch (e) { stored = 0; }
+    // A deadline carried in the link is the contact's real one, so it wins and
+    // gets saved — that way later visits without the link keep the same clock.
+    var fromUrl = deadlineFromUrl(cfg.hours);
+    if (fromUrl) {
+      if (readStored(cfg.storageKey) !== fromUrl) writeStored(cfg.storageKey, fromUrl);
+      return fromUrl;
+    }
+
+    var stored = readStored(cfg.storageKey);
     if (stored) return stored;
 
     var fresh = Date.now() + cfg.hours * 60 * 60 * 1000;
-    try { window.localStorage.setItem(cfg.storageKey, String(fresh)); }
-    catch (e) { /* countdown still works, it just resets on refresh */ }
+    writeStored(cfg.storageKey, fresh);
     return fresh;
   }
 
-  // A deadline in the link (?exp=<epoch-ms or ISO date>) overrides everything.
-  function urlDeadline() {
-    var raw = new URLSearchParams(window.location.search).get("exp");
-    if (!raw) return 0;
-    var num = Number(raw);
-    var ts = isNaN(num) ? Date.parse(raw) : num;
-    return isNaN(ts) ? 0 : ts;
-  }
-
   function resolveDeadline() {
-    var fromUrl = urlDeadline();
-    if (fromUrl) return fromUrl;
-    if (CONFIG.mode === "weekly")  return weeklyDeadline(CONFIG.weekly);
     if (CONFIG.mode === "rolling") return rollingDeadline(CONFIG.rolling);
+
+    // For a shared close date, ?exp= is a temporary override (handy for
+    // testing the expired state) and is deliberately not persisted. ?start=
+    // is ignored here — it only means something for a per-visitor window.
+    var fromUrl = parseTs(urlParam("exp"));
+    if (fromUrl) return fromUrl;
+    if (CONFIG.mode === "weekly") return weeklyDeadline(CONFIG.weekly);
     return fixedDeadline(CONFIG.fixed);
   }
 
@@ -270,3 +313,25 @@
   });
 })();
 </script>
+
+<!-- ============================================================
+     HOW THE DEADLINE BEHAVES
+
+     In "fixed" mode (the default) there is ONE close for everyone. The
+     clock is computed from the close date on every tick, so:
+
+       - every visitor sees the same number, counting down together
+       - refreshing, switching phones, or clearing site data changes nothing
+       - nothing is stored in the browser; there is no per-person clock
+       - it can't drift, and it survives the tab being backgrounded
+
+     Each launch, change only `fixed.date` (and `time` if the hour moves).
+
+     "weekly" does the same thing but retargets the next matching weekday
+     automatically, so a recurring launch needs no edits at all.
+
+     "rolling" is the opposite behavior, kept here in case it's ever
+     wanted: each visitor gets their own window from their first view,
+     saved in their browser. Link with ?start={{contact.date_created}} to
+     tie that window to the contact rather than the browser.
+     ============================================================ -->

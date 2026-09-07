@@ -530,6 +530,25 @@
     line-height: 1.2;
   }
 
+  /* the profile link is the whole verifiability argument, so it sits with the
+     name rather than buried at the bottom */
+  .cs-verify {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--cs-blue-lift);
+    color: color-mix(in srgb, var(--cs-a) 62%, #ffffff);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .cs-verify:hover,
+  .cs-verify:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
   .cs-headline {
     margin: 0 0 22px;
     font-size: clamp(21px, 2.5vw, 27px);
@@ -614,10 +633,18 @@
     margin: 0;
   }
 
+  /* LinkedIn screenshots run 1200px and taller, which buries the video and
+     the CTA. Cap the height and anchor to the top: the author, the headline
+     and the announcement all sit up there, and what gets cropped is the
+     decorative graphic underneath. Raise the cap to show more. */
   .cs-proof img {
     display: block;
     width: 100%;
     height: auto;
+    max-height: 440px;
+    object-fit: cover;
+    object-position: top center;
+    background: #ffffff;
     border: 1px solid var(--cs-line);
     border-radius: 10px;
   }
@@ -834,7 +861,8 @@
       id: "larita",
       name: "LaRita W.",
       category: "Former Classroom Teacher, Laid Off",
-      avatar: "", // TODO: paste LaRita's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d0f27290fb04997ac.jpeg",
+      linkedin: "https://www.linkedin.com/in/laritawilliams/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Laid Off Teacher \u2192 Sr. People Analyst at Roku",
@@ -866,6 +894,14 @@
             caption:
               "The profile now used in Data In Motion trainings as the " +
               "example of correct positioning."
+          },
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d67ecc8731d244e78.png",
+            alt: "Roku\u2019s own LinkedIn post featuring LaRita Williams as Sr. " +
+              "People Analyst on its People Shared Services team in " +
+              "Austin",
+            caption: "Roku posted this about her. She did not have to say it " +
+              "herself."
           }
         ],
         // TODO: add wistia: "MEDIA_ID" if there is an interview clip for LaRita
@@ -942,7 +978,8 @@
       id: "caitlin",
       name: "Caitlin U.",
       category: "Former High School Math Teacher, Texas",
-      avatar: "", // TODO: paste Caitlin's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722cfad59e6cfed08185d.jpeg",
+      linkedin: "https://www.linkedin.com/in/caitlin-ursino/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Math Teacher \u2192 Finance Analyst",
@@ -973,6 +1010,14 @@
         },
         // TODO: add wistia: "MEDIA_ID" if there is an interview clip, and an
         // images entry if you want her LinkedIn profile shown as proof
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722d0ea6d6d189c7446ec.png",
+            alt: "Caitlin Ursino\u2019s LinkedIn post announcing she is a finance " +
+              "analyst at Mustang Cat",
+            caption: ""
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -1039,9 +1084,10 @@
 
     {
       id: "katherine",
-      name: "Katherine L.",
+      name: "Catherine L.",
       category: "Former Healthcare Operations",
-      avatar: "", // TODO: paste Katherine's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ed8cde54706c14ed492b.jfif",
+      linkedin: "https://www.linkedin.com/in/catherinelanger/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Overwhelmed Job Search \u2192 Healthcare Data Analyst in 27 Days",
@@ -1054,7 +1100,7 @@
         "Her mentor turned her operations experience into quantifiable " +
         "impact. Offer in 27 days.",
       modal: {
-        name: "Katherine L., Healthcare Data Analyst",
+        name: "Catherine L., Healthcare Data Analyst",
         category: "Former Healthcare Operations",
         headline:
           "Overwhelmed Job Search \u2192 Healthcare Data Analyst in 27 Days",
@@ -1068,15 +1114,23 @@
           text:
             "For the first time, I wasn\u2019t memorizing. I was " +
             "communicating confidently.",
-          author: "Katherine L., Healthcare Data Analyst"
+          author: "Catherine L., Healthcare Data Analyst"
         },
         closingQuote: {
           text:
             "If you\u2019re in a stressful search right now, remember you " +
             "don\u2019t have to do it alone.",
-          author: "Katherine L., Healthcare Data Analyst"
+          author: "Catherine L., Healthcare Data Analyst"
         },
-        // TODO: add wistia: "MEDIA_ID" if there is a clip for Katherine
+        wistia: "p6g63rj9rj",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ee005113a1715ffe5a69.jpg",
+            alt: "Catherine Langer\u2019s LinkedIn post announcing she is " +
+              "starting as Healthcare Data Analyst at Kootenai Health",
+            caption: "65 reactions, 40 comments, 2 reposts."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -1152,7 +1206,8 @@
       id: "jose",
       name: "Jose M.",
       category: "15 Years in Sales",
-      avatar: "", // TODO: paste Jose's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37741b35065942ea20.png",
+      linkedin: "https://www.linkedin.com/in/jose-martinez-b766b3359/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "15 Years in Sales \u2192 Senior Business Analyst",
@@ -1196,6 +1251,12 @@
               "Slack message from Jose Martinez: offered the Senior Business " +
               "Analyst position with a training start date of July 2nd.",
             caption: "The next morning, 4 days after applying."
+          },
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37ad59e6cfede4065e.png",
+            alt: "Jose Martinez\u2019s LinkedIn post about returning to school " +
+              "through Data In Motion",
+            caption: ""
           }
         ],
         wistia: "udpai65364",
@@ -1281,7 +1342,8 @@
       id: "jacinda",
       name: "Jacinda L.",
       category: "Former CDL A Truck Driver, FedEx Ground",
-      avatar: "", // TODO: paste Jacinda's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8720df8f3f0ab510a57a37.jpeg",
+      linkedin: "https://www.linkedin.com/in/jacindal321/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Truck Driver \u2192 Data Analyst in 90 Days",
@@ -1311,8 +1373,7 @@
             label: "Stack Built From Zero"
           }
         ],
-        // TODO: add wistia: "MEDIA_ID" if there is a clip for Jacinda, and an
-        // images entry if you have the before and after of her profile
+        video: "https://www.loom.com/embed/6a035187106e4561b9c772e45bb5e58d",
         sections: [
           {
             label: "Their path before DIM",
@@ -1389,7 +1450,8 @@
       id: "shantel",
       name: "Shantel W.",
       category: "No Bachelor\u2019s Degree",
-      avatar: "", // TODO: paste Shantel's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f59c1e1ff9023ee421e.jpeg",
+      linkedin: "https://www.linkedin.com/in/shantel-williams-software-developer/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "No Bachelor\u2019s Degree \u2192 A Role at Microsoft",
@@ -1414,6 +1476,14 @@
         ],
         // TODO: add wistia: "MEDIA_ID" if there is a clip for Shantel, and an
         // images entry if you have a screenshot of the posting streak
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f5fad59e6cfede7fd9a.png",
+            alt: "Shantel Williams\u2019s LinkedIn post announcing she is " +
+              "starting at Microsoft as a Software Engineer",
+            caption: "Her profile headline reads Software Engineer at Microsoft."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -1475,7 +1545,8 @@
       id: "ronnie",
       name: "Ronnie",
       category: "Data and Business Analytics, Laid Off at Accenture",
-      avatar: "", // TODO: paste Ronnie's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f590f27290fb02b3b1d.jpeg",
+      linkedin: "https://www.linkedin.com/in/ron-simmons-0b93691a2/",
       accent: "#0038ff",  // DIM primary blue
       accent2: "#ff6240", // DIM coral: together they make the top bar gradient
       stat: "Laid Off \u2192 $90K Fully-Remote Job in 30 Days",
@@ -1501,6 +1572,14 @@
           author: "Ronnie, Data Analyst at eSimplicity"
         },
         wistia: "e2jdcz4o5w",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f5f741b350659470dbc.png",
+            alt: "Ronnie Simmons\u2019s LinkedIn post announcing he is starting " +
+              "as a Business Analyst at eSimplicity",
+            caption: ""
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -1587,7 +1666,8 @@
       // Once confirmed it belongs here, the way Ronnie's card says "Laid Off at
       // Accenture", and in the headline as a "X \u2192 Y" hook.
       category: "Data Analytics, Six-Figure Offer",
-      avatar: "", // TODO: paste Thomas's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8712168f3f0ab51092215d.jpeg",
+      linkedin: "https://www.linkedin.com/in/thomas-yohannes-mph/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "\u201cJust Trust Me\u201d \u2192 Six-Figure Offer",
@@ -1597,7 +1677,7 @@
         "projects instead of putting them on the screen. 6-figure offer " +
         "within 3 months of finishing.",
       modal: {
-        name: "Thomas J.",
+        name: "Thomas Y.",
         // TODO [NEEDS CONFIRMATION]: he says "six figure offer" and never a
         // number. A specific figure and his job title both belong in this
         // headline once you have them on file.
@@ -1612,6 +1692,14 @@
           { value: "VP Level", label: "Interview Round Reached" }
         ],
         wistia: "ukjdvqw75m",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871216cdd4b797a3e3e518.png",
+            alt: "Thomas Yohannes\u2019s LinkedIn post announcing he is starting " +
+              "as a Data Analyst with HITT Contracting",
+            caption: ""
+          }
+        ],
         sections: [
           {
             label: "Their path before Data in Motion",
@@ -1698,7 +1786,7 @@
             "The most important thing were the mentors. They helped more " +
             "than the topics, more than the projects. It was actually the " +
             "people that helped.",
-          author: "Thomas J., Data in Motion grad"
+          author: "Thomas Y., Data in Motion grad"
         },
         cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
         disclaimer:
@@ -1711,7 +1799,8 @@
       id: "hakeem",
       name: "Hakeem L.",
       category: "Sales, Zero Tech Background",
-      avatar: "", // TODO: paste Hakeem's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8714a4c1e1ff9023f6a940.jpeg",
+      linkedin: "https://www.linkedin.com/in/hakeemlawrence/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Sales \u2192 Senior Analytics Consultant at phData",
@@ -1743,6 +1832,12 @@
             caption:
               "The profile he built while learning: Analytics Engineer " +
               "banner, 8,808 followers, Sr. Analytics Consultant at phData."
+          },
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8714a4994ded095a97b2b5.png",
+            alt: "Hakeem Lawrence\u2019s LinkedIn post announcing his Sr. " +
+              "Analytics Consultant role at phData",
+            caption: "He thanks Kedeisha Bryan and Data In Motion by name."
           }
         ],
         // TODO: add wistia: "MEDIA_ID" if there is an interview clip for Hakeem
@@ -1809,7 +1904,8 @@
       id: "rachel",
       name: "Rachel",
       category: "20 Years Teaching High School Math",
-      avatar: "", // TODO: paste Rachel's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871562994ded095a9807fb.jpeg",
+      linkedin: "https://www.linkedin.com/in/rachel-helleloid/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "20 Years Teaching Math \u2192 Business Intelligence Analyst",
@@ -1844,6 +1940,15 @@
           author: "Rachel, Business Intelligence Analyst"
         },
         // TODO: add wistia: "MEDIA_ID" if there is a clip for Rachel
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8715628f3f0ab51095c815.png",
+            alt: "Rachel Helleloid\u2019s LinkedIn post announcing she is " +
+              "starting as Business Intelligence Analyst at Essentia " +
+              "Health",
+            caption: ""
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -1939,7 +2044,8 @@
       id: "will",
       name: "Will K.",
       category: "New Graduate, University of South Florida",
-      avatar: "", // TODO: paste Will's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871684c1e1ff9023f86bb2.jpeg",
+      linkedin: "https://www.linkedin.com/in/william-kieffer/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat:
@@ -1967,6 +2073,14 @@
           author: "Will K."
         },
         wistia: "5qmf872wnj",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871684cdd4b797a3e9d147.png",
+            alt: "William Kieffer\u2019s LinkedIn post announcing he is joining " +
+              "USI Insurance Services as an Employee Benefits Analyst",
+            caption: "USI\u2019s own recruiter posted it too."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -2067,7 +2181,8 @@
       id: "elleni",
       name: "Elleni T.",
       category: "Former Accounting, Career Changer",
-      avatar: "", // TODO: paste Elleni's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8718f9741b3506595630a1.jpeg",
+      linkedin: "https://www.linkedin.com/in/elleni-tessema/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Accounting \u2192 Government Data Analyst",
@@ -2092,6 +2207,15 @@
         ],
         // TODO: add wistia: "MEDIA_ID" if there is a clip, and an images entry
         // if you have a screenshot worth showing as proof
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8718f9cdd4b797a3eeddd5.png",
+            alt: "Elleni Tessema\u2019s LinkedIn experience entry: Financial Data " +
+              "Analyst at the Office of the Chief Financial Officer, " +
+              "February 2025 to present",
+            caption: "The role, the employer, and the start date."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -2157,7 +2281,8 @@
       id: "amanda",
       name: "Amanda L.",
       category: "Former Teacher, Detroit",
-      avatar: "", // TODO: paste Amanda's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8719a3ad59e6cfedf77c5f.jpeg",
+      linkedin: "https://www.linkedin.com/in/amandaloskill/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Teacher \u2192 Academic Research Analyst",
@@ -2185,6 +2310,15 @@
         ],
         // TODO: add wistia: "MEDIA_ID" if there is a clip for Amanda, and an
         // images entry if you have a screenshot of her profile worth showing
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8719a3e6501a9518b962f3.png",
+            alt: "Amanda Loskill\u2019s LinkedIn post announcing her Academic " +
+              "Research Analyst role at the Institute for Humane Studies",
+            caption: "Her headline reads Data Analyst, Excel, SQL, Python, " +
+              "Tableau."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -2257,7 +2391,8 @@
       id: "robby",
       name: "Robby",
       category: "Data Analyst, 3 Years Experience",
-      avatar: "", // TODO: paste Robby's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871cb80f27290fb0421cd4.jpeg",
+      linkedin: "https://www.linkedin.com/in/robbymz/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "1% Response Rate \u2192 Job Offer",
@@ -2285,7 +2420,16 @@
             "realized it\u2019s really essential.",
           author: "Robby, Data Analyst"
         },
-        // TODO: add wistia: "MEDIA_ID" if there is a clip for Robby
+        wistia: "k88ct0murh",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a871cb88f3f0ab5109fd364.png",
+            alt: "Robby\u2019s LinkedIn experience entry: Business Intelligence " +
+              "Analyst, Commercial Lines at HUB International, June 2025 " +
+              "to present, Canada, remote",
+            caption: "The role, the employer, and the start date."
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -2382,7 +2526,8 @@
       id: "tanya",
       name: "Tanya C.",
       category: "Promoted Internally, No Job Search",
-      avatar: "", // TODO: paste Tanya's photo URL from the GHL media library
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87205367ecc8731d20df7f.jpeg",
+      linkedin: "https://www.linkedin.com/in/tanya-davis-castro-5618b265/",
       accent: "#0038ff",
       accent2: "#ff6240",
       stat: "Beginner \u2192 +$20K Promotion",
@@ -2403,6 +2548,14 @@
         ],
         // TODO: add wistia: "MEDIA_ID" if there is a clip, and an images entry
         // if you have a screenshot of the promotion announcement
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a872053cdd4b797a3f91df3.png",
+            alt: "Tanya Davis-Castro\u2019s LinkedIn post announcing she joined " +
+              "Clario after its acquisition of WCG\u2019s eCOA business",
+            caption: ""
+          }
+        ],
         sections: [
           {
             label: "Their path before DIM",
@@ -2586,6 +2739,11 @@
         "<div>" +
           '<p class="cs-modal-name">' + esc(m.name || cs.name) + "</p>" +
           '<p class="cs-cat">' + esc(m.category || cs.category) + "</p>" +
+          (cs.linkedin
+            ? '<a class="cs-verify" href="' + esc(cs.linkedin) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              "Verify on LinkedIn ↗</a>"
+            : "") +
         "</div>" +
       "</div>";
 

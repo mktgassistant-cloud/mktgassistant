@@ -13,7 +13,7 @@ resequencing is a matter of moving one object.
    ICP, 5 offers, Roku, student to mentor, complete and verifiable.
 2. **Caitlin U.**, zero applications, recruiter found her. Publicly checkable
    profile, post, and reaction counts.
-3. **Katherine L.**, 27 days, fastest placement on record, told in her own
+3. **Catherine L.**, 27 days, fastest placement on record, told in her own
    voice throughout.
 4. **Jose M.**, dated Slack screenshots proving 4 days from application to
    offer. Hardest evidence on the grid.
@@ -23,7 +23,7 @@ resequencing is a matter of moving one object.
    mismatch and the consent question.
 7. **Ronnie**, the only hard salary figure and a clean 30 days. Wrong ICP caps
    it.
-8. **Thomas J.**, "just trust me" to a six-figure offer in 3 months. Has a
+8. **Thomas Y.**, "just trust me" to a six-figure offer in 3 months. Has a
    video and a timeline, but no title, employer, or exact figure. Placement is
    an estimate, not from the ranked list.
 9. **Hakeem L.**, externally auditable, clearest demonstration of the challenge
@@ -73,30 +73,56 @@ is more than one card.
 
 ## Still TODO
 
-- `avatar` on all fifteen cards — photo URLs from the GHL media library. Empty
-  falls back to the person's initials in a blue ring.
-- `modal.cta.href` — `#book` on all fifteen, needs the real booking link.
-- `images[].src` uploads: Jose's two Slack screenshots, Hakeem's LinkedIn
-  profile screenshot, LaRita's LinkedIn profile screenshot. An entry with an
-  empty `src` is skipped, so nothing broken renders until they are uploaded.
-- Jose's employer, and Thomas's job title, employer, and actual salary figure.
-  None are in their transcripts, so none were invented.
+- `modal.cta.href` is `#book` on all fifteen. Needs the real booking link.
+- Jose's employer is still not stated anywhere, including his own post.
+- Thomas's salary figure. "Six figure" is his own wording and nothing
+  corroborates a number.
+- `images[].src` still empty: Jose's two Slack screenshots, LaRita's and
+  Hakeem's LinkedIn profile screenshots. Those are separate artifacts from the
+  posts already wired, so their slots stay empty and render nothing.
+- Jacinda has no proof screenshot, because none exists. Her LinkedIn work
+  history is not updated either, so her "Verify on LinkedIn" link points at a
+  profile that does not corroborate the case study. Consider dropping her
+  `linkedin` line until it is.
 - Jose's positioning-statement writeup, flagged in a code comment: it needs to
   read as DIM IP rather than as a feature bullet.
-- `wistia` for Hakeem, LaRita, Caitlin, Tanya, Elleni, Robby, Amanda, Jacinda,
-  Katherine, Shantel, and Rachel, if there are clips. Wired: Ronnie `e2jdcz4o5w`, Thomas
-  `ukjdvqw75m`, Jose `udpai65364`, Will `5qmf872wnj`.
-- Hakeem, Tanya, Elleni, Amanda, Jacinda, and Shantel have no pull quote in
+- `wistia` for LaRita, Caitlin, Shantel, Hakeem, Rachel, Elleni, Amanda and
+  Tanya, if clips exist. Wired: LaRita none, Catherine `p6g63rj9rj`, Jose
+  `udpai65364`, Ronnie `e2jdcz4o5w`, Thomas `ukjdvqw75m`, Will `5qmf872wnj`,
+  Robby `k88ct0murh`. Jacinda uses a Loom through `modal.video`.
+- Will has a second Wistia ID, `8y3xgnmmzu`. `5qmf872wnj` is still wired.
+  Only one can show.
+- Tanya's post announces joining Clario through the WCG eCOA acquisition. It
+  does not evidence the $20K promotion her card claims, so it sits under a
+  claim it does not support.
+- Amanda's write-up reaches for a school district example, but she landed at
+  the Institute for Humane Studies, a higher-ed research nonprofit.
+- LaRita, Tanya, Elleni, Amanda, Shantel and Jacinda have no pull quote in
   their source copy, so their modals have no quote block.
-- Amanda's LinkedIn profile screenshot, if you want proof of the headline and
-  Featured section the write-up describes. Same for Jacinda's profile, where a
-  before and after of the FedEx bullet would carry the whole point. Shantel's
-  posting streak would work the same way as proof.
-- Jacinda's location: the copy has her in Troy, Alabama and driving out of
-  Brooklyn. Both are kept as written, flagged in a code comment.
-- `accent` / `accent2` — all set to DIM blue `#0038FF` and coral `#FF6240`,
-  which together draw the top bar gradient. Vary per card if you want them to
-  read differently.
+- `accent` / `accent2` are DIM blue `#0038FF` and coral `#FF6240` on every
+  card, which together draw the top bar gradient. Vary per card if you want
+  them to read differently.
+
+## Facts the screenshots confirmed
+
+These came out of the LinkedIn assets and are not yet written into any copy.
+Titles and employers are now verifiable, so the write-ups can use them:
+
+| Card | Employer | Title |
+|---|---|---|
+| Catherine L. | Kootenai Health | Healthcare Data Analyst |
+| Thomas Y. | HITT Contracting Inc. | Data Analyst, now Data Analyst Manager |
+| Rachel | Essentia Health | Business Intelligence Analyst |
+| Will K. | USI Insurance Services | Employee Benefits Analyst, Bloomington MN |
+| Elleni T. | Office of the Chief Financial Officer | Financial Data Analyst |
+| Amanda L. | Institute for Humane Studies | Academic Research Analyst |
+| Robby | HUB International | Business Intelligence Analyst, Commercial Lines |
+| Caitlin U. | Mustang Cat | CMD Finance Analyst |
+
+Two of these are strong enough to quote directly. Hakeem's post thanks
+"Kedeisha Bryan and Data In Motion for the fantastic career consulting and
+interview prep" by name, and Roku published its own post about LaRita rather
+than her announcing it herself.
 
 ## Fields a case study can use
 
@@ -163,6 +189,14 @@ For the dark page background, wrap it in a scratch file with
 `body{background:#0d0c0f}`.
 
 ## Implementation notes
+
+- Every card carries `avatar` (the round photo beside the name) and `linkedin`
+  (a "Verify on LinkedIn" link under the category line, new tab, noopener).
+  Fourteen carry a proof screenshot in `images`.
+- Proof screenshots are capped at 440px tall and anchored to the top, because
+  LinkedIn screenshots run past 1200px and would bury the video and the CTA.
+  What gets cropped is the decorative graphic at the bottom of a post, never
+  the author line or the announcement.
 
 - One data object drives card + modal, so numbers can't disagree between them.
 - The modal is relocated to `<body>` at runtime. GHL sections routinely use

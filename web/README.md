@@ -1,4 +1,14 @@
-# Case study cards + modal (GoHighLevel embed)
+# GoHighLevel embed blocks
+
+Two independent paste-into-GHL blocks live here:
+
+- `ghl-case-study-cards.html`, the student case study grid and modals.
+- `ghl-clarity-call-checklist.html`, the "On this call we'll:" checklist.
+  Pure HTML and CSS, no JavaScript, so it renders inside the builder canvas
+  straight away. Edit the `<li>` lines and nothing else. Add `is-light` to the
+  wrapper for a white section; `--cc-check` recolors the ticks.
+
+# Case study cards + modal
 
 `ghl-case-study-cards.html` is a single self-contained block — HTML, CSS and JS
 in one file, no build step, no external dependencies. It renders two states:

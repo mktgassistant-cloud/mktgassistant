@@ -1,0 +1,188 @@
+<!--
+  ============================================================================
+  CLARITY CALL CHECKLIST: paste-into-GoHighLevel block
+  ============================================================================
+  HOW TO USE
+    1. In the GHL funnel/page builder add a "Custom Code" (or "Code") element
+       and paste this ENTIRE file into it.
+    2. Edit the <li> lines below. That is the whole job. There is no
+       JavaScript in this block, so unlike the case study cards it renders
+       immediately inside the builder canvas, no live preview needed.
+
+  ON A LIGHT SECTION
+    Add is-light to the wrapper: <section class="cc-wrap is-light">
+    Nothing else changes.
+
+  SIZING
+    --cc-max caps the width. --cc-check recolors the ticks.
+
+  COPY RULES (same as the case study block)
+    * No em dashes anywhere.
+    * Numerals, not words: 30 days, not thirty days.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900&display=swap"
+  rel="stylesheet">
+
+<style>
+  .cc-wrap {
+    /* matches the case study block, so the two sit together */
+    --cc-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif;
+    --cc-text: #f6f6ff;
+    --cc-body: #c9d8e0;
+    --cc-muted: #8893a8;
+    --cc-check: #ff6240;
+    --cc-rule: #232c5e;
+    --cc-max: 620px;
+
+    box-sizing: border-box;
+    max-width: var(--cc-max);
+    margin: 0 auto;
+    padding: 0 20px;
+    color: var(--cc-body);
+    font-family: var(--cc-font);
+    text-align: left;
+  }
+
+  .cc-wrap *,
+  .cc-wrap *::before,
+  .cc-wrap *::after {
+    box-sizing: inherit;
+  }
+
+  /* drop-in for a white or light grey GHL section */
+  .cc-wrap.is-light {
+    --cc-text: #0d1336;
+    --cc-body: #2f3a52;
+    --cc-muted: #6b7688;
+    --cc-rule: #e4e7ee;
+  }
+
+  .cc-eyebrow {
+    margin: 0 0 22px;
+    color: var(--cc-text);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .cc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cc-list li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 15px 0;
+    border-top: 1px solid var(--cc-rule);
+    font-size: 16.5px;
+    line-height: 1.5;
+  }
+
+  .cc-list li:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .cc-list li:last-child {
+    padding-bottom: 0;
+  }
+
+  /* the tick is optically a little low against a cap-height line of text */
+  .cc-tick {
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    flex: none;
+    color: var(--cc-check);
+  }
+
+  .cc-list strong {
+    color: var(--cc-text);
+    font-weight: 600;
+  }
+
+  .cc-note {
+    margin: 22px 0 0;
+    color: var(--cc-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .cc-list li {
+      font-size: 15.5px;
+      gap: 12px;
+      grid-template-columns: 20px 1fr;
+    }
+
+    .cc-tick {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
+
+<section class="cc-wrap" aria-labelledby="cc-eyebrow">
+  <p class="cc-eyebrow" id="cc-eyebrow">On this call we&rsquo;ll:</p>
+
+  <ul class="cc-list">
+    <li>
+      <svg class="cc-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true" focusable="false"><path d="M4 12.5l5.5 5.5L20 6"/></svg>
+      <span>
+        <strong>Diagnose the exact reason</strong> your applications are not
+        getting responses
+      </span>
+    </li>
+
+    <li>
+      <svg class="cc-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true" focusable="false"><path d="M4 12.5l5.5 5.5L20 6"/></svg>
+      <span>
+        <strong>Map out which skills you actually need</strong>, in the order
+        that gets you hired
+      </span>
+    </li>
+
+    <li>
+      <svg class="cc-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true" focusable="false"><path d="M4 12.5l5.5 5.5L20 6"/></svg>
+      <span>
+        <strong>Show you how to turn the experience you already have</strong>
+        into proof a hiring manager can evaluate
+      </span>
+    </li>
+
+    <li>
+      <svg class="cc-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true" focusable="false"><path d="M4 12.5l5.5 5.5L20 6"/></svg>
+      <span>
+        <strong>Give you a straight answer on whether we can help</strong>,
+        using your actual numbers rather than averages
+      </span>
+    </li>
+  </ul>
+
+  <!-- Delete this line if you do not want it. -->
+  <p class="cc-note">
+    30 minutes, no obligation. If we are not the right fit we will say so on
+    the call.
+  </p>
+</section>

@@ -15,6 +15,8 @@
 
   SIZING
     --cc-max caps the width. --cc-check recolors the ticks.
+    --cc-size sets the bullet text size, 15.5px here, dropping to 14.5px
+    on phones. Change it in one place.
 
   COPY RULES (same as the case study block)
     * No em dashes anywhere.
@@ -39,6 +41,7 @@
     --cc-check: #ff6240;
     --cc-rule: #232c5e;
     --cc-max: 620px;
+    --cc-size: 15.5px;
 
     box-sizing: border-box;
     max-width: var(--cc-max);
@@ -66,7 +69,7 @@
   .cc-eyebrow {
     margin: 0 0 22px;
     color: var(--cc-text);
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     letter-spacing: 1.6px;
     text-transform: uppercase;
@@ -86,7 +89,7 @@
     align-items: start;
     padding: 15px 0;
     border-top: 1px solid var(--cc-rule);
-    font-size: 16.5px;
+    font-size: var(--cc-size);
     line-height: 1.5;
   }
 
@@ -113,17 +116,9 @@
     font-weight: 600;
   }
 
-  .cc-note {
-    margin: 22px 0 0;
-    color: var(--cc-muted);
-    font-size: 13px;
-    line-height: 1.55;
-    text-align: center;
-  }
-
   @media (max-width: 600px) {
     .cc-list li {
-      font-size: 15.5px;
+      --cc-size: 14.5px;
       gap: 12px;
       grid-template-columns: 20px 1fr;
     }
@@ -179,9 +174,4 @@
       </span>
     </li>
   </ul>
-
-  <!-- Delete this line if you do not want it. -->
-  <p class="cc-note">
-    No obligation. If we are not the right fit we will say so on the call.
-  </p>
 </section>

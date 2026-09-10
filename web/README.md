@@ -49,15 +49,33 @@ resequencing is a matter of moving one object.
 
 ## Install in GHL
 
-1. Funnel/page builder → add an **element** → **Custom Code** (in some
-   accounts it's called *Code*). Put it in a full-width section/row.
-2. Paste the entire contents of `ghl-case-study-cards.html` into the code box.
-3. Save, then **preview the live page** — the builder canvas often refuses to
-   run `<script>`, so the card can look missing inside the editor while working
-   perfectly on the published page.
+Paste `ghl-case-study-cards.html` **once**, not once per group of cards.
+Either a **Custom Code** element at the bottom of the page, or
+**Settings → Tracking Code → Footer**.
 
-If your account's code element strips `<script>`, put the `<style>` + HTML in
-the code element and paste the `<script>` block into
+Then place a mount wherever cards should appear. One line each, as many as
+you want:
+
+```html
+<div class="cs-mount" data-cs="larita,caitlin,katherine"></div>
+<div class="cs-mount" data-cs="jose,jacinda,shantel"></div>
+```
+
+`data-cs` is a comma separated list of ids, rendered in the order written.
+Omit it and that mount renders all fifteen. Unknown ids are skipped rather
+than rendering a blank card. Mounts can sit above or below the block, since
+rendering waits for the document and sweeps again on load.
+
+Nothing appears until a mount exists, which is what lets the block live in
+the footer without dumping fifteen cards down there.
+
+The modal arrows walk the group you clicked into, not the whole set: a mount
+of 3 cycles those 3, and a mount of 1 hides the arrows. Deep links open a
+card inside whichever group holds it. Pasting the block twice is harmless,
+the second copy stands down rather than fighting over element ids.
+
+If your account's code element strips `<script>`, put the `<style>` + modal
+markup in the code element and paste the `<script>` block into
 **Settings → Tracking Code → Footer** instead. Nothing else changes.
 
 ## Adding the next student

@@ -3,12 +3,26 @@
   CASE STUDY CARDS + MODAL: paste-into-GoHighLevel block
   ============================================================================
   HOW TO USE
-    1. In the GHL funnel/page builder add a "Custom Code" (or "Code") element,
-       full page width, and paste this ENTIRE file into it.
-    2. Edit only the CASE_STUDIES array below. Everything (cards + modals) is
+    1. Paste this ENTIRE file ONCE. Either a "Custom Code" (or "Code")
+       element at the bottom of the page, or
+       Settings > Tracking Code > Footer. Once, not once per group.
+    2. Then drop a mount wherever you want cards to appear. A mount is one
+       line, and you can have as many as you like:
+
+         <div class="cs-mount" data-cs="larita,caitlin,katherine"></div>
+
+       data-cs is a comma separated list of ids, shown in the order you
+       write them. Leave data-cs off and that mount renders all of them.
+       A mount can sit above or below this block, it makes no difference.
+    3. Edit only the CASE_STUDIES array below. Everything (cards + modals) is
        generated from it, so a card and its detail view can never drift apart.
-    3. Search for "TODO" to find every spot that still needs your copy,
+    4. Search for "TODO" to find every spot that still needs your copy,
        avatar URL, quote, or video.
+
+  GROUPS AND THE ARROWS
+    The modal arrows walk the group you clicked into, not all 15. Click a
+    card in a mount of 3 and the arrows cycle those 3. A mount of 1 hides
+    the arrows entirely.
 
   WHAT TO EDIT PER CASE STUDY
     id        - short slug, used for the #case=<id> deep link. Keep unique.
@@ -816,9 +830,20 @@
   }
 </style>
 
-<section class="cs-wrap" id="cs-wrap">
-  <ul class="cs-grid" id="cs-grid"><!-- cards render here --></ul>
-</section>
+<!--
+  Cards render into mount points, so this block is pasted ONCE and the cards
+  can appear in as many places on the page as you like. A mount is one line:
+
+    <div class="cs-mount" data-cs="larita,caitlin,katherine"></div>
+
+  Drop that wherever you want those 3 cards. data-cs is a comma separated
+  list of ids, in the order you want them shown. Omit data-cs entirely and
+  the mount renders all of them.
+
+  Nothing appears until at least one mount exists. That is deliberate: it
+  means the block itself can live in the page footer, or in
+  Settings > Tracking Code > Footer, without dumping 15 cards down there.
+-->
 
 <div class="cs-modal" id="cs-modal" hidden>
   <div class="cs-overlay" data-cs-close></div>
@@ -2604,17 +2629,21 @@
   /* ==========================================================================
      3. ENGINE: no need to touch anything below this line
      ========================================================================== */
-  var wrap = document.getElementById("cs-wrap");
-  var grid = document.getElementById("cs-grid");
+  /* Pasted twice by accident? The first copy wins and the second bows out,
+     rather than both fighting over the same element ids. */
+  if (window.__csCaseStudiesLive) return;
+  window.__csCaseStudiesLive = true;
+
   var modal = document.getElementById("cs-modal");
   var dialog = document.getElementById("cs-dialog");
   var inner = document.getElementById("cs-inner");
   var prevBtn = document.getElementById("cs-prev");
   var nextBtn = document.getElementById("cs-next");
 
-  if (!grid || !modal) return;
+  if (!modal) return;
 
-  var current = -1;
+  var current = -1;      // index into CASE_STUDIES
+  var active = [];       // the clicked mount's list, what prev / next walks
   var lastFocus = null;
   var scrollLocked = false;
 
@@ -2687,10 +2716,30 @@
   }
 
   /* ---------------------------------------------------------------- cards -- */
-  function renderCards() {
-    if (CASE_STUDIES.length < 3) wrap.className += " cs-n" + CASE_STUDIES.length;
+  /* Resolve one mount's data-cs into an array of indexes into CASE_STUDIES.
+     Unknown ids are skipped rather than rendering an empty card, and a mount
+     with no data-cs gets everything. */
+  function listFor(mount) {
+    var raw = (mount.getAttribute("data-cs") || "").trim();
+    if (!raw) return CASE_STUDIES.map(function (c, i) { return i; });
 
-    grid.innerHTML = CASE_STUDIES.map(function (cs, i) {
+    var ids = CASE_STUDIES.map(function (c) { return c.id; });
+    var out = [];
+
+    raw.split(",").forEach(function (part) {
+      var i = ids.indexOf(part.trim());
+      if (i > -1 && out.indexOf(i) < 0) out.push(i);
+    });
+
+    return out;
+  }
+
+  function renderCards(mount, list) {
+    mount.className = "cs-mount cs-wrap" +
+      (list.length < 3 ? " cs-n" + list.length : "");
+
+    mount.innerHTML = '<ul class="cs-grid">' + list.map(function (i) {
+      var cs = CASE_STUDIES[i];
       var len = String(cs.stat).length;
       var longStat = len > 30 ? " is-xxlong"
         : len > 18 ? " is-xlong"
@@ -2722,7 +2771,7 @@
           "</article>" +
         "</li>"
       );
-    }).join("");
+    }).join("") + "</ul>";
   }
 
   /* ---------------------------------------------------------------- modal -- */
@@ -2820,7 +2869,7 @@
     inner.innerHTML = html;
     current = i;
 
-    var multiple = CASE_STUDIES.length > 1;
+    var multiple = active.length > 1;
     prevBtn.hidden = !multiple;
     nextBtn.hidden = !multiple;
 
@@ -2846,8 +2895,9 @@
     scrollLocked = false;
   }
 
-  function open(i) {
+  function open(i, list) {
     if (i < 0 || i >= CASE_STUDIES.length) return;
+    active = list && list.length ? list : [i];
     lastFocus = document.activeElement;
     renderModal(i);
     modal.hidden = false;
@@ -2875,21 +2925,29 @@
   }
 
   function step(delta) {
-    if (current < 0) return;
-    var n = CASE_STUDIES.length;
-    var i = ((current + delta) % n + n) % n;
+    if (current < 0 || !active.length) return;
+    var at = active.indexOf(current);
+    if (at < 0) return;
+    var n = active.length;
+    var i = active[((at + delta) % n + n) % n];
     renderModal(i);
     dialog.scrollTop = 0;
     dialog.focus();
   }
 
   /* ---------------------------------------------------------------- events -- */
-  grid.addEventListener("click", function (e) {
-    var card = e.target.closest ? e.target.closest("[data-cs-index]") : null;
+  /* Delegated from document, so it covers every mount on the page without
+     one listener each. */
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    var card = e.target.closest("[data-cs-index]");
     if (!card) return;
     // let real links inside a card behave normally
     if (e.target.closest("a")) return;
-    open(Number(card.getAttribute("data-cs-index")));
+
+    var mount = card.closest(".cs-mount");
+    open(Number(card.getAttribute("data-cs-index")),
+      mount ? listFor(mount) : null);
   });
 
   modal.addEventListener("click", function (e) {
@@ -2936,18 +2994,57 @@
   });
 
   /* ------------------------------------------------------------------ boot -- */
-  renderCards();
-
   // Move the modal to <body> so GHL wrappers with overflow/transform can't
   // clip it or trap it behind other page elements.
   if (modal.parentNode !== document.body) document.body.appendChild(modal);
 
-  if (CONFIG.deepLink) {
-    var match = /#case=([\w-]+)/.exec(location.hash);
-    if (match) {
-      var idx = CASE_STUDIES.map(function (c) { return c.id; }).indexOf(match[1]);
-      if (idx > -1) open(idx);
-    }
+  /* Render every mount we can see. Mounts already done are skipped, so this
+     is safe to call more than once. */
+  function scan() {
+    var found = [].slice.call(document.querySelectorAll(".cs-mount"));
+    var lists = [];
+
+    found.forEach(function (mount) {
+      var list = listFor(mount);
+      lists.push(list);
+      if (mount.getAttribute("data-cs-ready")) return;
+      renderCards(mount, list);
+      mount.setAttribute("data-cs-ready", "1");
+    });
+
+    return lists;
   }
+
+  function deepLink(lists) {
+    if (!CONFIG.deepLink || current > -1) return;
+
+    var match = /#case=([\w-]+)/.exec(location.hash);
+    if (!match) return;
+
+    var idx = CASE_STUDIES.map(function (c) { return c.id; }).indexOf(match[1]);
+    if (idx < 0) return;
+
+    // open it in whichever group holds it, so the arrows stay consistent
+    var owner = null;
+    lists.forEach(function (l) {
+      if (!owner && l.indexOf(idx) > -1) owner = l;
+    });
+
+    open(idx, owner);
+  }
+
+  /* A mount can sit anywhere on the page, including further down than this
+     script, in which case it does not exist yet at this point. So wait for
+     the document, then sweep again on load in case GHL injected a section
+     late. */
+  function boot() { deepLink(scan()); }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () { deepLink(scan()); });
 })();
 </script>

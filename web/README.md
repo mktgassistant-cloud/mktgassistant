@@ -3,6 +3,10 @@
 Two independent paste-into-GHL blocks live here:
 
 - `ghl-case-study-cards.html`, the student case study grid and modals.
+- `ghl-cards-first-6.html`, the same engine with a mount for cards 1 to 6
+  already in it, so it drops into one GHL element and renders those 6 on the
+  spot. Use this OR `ghl-case-study-cards.html`, never both, and add
+  mount-only lines for every other placement.
 - `ghl-clarity-call-checklist.html`, the "On this call we'll:" checklist.
   Pure HTML and CSS, no JavaScript, so it renders inside the builder canvas
   straight away. Edit the `<li>` lines and nothing else. Add `is-light` to the

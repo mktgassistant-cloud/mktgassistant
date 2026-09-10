@@ -72,6 +72,7 @@
 "greenhouse:stripe:8145119",
 "greenhouse:stripe:8157823",
 "greenhouse:stripe:8164674",
+"greenhouse:stripe:8185294",
 "greenhouse:twilio:7904609",
 "greenhouse:twilio:7923207",
 "greenhouse:twilio:8170601",
@@ -85,5 +86,6 @@
 "lever:palantir:a00e136e-7a65-4196-be22-cbd523706597",
 "lever:palantir:e6be4159-c8d1-481d-ad15-13274861b795",
 "lever:zoox:11d7b37e-4420-4619-a465-d387ffc6ee16",
-"lever:zoox:5e03b357-0cc1-4194-9488-14f85044f4f9"
+"lever:zoox:5e03b357-0cc1-4194-9488-14f85044f4f9",
+"lever:zoox:ae2785ae-dfee-484b-8add-3cf32ca2d10e"
 ]

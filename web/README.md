@@ -7,6 +7,10 @@ Two independent paste-into-GHL blocks live here:
   already in it, so it drops into one GHL element and renders those 6 on the
   spot. Use this OR `ghl-case-study-cards.html`, never both, and add
   mount-only lines for every other placement.
+  Its cards are **pre-rendered as plain HTML**: the mount carries the finished
+  markup and `data-cs-ready="1"`, so the cards are visible even if the script
+  never runs, and the engine leaves them alone rather than rendering twice.
+  Regenerate after any card edit, see "Pre-rendering" below.
 - `ghl-cards-next-9.html`, the same idea for cards 7 to 15. Only for a
   DIFFERENT page from the first 6, since it carries its own copy of the
   engine. On the same page, use a mount line instead.
@@ -84,6 +88,18 @@ the second copy stands down rather than fighting over element ids.
 If your account's code element strips `<script>`, put the `<style>` + modal
 markup in the code element and paste the `<script>` block into
 **Settings → Tracking Code → Footer** instead. Nothing else changes.
+
+## Pre-rendering
+
+The per-group builds ship with their cards already written out as HTML, so a
+page that fails to run the script still shows the cards. JavaScript then adds
+the modal, the arrows and the form on top. Verified with JavaScript disabled
+entirely: 6 cards, correct layout, one column at 390px.
+
+The markup is lifted from a real render rather than written by hand, so it
+cannot drift from what the engine would produce. After editing CASE_STUDIES,
+regenerate it. The mount must be marked `data-cs-ready="1"` or the engine
+will render over the top of it.
 
 ## Adding the next student
 

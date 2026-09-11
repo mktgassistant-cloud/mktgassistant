@@ -875,7 +875,18 @@
      ========================================================================== */
   var CONFIG = {
     deepLink: true,  // support /page#case=ronnie and update the hash on open
-    arrowKeys: true  // ← / → move between case studies while the modal is open
+    arrowKeys: true, // ← / → move between case studies while the modal is open
+
+    // Where every "Book a Free Call" button goes. One place, all 15 cards.
+    // A card can still override it with its own modal.cta.href.
+    ctaHref: "https://datacareerblueprint.com/apply-page",
+
+    // Set to true to tag the link with which card the click came from, so
+    // the analytics show WHICH case study books calls. Produces:
+    //   .../apply-page?utm_source=website&utm_medium=case-study
+    //     &utm_campaign=student-stories&utm_content=larita
+    // Leave false until you are happy with those values.
+    ctaUTM: false
   };
 
   /* ==========================================================================
@@ -992,7 +1003,7 @@
               "she had them.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1100,7 +1111,7 @@
               "opportunities arrive instead of being chased.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1220,7 +1231,7 @@
               "preparation and community.&rdquo;</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1356,7 +1367,7 @@
               "believed he was.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1464,7 +1475,7 @@
               "talent.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1559,7 +1570,7 @@
               "<p>She did not start special. She started consistent.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1677,7 +1688,7 @@
               "get the next one.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1813,7 +1824,7 @@
             "people that helped.",
           author: "Thomas Y., Data in Motion grad"
         },
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -1918,7 +1929,7 @@
               "months.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2058,7 +2069,7 @@
               "people that are super supportive.&rdquo;</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2195,7 +2206,7 @@
             "matter how much of a novice you are.",
           author: "Will K."
         },
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2295,7 +2306,7 @@
               "else is fighting over. Do not sleep on them.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2405,7 +2416,7 @@
               "and put them where someone can find them.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2540,7 +2551,7 @@
               "professionals who are stuck, which is what he was.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2618,7 +2629,7 @@
               "had.</p>"
           }
         ],
-        cta: { text: "Book a Free Call", href: "#book" }, // TODO: real booking link
+        cta: { text: "Book a Free Call" }, // href comes from CONFIG.ctaHref
         disclaimer:
           "Individual results vary. Outcomes depend on effort, prior " +
           "experience, and market conditions. Not all students secure offers."
@@ -2774,6 +2785,19 @@
     }).join("") + "</ul>";
   }
 
+  /* The card's own href wins, otherwise CONFIG.ctaHref. With ctaUTM on, the
+     card id rides along as utm_content so you can tell which case study
+     actually produced the booking. */
+  function ctaHref(cta, cs) {
+    var href = cta.href || CONFIG.ctaHref || "#";
+    if (!CONFIG.ctaUTM || href.charAt(0) === "#" || !cs.id) return href;
+
+    return href + (href.indexOf("?") > -1 ? "&" : "?") +
+      "utm_source=website&utm_medium=case-study" +
+      "&utm_campaign=student-stories&utm_content=" +
+      encodeURIComponent(cs.id);
+  }
+
   /* ---------------------------------------------------------------- modal -- */
   function renderModal(i) {
     var cs = CASE_STUDIES[i];
@@ -2858,7 +2882,7 @@
     }
 
     if (m.cta && m.cta.text) {
-      html += '<a class="cs-cta" href="' + esc(m.cta.href || "#") + '">' +
+      html += '<a class="cs-cta" href="' + esc(ctaHref(m.cta, cs)) + '">' +
         esc(m.cta.text) + "</a>";
     }
 

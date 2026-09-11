@@ -105,7 +105,10 @@ is more than one card.
 
 ## Still TODO
 
-- `modal.cta.href` is `#book` on all fifteen. Needs the real booking link.
+- `CONFIG.ctaUTM` is `false`. Flip it to `true` to tag each Book a Free Call
+  link with `utm_content=<card id>`, so the analytics say which case study
+  produced the booking. Check the utm_source / medium / campaign values match
+  your taxonomy first.
 - Jose's employer is still not stated anywhere, including his own post.
 - Thomas's salary figure. "Six figure" is his own wording and nothing
   corroborates a number.
@@ -165,6 +168,11 @@ Modal: `name` and `category` (optional overrides), `headline`, `subhead`
 (optional), `stats`, `quote` (above the write-up), `closingQuote` (below it),
 `images` (proof screenshots, above the video), `wistia` (media ID) or `video`
 (embed URL), `sections`, `cta`, `disclaimer`. Anything omitted renders nothing.
+
+`cta` is `{ text }` only. The URL comes from `CONFIG.ctaHref`, currently
+`https://datacareerblueprint.com/apply-page`, so changing where the button
+goes is one edit rather than fifteen. A card can still override it with its
+own `cta.href`.
 
 Modal order: headline, subhead, stat tiles, opening quote, write-up, closing
 quote, proof images, video, CTA, disclaimer.

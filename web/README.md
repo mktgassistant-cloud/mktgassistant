@@ -7,6 +7,9 @@ Two independent paste-into-GHL blocks live here:
   already in it, so it drops into one GHL element and renders those 6 on the
   spot. Use this OR `ghl-case-study-cards.html`, never both, and add
   mount-only lines for every other placement.
+- `ghl-cards-next-9.html`, the same idea for cards 7 to 15. Only for a
+  DIFFERENT page from the first 6, since it carries its own copy of the
+  engine. On the same page, use a mount line instead.
 - `ghl-clarity-call-checklist.html`, the "On this call we'll:" checklist.
   Pure HTML and CSS, no JavaScript, so it renders inside the builder canvas
   straight away. Edit the `<li>` lines and nothing else. Add `is-light` to the

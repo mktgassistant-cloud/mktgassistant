@@ -190,8 +190,16 @@ Details worth knowing:
 - The anchor keeps `ctaHref` as its real `href`, so a middle click still
   opens the apply page in a tab, and if `embed.js` has not loaded the click
   simply follows the link. The button is never dead.
-- `embed.js` loads when a case study first opens, not on page load, so it
-  costs nothing to visitors who never open a card.
+- `embed.js` loads at start up. It used to wait for the first card open,
+  which meant a fast click could land before it arrived.
+- A click never silently redirects. If the embed is still in flight the
+  click waits for it, up to 4 seconds, then follows `ctaHref` rather than
+  doing nothing. Cmd / Ctrl / middle click still open the link in a tab.
+- `.tf-v1-popup` is forced above everything, because GHL themes hand out
+  very large z-indexes.
+- `CONFIG.debug: true` makes every click explain itself in the browser
+  console: whether the embed loaded, whether the popup opened, or why it
+  fell back.
 - Opening the form closes the case study first. The Typeform popup is full
   screen, and leaving the dialog open underneath means two scroll locks and
   our focus trap fighting the form's iframe for the keyboard.

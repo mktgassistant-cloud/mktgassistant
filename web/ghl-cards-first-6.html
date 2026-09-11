@@ -679,6 +679,13 @@
      the CTA. Cap the height and anchor to the top: the author, the headline
      and the announcement all sit up there, and what gets cropped is the
      decorative graphic underneath. Raise the cap to show more. */
+  /* GHL themes hand out very large z-indexes, and the form has to clear
+     them all. */
+  .tf-v1-popup,
+  .tf-v1-close-icon {
+    z-index: 2147483001 !important;
+  }
+
   .cs-proof img {
     display: block;
     width: 100%;
@@ -924,7 +931,12 @@
     // The button keeps ctaHref as its href either way, so a middle click
     // still opens the apply page in a tab, and if Typeform fails to load
     // the click just follows the link rather than doing nothing.
-    ctaTypeform: "01KVR57XYKKAFZQRAV9RB47MM8"
+    ctaTypeform: "01KVR57XYKKAFZQRAV9RB47MM8",
+
+    // Turn on to have the console explain every CTA click: whether the embed
+    // loaded, whether the popup opened, or why it fell back to the link.
+    // Open the browser console (F12) and click the button.
+    debug: false
   };
 
   /* ==========================================================================
@@ -2740,27 +2752,59 @@
 
   var tfPopup = null;
 
-  function ensureTypeform() {
-    if (CONFIG.ctaTypeform) addScript("https://embed.typeform.com/next/embed.js", false);
+  function log() {
+    if (!CONFIG.debug || !window.console) return;
+    var a = [].slice.call(arguments);
+    a.unshift("[case studies]");
+    console.log.apply(console, a);
   }
 
-  /* Returns true if the popup took the click. False means "let the link do
-     its normal thing", which is what happens when the embed has not loaded
-     yet, so the button is never dead. */
-  function openTypeform() {
-    if (!CONFIG.ctaTypeform) return false;
-    if (!window.tf || typeof window.tf.createPopup !== "function") return false;
+  /* Loaded at start up rather than on first card open. It is a conversion
+     button, so being ready matters more than the 60kb. */
+  function ensureTypeform() {
+    if (!CONFIG.ctaTypeform) return;
+    addScript("https://embed.typeform.com/next/embed.js", false);
+  }
 
+  function tfReady() {
+    return !!(window.tf && typeof window.tf.createPopup === "function");
+  }
+
+  function showPopup() {
     if (!tfPopup) {
-      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, {
-        size: 100,
-        // the case study is already closed by now, so nothing is underneath
-        onClose: function () {}
-      });
+      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, { size: 100 });
+      log("popup created for", CONFIG.ctaTypeform);
     }
-
     tfPopup.open();
-    return true;
+    log("popup opened");
+  }
+
+  /* Wait for the embed rather than silently falling through to a redirect.
+     embed.js may still be in flight when someone clicks fast, and a click
+     that quietly navigates away is exactly the tracking loss we are trying
+     to avoid. Give up after a few seconds and follow the link, so the
+     button always does something. */
+  function openTypeform(href) {
+    if (tfReady()) return showPopup();
+
+    log("embed not ready yet, waiting");
+
+    var waited = 0;
+    var timer = setInterval(function () {
+      if (tfReady()) {
+        clearInterval(timer);
+        showPopup();
+        return;
+      }
+
+      waited += 100;
+
+      if (waited >= 4000) {
+        clearInterval(timer);
+        log("embed never loaded, following the link instead:", href);
+        if (href && href.charAt(0) !== "#") window.location.href = href;
+      }
+    }, 100);
   }
 
   function ensureWistia(id) {
@@ -2984,7 +3028,6 @@
 
   function open(i, list) {
     if (i < 0 || i >= CASE_STUDIES.length) return;
-    ensureTypeform();
     active = list && list.length ? list : [i];
     lastFocus = document.activeElement;
     renderModal(i);
@@ -3044,14 +3087,20 @@
     var cta = e.target.closest(".cs-cta");
     if (!cta) return;
 
+    log("CTA clicked. typeform id:", CONFIG.ctaTypeform || "(none)",
+      "| embed loaded:", tfReady());
+
+    if (!CONFIG.ctaTypeform) return;        // plain link, let it navigate
+
+    // let people open the apply page in a new tab if they want to
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2) return;
+
     /* Close the case study first. The Typeform popup is full screen, and
        leaving our dialog open underneath means two scroll locks and our
        focus trap fighting the form's iframe for the keyboard. */
-    if (CONFIG.ctaTypeform && window.tf && window.tf.createPopup) {
-      e.preventDefault();
-      close();
-      openTypeform();
-    }
+    e.preventDefault();
+    close();
+    openTypeform(cta.getAttribute("href"));
   });
 
   prevBtn.addEventListener("click", function () { step(-1); });
@@ -3137,7 +3186,12 @@
      script, in which case it does not exist yet at this point. So wait for
      the document, then sweep again on load in case GHL injected a section
      late. */
-  function boot() { deepLink(scan()); }
+  function boot() {
+    ensureTypeform();
+    log("booted. typeform id:", CONFIG.ctaTypeform || "(none)",
+      "| cta href:", CONFIG.ctaHref);
+    deepLink(scan());
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);

@@ -2756,7 +2756,7 @@
   /* Wistia is a web component, not an iframe: it needs player.js plus a small
      per-media module. Both are injected once, the first time a card that uses
      them is opened, so they cost nothing on page load. */
-  function addScript(src, isModule) {
+  function addScript(src, isModule, onFail) {
     if (document.querySelector(
       'script[data-cs-src="' + src + '"], script[src="' + src + '"]'
     )) return;
@@ -2765,10 +2765,12 @@
     el.async = true;
     el.setAttribute("data-cs-src", src);
     if (isModule) el.type = "module";
+    if (onFail) el.onerror = onFail;
     document.head.appendChild(el);
   }
 
   var tfPopup = null;
+  var tfBlocked = false;
 
   function log() {
     if (!CONFIG.debug || !window.console) return;
@@ -2781,7 +2783,15 @@
      button, so being ready matters more than the 60kb. */
   function ensureTypeform() {
     if (!CONFIG.ctaTypeform) return;
-    addScript("https://embed.typeform.com/next/embed.js", false);
+
+    addScript("https://embed.typeform.com/next/embed.js", false, function () {
+      /* Ad and privacy blockers kill this request outright
+         (ERR_BLOCKED_BY_CLIENT). Knowing straight away means a click can
+         fall back to the apply page immediately instead of appearing dead
+         while it waits. */
+      tfBlocked = true;
+      log("embed.js failed to load, probably blocked. CTA will use the link.");
+    });
   }
 
   function tfReady() {
@@ -2836,6 +2846,12 @@
   function openTypeform(href, cardId) {
     if (tfReady()) return showPopup(cardId);
 
+    if (tfBlocked) {
+      log("embed blocked, going straight to", href);
+      if (href && href.charAt(0) !== "#") window.location.href = href;
+      return;
+    }
+
     log("embed not ready yet, waiting");
 
     var waited = 0;
@@ -2848,7 +2864,7 @@
 
       waited += 100;
 
-      if (waited >= 4000) {
+      if (tfBlocked || waited >= 4000) {
         clearInterval(timer);
         log("embed never loaded, following the link instead:", href);
         if (href && href.charAt(0) !== "#") window.location.href = href;

@@ -1,0 +1,53 @@
+<!--
+  ============================================================================
+  TEMPORARY DIAGNOSTIC. Paste into a Custom HTML element on the page that is
+  misbehaving, put it near the top, then open the page on your phone and read
+  the red bar. Delete this element once we know the answer.
+  ============================================================================
+-->
+<div id="cs-diag" style="position:relative;z-index:2147483003;margin:8px;
+  padding:12px 14px;border-radius:8px;background:#b3001b;color:#fff;
+  font:13px/1.5 -apple-system,BlinkMacSystemFont,system-ui,sans-serif">
+  checking, give it 3 seconds...
+</div>
+
+<script>
+(function () {
+  function report() {
+    var d = document.getElementById("cs-diag");
+    if (!d) return;
+
+    var mounts = document.querySelectorAll(".cs-mount");
+    var cards = document.querySelectorAll(".cs-card");
+    var lines = [];
+
+    lines.push("screen width: " + window.innerWidth);
+    lines.push("engine running: " + (window.__csCaseStudiesLive ? "YES" : "NO"));
+    lines.push("mount elements found: " + mounts.length);
+    lines.push("cards rendered: " + cards.length);
+
+    for (var i = 0; i < mounts.length; i++) {
+      var m = mounts[i];
+      var box = m.getBoundingClientRect();
+      var vis = window.getComputedStyle(m);
+      lines.push(
+        "  mount " + (i + 1) + ": [" + (m.getAttribute("data-cs") || "all") + "]" +
+        " cards=" + m.querySelectorAll(".cs-card").length +
+        " display=" + vis.display +
+        " width=" + Math.round(box.width)
+      );
+    }
+
+    if (!mounts.length) {
+      lines.push("NO MOUNT ON THIS PAGE. The element holding the mount is " +
+        "missing, or hidden on this device in the GHL element settings.");
+    }
+
+    d.textContent = lines.join("\n");
+    d.style.whiteSpace = "pre-wrap";
+  }
+
+  setTimeout(report, 3000);
+  setTimeout(report, 8000);
+})();
+</script>

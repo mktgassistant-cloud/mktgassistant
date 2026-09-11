@@ -3242,6 +3242,12 @@
     var found = [].slice.call(document.querySelectorAll(".cs-mount"));
     var lists = [];
 
+    if (!found.length) {
+      log("no .cs-mount on the page yet. Nothing will render until one " +
+        "exists. If this persists, the element holding the mount is missing " +
+        "or hidden on this device.");
+    }
+
     found.forEach(function (mount) {
       var list = listFor(mount);
       lists.push(list);
@@ -3279,6 +3285,47 @@
     log("booted. form id:", CONFIG.ctaTypeform || "(none)",
       "| cta href:", CONFIG.ctaHref);
     deepLink(scan());
+    watch();
+  }
+
+  /* GHL does not always have the whole page in the DOM when we first look.
+     Mobile layouts in particular get built, swapped or lazily revealed after
+     load, and a mount that appears then would otherwise sit empty forever.
+     So keep watching for new mounts rather than scanning twice and hoping. */
+  var watchTimer = null;
+
+  function watch() {
+    if (!window.MutationObserver) {
+      // no observer available, settle for a few late sweeps
+      [500, 1500, 3000, 6000].forEach(function (ms) {
+        setTimeout(function () { deepLink(scan()); }, ms);
+      });
+      return;
+    }
+
+    new MutationObserver(function (records) {
+      /* Only bother when something that could hold a mount was added.
+         scan() skips mounts it has already rendered, so this stays cheap. */
+      var worth = false;
+
+      for (var i = 0; i < records.length && !worth; i++) {
+        var added = records[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j];
+          if (n.nodeType !== 1) continue;
+          if (n.classList && n.classList.contains("cs-mount")) { worth = true; break; }
+          if (n.querySelector && n.querySelector(".cs-mount")) { worth = true; break; }
+        }
+      }
+
+      if (!worth) return;
+
+      clearTimeout(watchTimer);
+      watchTimer = setTimeout(function () {
+        log("new mount appeared, rendering it");
+        deepLink(scan());
+      }, 80);
+    }).observe(document.body, { childList: true, subtree: true });
   }
 
   if (document.readyState === "loading") {

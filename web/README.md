@@ -174,6 +174,26 @@ Modal: `name` and `category` (optional overrides), `headline`, `subhead`
 goes is one edit rather than fifteen. A card can still override it with its
 own `cta.href`.
 
+### Book a Free Call: popup or redirect
+
+`CONFIG.ctaTypeform` holds a Typeform live id. Set (currently
+`01KVR57XYKKAFZQRAV9RB47MM8`), the button opens that form as a full screen
+popup over the page, with no navigation, so page level tracking keeps
+running. Set it to `""` and the button falls back to a plain redirect to
+`ctaHref`, which is what a second page wanting different behaviour would do.
+
+Details worth knowing:
+
+- The anchor keeps `ctaHref` as its real `href`, so a middle click still
+  opens the apply page in a tab, and if `embed.js` has not loaded the click
+  simply follows the link. The button is never dead.
+- `embed.js` loads when a case study first opens, not on page load, so it
+  costs nothing to visitors who never open a card.
+- Opening the form closes the case study first. The Typeform popup is full
+  screen, and leaving the dialog open underneath means two scroll locks and
+  our focus trap fighting the form's iframe for the keyboard.
+- The popup is built once and reused across clicks.
+
 Modal order: headline, subhead, stat tiles, opening quote, write-up, closing
 quote, proof images, video, CTA, disclaimer.
 

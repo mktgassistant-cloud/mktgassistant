@@ -914,7 +914,17 @@
     //   .../apply-page?utm_source=website&utm_medium=case-study
     //     &utm_campaign=student-stories&utm_content=larita
     // Leave false until you are happy with those values.
-    ctaUTM: false
+    ctaUTM: false,
+
+    // Typeform live id. Set it and "Book a Free Call" opens the form as a
+    // popup over the page instead of navigating away, so whatever tracking
+    // runs on this page keeps running. Set it to "" to go back to a plain
+    // redirect to ctaHref.
+    //
+    // The button keeps ctaHref as its href either way, so a middle click
+    // still opens the apply page in a tab, and if Typeform fails to load
+    // the click just follows the link rather than doing nothing.
+    ctaTypeform: "01KVR57XYKKAFZQRAV9RB47MM8"
   };
 
   /* ==========================================================================
@@ -2728,6 +2738,31 @@
     document.head.appendChild(el);
   }
 
+  var tfPopup = null;
+
+  function ensureTypeform() {
+    if (CONFIG.ctaTypeform) addScript("https://embed.typeform.com/next/embed.js", false);
+  }
+
+  /* Returns true if the popup took the click. False means "let the link do
+     its normal thing", which is what happens when the embed has not loaded
+     yet, so the button is never dead. */
+  function openTypeform() {
+    if (!CONFIG.ctaTypeform) return false;
+    if (!window.tf || typeof window.tf.createPopup !== "function") return false;
+
+    if (!tfPopup) {
+      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, {
+        size: 100,
+        // the case study is already closed by now, so nothing is underneath
+        onClose: function () {}
+      });
+    }
+
+    tfPopup.open();
+    return true;
+  }
+
   function ensureWistia(id) {
     addScript("https://fast.wistia.com/player.js", false);
     addScript("https://fast.wistia.com/embed/" + id + ".js", true);
@@ -2949,6 +2984,7 @@
 
   function open(i, list) {
     if (i < 0 || i >= CASE_STUDIES.length) return;
+    ensureTypeform();
     active = list && list.length ? list : [i];
     lastFocus = document.activeElement;
     renderModal(i);
@@ -3003,7 +3039,19 @@
   });
 
   modal.addEventListener("click", function (e) {
-    if (e.target.closest("[data-cs-close]")) close();
+    if (e.target.closest("[data-cs-close]")) return close();
+
+    var cta = e.target.closest(".cs-cta");
+    if (!cta) return;
+
+    /* Close the case study first. The Typeform popup is full screen, and
+       leaving our dialog open underneath means two scroll locks and our
+       focus trap fighting the form's iframe for the keyboard. */
+    if (CONFIG.ctaTypeform && window.tf && window.tf.createPopup) {
+      e.preventDefault();
+      close();
+      openTypeform();
+    }
   });
 
   prevBtn.addEventListener("click", function () { step(-1); });

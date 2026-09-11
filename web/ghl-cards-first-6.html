@@ -679,11 +679,80 @@
      the CTA. Cap the height and anchor to the top: the author, the headline
      and the announcement all sit up there, and what gets cropped is the
      decorative graphic underneath. Raise the cap to show more. */
-  /* GHL themes hand out very large z-indexes, and the form has to clear
-     them all. */
-  .tf-v1-popup,
-  .tf-v1-close-icon {
-    z-index: 2147483001 !important;
+  /* Our own form lightbox. Typeform's embed.js is not involved, so nothing
+     here depends on a script an ad blocker might eat. */
+  .cs-form {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483002;
+    display: none;
+    padding: 28px 16px;
+    background: rgba(4, 6, 20, 0.88);
+  }
+
+  .cs-form.is-open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cs-form-panel {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    height: min(88vh, 760px);
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  }
+
+  .cs-form iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .cs-form-x {
+    position: absolute;
+    top: -38px;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: #ffffff;
+    background: none;
+    border: 0;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  .cs-form-x:hover,
+  .cs-form-x:focus-visible {
+    opacity: 1;
+  }
+
+  /* if the form itself cannot load, there is still a way through */
+  .cs-form-alt {
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 620px) {
+    .cs-form {
+      padding: 52px 10px 28px;
+    }
+
+    .cs-form-panel {
+      height: calc(100vh - 92px);
+    }
   }
 
   .cs-proof img {
@@ -2769,8 +2838,7 @@
     document.head.appendChild(el);
   }
 
-  var tfPopup = null;
-  var tfBlocked = false;
+  var formBox = null;
 
   function log() {
     if (!CONFIG.debug || !window.console) return;
@@ -2779,30 +2847,13 @@
     console.log.apply(console, a);
   }
 
-  /* Loaded at start up rather than on first card open. It is a conversion
-     button, so being ready matters more than the 60kb. */
-  function ensureTypeform() {
-    if (!CONFIG.ctaTypeform) return;
-
-    addScript("https://embed.typeform.com/next/embed.js", false, function () {
-      /* Ad and privacy blockers kill this request outright
-         (ERR_BLOCKED_BY_CLIENT). Knowing straight away means a click can
-         fall back to the apply page immediately instead of appearing dead
-         while it waits. */
-      tfBlocked = true;
-      log("embed.js failed to load, probably blocked. CTA will use the link.");
-    });
-  }
-
-  function tfReady() {
-    return !!(window.tf && typeof window.tf.createPopup === "function");
-  }
-
   /* Forward whatever campaign parameters the page was opened with, then add
-     which case study produced the click. */
-  function hiddenFields(cardId) {
-    var out = {};
+     which case study produced the click. Typeform reads these off the query
+     string straight into its hidden fields. */
+  function formURL(cardId) {
+    var base = "https://form.typeform.com/to/" + encodeURIComponent(CONFIG.ctaTypeform);
     var search = window.location.search || "";
+    var out = {};
 
     ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
       "gclid"].forEach(function (key) {
@@ -2813,63 +2864,60 @@
     var field = CONFIG.ctaUTMField || "utm_content";
     if (CONFIG.ctaUTM && cardId && !out[field]) out[field] = cardId;
 
-    return out;
+    var qs = ["typeform-embed=popup-blank"];
+    Object.keys(out).forEach(function (k) {
+      qs.push(encodeURIComponent(k) + "=" + encodeURIComponent(out[k]));
+    });
+
+    return base + "?" + qs.join("&");
   }
 
-  function showPopup(cardId) {
-    /* Hidden fields are baked in when the popup is built, so a popup built
-       for one card cannot be reused for the next. */
-    if (tfPopup && tfPopup.__csCard !== cardId) {
-      if (typeof tfPopup.unmount === "function") tfPopup.unmount();
-      tfPopup = null;
-    }
+  function buildFormBox() {
+    var el = document.createElement("div");
+    el.className = "cs-form";
+    el.innerHTML =
+      '<div class="cs-form-panel">' +
+        '<button class="cs-form-x" type="button" data-cs-form-close ' +
+          'aria-label="Close the form">&times;</button>' +
+        '<iframe title="Application form" allow="camera; microphone; ' +
+          'autoplay; encrypted-media;"></iframe>' +
+        '<a class="cs-form-alt" href="' + esc(CONFIG.ctaHref || "#") + '">' +
+          "Trouble loading? Open the application page</a>" +
+      "</div>";
 
-    if (!tfPopup) {
-      var hidden = hiddenFields(cardId);
-      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, {
-        size: 100,
-        hidden: hidden
-      });
-      tfPopup.__csCard = cardId;
-      log("popup created for form", CONFIG.ctaTypeform, "hidden:", hidden);
-    }
+    el.addEventListener("click", function (e) {
+      // the backdrop, or the X
+      if (e.target === el || e.target.closest("[data-cs-form-close]")) closeForm();
+    });
 
-    tfPopup.open();
-    log("popup opened");
+    document.body.appendChild(el);
+    return el;
   }
 
-  /* Wait for the embed rather than silently falling through to a redirect.
-     embed.js may still be in flight when someone clicks fast, and a click
-     that quietly navigates away is exactly the tracking loss we are trying
-     to avoid. Give up after a few seconds and follow the link, so the
-     button always does something. */
-  function openTypeform(href, cardId) {
-    if (tfReady()) return showPopup(cardId);
+  function openForm(cardId) {
+    if (!formBox) formBox = buildFormBox();
 
-    if (tfBlocked) {
-      log("embed blocked, going straight to", href);
-      if (href && href.charAt(0) !== "#") window.location.href = href;
-      return;
-    }
+    var url = formURL(cardId);
+    formBox.querySelector("iframe").src = url;
+    formBox.classList.add("is-open");
+    lockScroll();
 
-    log("embed not ready yet, waiting");
+    var x = formBox.querySelector(".cs-form-x");
+    if (x) x.focus();
 
-    var waited = 0;
-    var timer = setInterval(function () {
-      if (tfReady()) {
-        clearInterval(timer);
-        showPopup(cardId);
-        return;
-      }
+    log("form opened:", url);
+  }
 
-      waited += 100;
+  function closeForm() {
+    if (!formBox || !formBox.classList.contains("is-open")) return;
+    formBox.classList.remove("is-open");
+    formBox.querySelector("iframe").src = "about:blank"; // stop the form
+    unlockScroll();
+    log("form closed");
+  }
 
-      if (tfBlocked || waited >= 4000) {
-        clearInterval(timer);
-        log("embed never loaded, following the link instead:", href);
-        if (href && href.charAt(0) !== "#") window.location.href = href;
-      }
-    }, 100);
+  function formOpen() {
+    return !!(formBox && formBox.classList.contains("is-open"));
   }
 
   function ensureWistia(id) {
@@ -3152,27 +3200,30 @@
     var cta = e.target.closest(".cs-cta");
     if (!cta) return;
 
-    log("CTA clicked. typeform id:", CONFIG.ctaTypeform || "(none)",
-      "| embed loaded:", tfReady());
+    log("CTA clicked. form id:", CONFIG.ctaTypeform || "(none)");
 
     if (!CONFIG.ctaTypeform) return;        // plain link, let it navigate
 
     // let people open the apply page in a new tab if they want to
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2) return;
 
-    /* Close the case study first. The Typeform popup is full screen, and
-       leaving our dialog open underneath means two scroll locks and our
-       focus trap fighting the form's iframe for the keyboard. */
+    /* Close the case study first, so there is one dialog on screen and one
+       scroll lock, and our focus trap is not fighting the form's iframe. */
     var card = current > -1 ? CASE_STUDIES[current] : null;
     e.preventDefault();
     close();
-    openTypeform(cta.getAttribute("href"), card ? card.id : "");
+    openForm(card ? card.id : "");
   });
 
   prevBtn.addEventListener("click", function () { step(-1); });
   nextBtn.addEventListener("click", function () { step(1); });
 
   document.addEventListener("keydown", function (e) {
+    if (formOpen()) {
+      if (e.key === "Escape") closeForm();
+      return;
+    }
+
     if (!modal.classList.contains("is-open")) return;
 
     if (e.key === "Escape") {
@@ -3253,8 +3304,7 @@
      the document, then sweep again on load in case GHL injected a section
      late. */
   function boot() {
-    ensureTypeform();
-    log("booted. typeform id:", CONFIG.ctaTypeform || "(none)",
+    log("booted. form id:", CONFIG.ctaTypeform || "(none)",
       "| cta href:", CONFIG.ctaHref);
     deepLink(scan());
   }

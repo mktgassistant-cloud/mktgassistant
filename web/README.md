@@ -180,47 +180,42 @@ own `cta.href`.
 ### Book a Free Call: popup or redirect
 
 `CONFIG.ctaTypeform` holds the Typeform **form id**, currently `QDe2w79Q`.
-The button opens that form as a full screen popup over the page, with no
-navigation, so page level tracking keeps running. Set it to `""` and the
-button falls back to a plain redirect to `ctaHref`.
+The button opens that form in a lightbox over the page, with no navigation,
+so page level tracking keeps running. Set it to `""` and the button falls
+back to a plain redirect to `ctaHref`.
 
 **Form id, not live embed id.** The snippet Typeform hands you uses
 `data-tf-live="01KVR57XYKKAFZQRAV9RB47MM8"`. That is a pointer, not a form:
 their script resolves it at runtime via
 `api.typeform.com/single-embed/<live id>`, which returns
 `<div data-tf-widget="QDe2w79Q" ...>` for the "Data Career Launch
-Application". The popup API wants `QDe2w79Q`. Given the live id it builds
-`form.typeform.com/to/01KVR...`, which is not a form and redirects to
-Typeform's "incorrect URL" page, so the popup opens onto nothing.
+Application". `form.typeform.com/to/01KVR...` is not a form and redirects to
+Typeform's "incorrect URL" page.
 
-Hidden fields: any `utm_*` or `gclid` on the page URL is forwarded into the
-form, and the card id goes into `CONFIG.ctaUTMField` (default `utm_content`)
-when the page URL does not already carry one, so paid traffic keeps its own
-attribution. The form declares `utm_source`, `utm_medium`, `utm_campaign`,
-`utm_term`, `utm_content`, `gclid` and `ip_address`.
+**No Typeform script.** The lightbox is ours: a fixed overlay holding an
+iframe pointed at `form.typeform.com/to/<form id>`. `embed.typeform.com`
+is never requested, so an ad blocker that eats third party scripts cannot
+break the button. Typeform sends no `X-Frame-Options` or frame-ancestors
+CSP on form URLs, so framing is supported.
 
-Details worth knowing:
+Tracking, which is the whole reason for the lightbox:
 
-- The anchor keeps `ctaHref` as its real `href`, so a middle click still
-  opens the apply page in a tab, and if `embed.js` has not loaded the click
-  simply follows the link. The button is never dead.
-- `embed.js` loads at start up. It used to wait for the first card open,
-  which meant a fast click could land before it arrived.
-- A click never silently redirects. If the embed is still in flight the
-  click waits for it, up to 4 seconds, then follows `ctaHref` rather than
-  doing nothing. Cmd / Ctrl / middle click still open the link in a tab.
-- `.tf-v1-popup` is forced above everything, because GHL themes hand out
-  very large z-indexes.
-- `CONFIG.debug: true` makes every click explain itself in the browser
-  console: whether the embed loaded, whether the popup opened, or why it
-  fell back.
-- Opening the form closes the case study first. The Typeform popup is full
-  screen, and leaving the dialog open underneath means two scroll locks and
-  our focus trap fighting the form's iframe for the keyboard.
-- The popup is built once and reused across clicks.
+- The page never reloads or navigates, so a Hyros style universal script
+  keeps running and its session is unbroken.
+- The CTA stays a real `<a href>` and the click is only `preventDefault`ed,
+  so click listeners still fire on it and a `!clicked` tag still registers.
+- Hidden fields ride in the iframe query string: any `utm_*` or `gclid` on
+  the page URL is forwarded, and the card id fills `CONFIG.ctaUTMField`
+  (default `utm_content`) when the page URL has none, so paid traffic keeps
+  its own attribution.
+- Nothing on the parent page can see inside the form iframe. That is true of
+  any Typeform embed, including Typeform's own popup, so lead level tracking
+  still has to come from Typeform's integrations.
 
-Modal order: headline, subhead, stat tiles, opening quote, write-up, closing
-quote, proof images, video, CTA, disclaimer.
+Esc, the backdrop and the X all close it, and closing points the iframe at
+`about:blank` so a part finished form does not keep running. A "Trouble
+loading? Open the application page" link sits under the panel in case the
+iframe itself is blocked.
 
 ## Brand
 

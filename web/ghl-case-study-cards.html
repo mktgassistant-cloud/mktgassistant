@@ -888,22 +888,40 @@
     // A card can still override it with its own modal.cta.href.
     ctaHref: "https://datacareerblueprint.com/apply-page",
 
-    // Set to true to tag the link with which card the click came from, so
-    // the analytics show WHICH case study books calls. Produces:
-    //   .../apply-page?utm_source=website&utm_medium=case-study
-    //     &utm_campaign=student-stories&utm_content=larita
-    // Leave false until you are happy with those values.
-    ctaUTM: false,
+    // Pass which card the click came from into the form as a hidden field.
+    // The form already declares utm_source, utm_medium, utm_campaign,
+    // utm_term, utm_content, gclid and ip_address, so this fills a field
+    // that exists rather than inventing one.
+    //
+    // Any utm_* or gclid already on the page URL is forwarded untouched.
+    // The card id only goes into utm_content when the page URL does not
+    // already carry one, so paid traffic keeps its own attribution.
+    //
+    // Cleanest long term: add a dedicated hidden field to the Typeform, say
+    // case_study, and set ctaUTMField to "case_study". Then card attribution
+    // and ad attribution never compete.
+    ctaUTM: true,
+    ctaUTMField: "utm_content",
 
-    // Typeform live id. Set it and "Book a Free Call" opens the form as a
+    // Typeform FORM id. Set it and "Book a Free Call" opens the form as a
     // popup over the page instead of navigating away, so whatever tracking
     // runs on this page keeps running. Set it to "" to go back to a plain
     // redirect to ctaHref.
     //
-    // The button keeps ctaHref as its href either way, so a middle click
-    // still opens the apply page in a tab, and if Typeform fails to load
-    // the click just follows the link rather than doing nothing.
-    ctaTypeform: "01KVR57XYKKAFZQRAV9RB47MM8",
+    // NOTE this is the form id, NOT the live embed id. The snippet from
+    // Typeform uses data-tf-live="01KVR57XYKKAFZQRAV9RB47MM8", which is a
+    // pointer that their script resolves at runtime through
+    // api.typeform.com/single-embed/<live id>. That call returns the real
+    // embed, and the form behind this one is:
+    //
+    //   <div data-tf-widget="QDe2w79Q" ... title="Data Career Launch
+    //   Application" ...>
+    //
+    // The popup API wants the form id. Handing it the live id builds
+    // form.typeform.com/to/01KVR..., which is not a form and bounces to
+    // Typeform's "incorrect URL" page, which is a popup that opens onto
+    // nothing.
+    ctaTypeform: "QDe2w79Q",
 
     // Turn on to have the console explain every CTA click: whether the embed
     // loaded, whether the popup opened, or why it fell back to the link.
@@ -2742,11 +2760,42 @@
     return !!(window.tf && typeof window.tf.createPopup === "function");
   }
 
-  function showPopup() {
-    if (!tfPopup) {
-      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, { size: 100 });
-      log("popup created for", CONFIG.ctaTypeform);
+  /* Forward whatever campaign parameters the page was opened with, then add
+     which case study produced the click. */
+  function hiddenFields(cardId) {
+    var out = {};
+    var search = window.location.search || "";
+
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+      "gclid"].forEach(function (key) {
+      var hit = new RegExp("[?&]" + key + "=([^&#]*)").exec(search);
+      if (hit) out[key] = decodeURIComponent(hit[1].replace(/\+/g, " "));
+    });
+
+    var field = CONFIG.ctaUTMField || "utm_content";
+    if (CONFIG.ctaUTM && cardId && !out[field]) out[field] = cardId;
+
+    return out;
+  }
+
+  function showPopup(cardId) {
+    /* Hidden fields are baked in when the popup is built, so a popup built
+       for one card cannot be reused for the next. */
+    if (tfPopup && tfPopup.__csCard !== cardId) {
+      if (typeof tfPopup.unmount === "function") tfPopup.unmount();
+      tfPopup = null;
     }
+
+    if (!tfPopup) {
+      var hidden = hiddenFields(cardId);
+      tfPopup = window.tf.createPopup(CONFIG.ctaTypeform, {
+        size: 100,
+        hidden: hidden
+      });
+      tfPopup.__csCard = cardId;
+      log("popup created for form", CONFIG.ctaTypeform, "hidden:", hidden);
+    }
+
     tfPopup.open();
     log("popup opened");
   }
@@ -2756,8 +2805,8 @@
      that quietly navigates away is exactly the tracking loss we are trying
      to avoid. Give up after a few seconds and follow the link, so the
      button always does something. */
-  function openTypeform(href) {
-    if (tfReady()) return showPopup();
+  function openTypeform(href, cardId) {
+    if (tfReady()) return showPopup(cardId);
 
     log("embed not ready yet, waiting");
 
@@ -2765,7 +2814,7 @@
     var timer = setInterval(function () {
       if (tfReady()) {
         clearInterval(timer);
-        showPopup();
+        showPopup(cardId);
         return;
       }
 
@@ -3070,9 +3119,10 @@
     /* Close the case study first. The Typeform popup is full screen, and
        leaving our dialog open underneath means two scroll locks and our
        focus trap fighting the form's iframe for the keyboard. */
+    var card = current > -1 ? CASE_STUDIES[current] : null;
     e.preventDefault();
     close();
-    openTypeform(cta.getAttribute("href"));
+    openTypeform(cta.getAttribute("href"), card ? card.id : "");
   });
 
   prevBtn.addEventListener("click", function () { step(-1); });

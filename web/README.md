@@ -108,10 +108,10 @@ is more than one card.
 
 ## Still TODO
 
-- `CONFIG.ctaUTM` is `false`. Flip it to `true` to tag each Book a Free Call
-  link with `utm_content=<card id>`, so the analytics say which case study
-  produced the booking. Check the utm_source / medium / campaign values match
-  your taxonomy first.
+- Consider adding a dedicated hidden field to the Typeform, e.g.
+  `case_study`, and setting `CONFIG.ctaUTMField` to it. Right now the card id
+  rides in `utm_content`, which paid traffic also uses, so the card id is
+  skipped whenever the page URL already carries one.
 - Jose's employer is still not stated anywhere, including his own post.
 - Thomas's salary figure. "Six figure" is his own wording and nothing
   corroborates a number.
@@ -179,11 +179,25 @@ own `cta.href`.
 
 ### Book a Free Call: popup or redirect
 
-`CONFIG.ctaTypeform` holds a Typeform live id. Set (currently
-`01KVR57XYKKAFZQRAV9RB47MM8`), the button opens that form as a full screen
-popup over the page, with no navigation, so page level tracking keeps
-running. Set it to `""` and the button falls back to a plain redirect to
-`ctaHref`, which is what a second page wanting different behaviour would do.
+`CONFIG.ctaTypeform` holds the Typeform **form id**, currently `QDe2w79Q`.
+The button opens that form as a full screen popup over the page, with no
+navigation, so page level tracking keeps running. Set it to `""` and the
+button falls back to a plain redirect to `ctaHref`.
+
+**Form id, not live embed id.** The snippet Typeform hands you uses
+`data-tf-live="01KVR57XYKKAFZQRAV9RB47MM8"`. That is a pointer, not a form:
+their script resolves it at runtime via
+`api.typeform.com/single-embed/<live id>`, which returns
+`<div data-tf-widget="QDe2w79Q" ...>` for the "Data Career Launch
+Application". The popup API wants `QDe2w79Q`. Given the live id it builds
+`form.typeform.com/to/01KVR...`, which is not a form and redirects to
+Typeform's "incorrect URL" page, so the popup opens onto nothing.
+
+Hidden fields: any `utm_*` or `gclid` on the page URL is forwarded into the
+form, and the card id goes into `CONFIG.ctaUTMField` (default `utm_content`)
+when the page URL does not already carry one, so paid traffic keeps its own
+attribution. The form declares `utm_source`, `utm_medium`, `utm_campaign`,
+`utm_term`, `utm_content`, `gclid` and `ip_address`.
 
 Details worth knowing:
 

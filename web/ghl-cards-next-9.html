@@ -973,7 +973,10 @@
 
     // Where every "Book a Free Call" button goes. One place, all 15 cards.
     // A card can still override it with its own modal.cta.href.
-    ctaHref: "https://datacareerblueprint.com/apply-page",
+    ctaHref: "https://osw86s5725y.typeform.com/to/GQwNt5sA" +
+      "?utm_source=email&utm_medium=email" +
+      "&utm_campaign=post-webinar-follow-up" +
+      "&typeform-source=datacareerblueprint.com",
 
     // Pass which card the click came from into the form as a hidden field.
     // The form already declares utm_source, utm_medium, utm_campaign,
@@ -1008,7 +1011,11 @@
     // form.typeform.com/to/01KVR..., which is not a form and bounces to
     // Typeform's "incorrect URL" page, which is a popup that opens onto
     // nothing.
-    ctaTypeform: "QDe2w79Q",
+    // Empty, so the button is a plain redirect to ctaHref. Put a form id
+    // back in here and it opens in the lightbox instead, without leaving
+    // the page. Note the two are different forms: the lightbox one was
+    // QDe2w79Q, the redirect above goes to GQwNt5sA.
+    ctaTypeform: "",
 
     // Turn on to have the console explain every CTA click: whether the embed
     // loaded, whether the popup opened, or why it fell back to the link.
@@ -3002,10 +3009,14 @@
     var href = cta.href || CONFIG.ctaHref || "#";
     if (!CONFIG.ctaUTM || href.charAt(0) === "#" || !cs.id) return href;
 
+    /* Only add what the URL does not already say. ctaHref arrives with its
+       own campaign parameters, and appending a second utm_source would give
+       the analytics two contradictory answers. */
+    var field = CONFIG.ctaUTMField || "utm_content";
+    if (new RegExp("[?&]" + field + "=").test(href)) return href;
+
     return href + (href.indexOf("?") > -1 ? "&" : "?") +
-      "utm_source=website&utm_medium=case-study" +
-      "&utm_campaign=student-stories&utm_content=" +
-      encodeURIComponent(cs.id);
+      encodeURIComponent(field) + "=" + encodeURIComponent(cs.id);
   }
 
   /* ---------------------------------------------------------------- modal -- */

@@ -1,0 +1,294 @@
+<!--
+  ============================================================================
+  WEBINAR OPT-IN PAGE: first 6 case study cards, NO "Full case study" link
+  ============================================================================
+  For https://datacareerblueprint.com/optin-page-229917
+
+  Paste this whole file into ONE Custom HTML/Javascript element where the
+  cards should appear. That is it.
+
+  How it differs from the main case study block:
+    * No "Full case study" button, no modal, no JavaScript at all. The cards
+      are plain HTML, so nothing on them pulls people off the opt-in.
+    * Cards do not lift or show a pointer on hover, since they are not
+      clickable.
+    * Everything is namespaced .csw-* (not .cs-*), so it cannot clash with
+      the main block if both ever end up on the same page.
+
+  To edit a card, change its text directly below. Same copy rules as the
+  main block: no em dashes, numerals not words.
+  ============================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+>
+
+<style>
+  .csw-wrap {
+    --csw-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif;
+    --csw-a: #0038ff;
+    --csw-b: #ff6240;
+    --csw-coral: #ff6240;
+    --csw-card-bg: #0d1336;
+    --csw-card-bg-2: #0a0e29;
+    --csw-line: #232c5e;
+    --csw-text: #f6f6ff;
+    --csw-body: #c9d8e0;
+    --csw-muted: #8893a8;
+    --csw-cols: 3;
+    --csw-gap: 18px;
+    --csw-max: 1180px;
+
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8px 0;
+    color: var(--csw-text);
+    font-family: var(--csw-font);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .csw-wrap *,
+  .csw-wrap *::before,
+  .csw-wrap *::after {
+    box-sizing: border-box;
+  }
+
+  .csw-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--csw-cols), minmax(0, 1fr));
+    gap: var(--csw-gap);
+    width: 100%;
+    max-width: var(--csw-max);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .csw-grid > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .csw-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 26px 22px 24px;
+    overflow: hidden;
+    text-align: left;
+    background: linear-gradient(180deg, var(--csw-card-bg), var(--csw-card-bg-2));
+    border: 1px solid var(--csw-line);
+    border-radius: 16px;
+  }
+
+  .csw-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--csw-a), var(--csw-b));
+  }
+
+  .csw-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .csw-avatar {
+    display: block;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    overflow: hidden;
+    background: #151d45;
+    border: 2px solid #3a5bd9;
+    border: 2px solid color-mix(in srgb, var(--csw-a) 65%, #6f7cb0);
+    border-radius: 50%;
+  }
+
+  .csw-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .csw-name {
+    margin: 0 0 3px;
+    color: var(--csw-text);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .csw-cat {
+    margin: 0;
+    color: var(--csw-muted);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .csw-stat {
+    margin: 0 0 6px;
+    color: #7f95ff;
+    color: color-mix(in srgb, var(--csw-a) 58%, #ffffff);
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.1px;
+  }
+
+  .csw-stat.is-xlong {
+    font-size: 21px;
+    line-height: 1.12;
+    letter-spacing: -0.2px;
+  }
+
+  .csw-arrow {
+    padding: 0 3px;
+    color: var(--csw-coral);
+    font-weight: 700;
+  }
+
+  .csw-statlab {
+    margin: 0 0 16px;
+    color: var(--csw-muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .csw-sum {
+    margin: 0;
+    color: var(--csw-body);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1080px) {
+    .csw-wrap.csw-wrap {
+      --csw-cols: 2;
+      --csw-max: 760px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .csw-wrap.csw-wrap {
+      --csw-cols: 1;
+      --csw-max: 460px;
+      --csw-gap: 14px;
+    }
+
+    .csw-card {
+      padding: 24px 20px 22px;
+    }
+  }
+</style>
+
+<div class="csw-wrap">
+  <ul class="csw-grid">
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d0f27290fb04997ac.jpeg" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">LaRita W.</h3>
+            <p class="csw-cat">Former Classroom Teacher, Laid Off</p>
+          </div>
+        </div>
+        <p class="csw-stat">Laid Off Teacher <span class="csw-arrow">&rarr;</span> Sr. People Analyst at Roku</p>
+        <p class="csw-statlab">3 Months &middot; 5 Offers to Choose From</p>
+        <p class="csw-sum">She was already teaching herself SQL, Python, and Tableau, and she was still stuck. 3 months after building the stack in the right order she had dozens of interviews and 5 data analyst offers. She now mentors Data In Motion students herself.</p>
+      </article>
+    </li>
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722cfad59e6cfed08185d.jpeg" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">Caitlin U.</h3>
+            <p class="csw-cat">Former High School Math Teacher, Texas</p>
+          </div>
+        </div>
+        <p class="csw-stat is-xlong">Math Teacher <span class="csw-arrow">&rarr;</span> Finance Analyst</p>
+        <p class="csw-statlab">Without Ever Applying &middot; Offer 1 Week After a Recruiter Found Her</p>
+        <p class="csw-sum">She never applied for the job. Her LinkedIn led with analyst instead of teacher, her Tableau projects were public on her profile, and a recruiter from Mustang Cat reached out to her. She had an offer within a week.</p>
+      </article>
+    </li>
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ed8cde54706c14ed492b.jfif" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">Catherine L.</h3>
+            <p class="csw-cat">Former Healthcare Operations</p>
+          </div>
+        </div>
+        <p class="csw-stat">Overwhelmed Job Search <span class="csw-arrow">&rarr;</span> Healthcare Data Analyst in 27 Days</p>
+        <p class="csw-statlab">Stayed in Healthcare, Changed What She Did in It &middot; Fastest Placement on Record</p>
+        <p class="csw-sum">Rewriting the resume, prepping interviews, fixing her online presence, all at once and no way to tell if any of it was working. Her mentor turned her operations experience into quantifiable impact. Offer in 27 days.</p>
+      </article>
+    </li>
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37741b35065942ea20.png" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">Jose M.</h3>
+            <p class="csw-cat">15 Years in Sales</p>
+          </div>
+        </div>
+        <p class="csw-stat">15 Years in Sales <span class="csw-arrow">&rarr;</span> Senior Business Analyst</p>
+        <p class="csw-statlab">Applied Monday. Offered Friday.</p>
+        <p class="csw-sum">Spent a year looking at programs and never enrolling, held in place by the fear that he was too far into his career to start over. Applied for a Senior Business Analyst role just to see what would happen. Offer in hand 4 days later.</p>
+      </article>
+    </li>
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8720df8f3f0ab510a57a37.jpeg" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">Jacinda L.</h3>
+            <p class="csw-cat">Former CDL A Truck Driver, FedEx Ground</p>
+          </div>
+        </div>
+        <p class="csw-stat">Truck Driver <span class="csw-arrow">&rarr;</span> Data Analyst in 90 Days</p>
+        <p class="csw-statlab">No Tech Background &middot; SQL, Python, Excel, Tableau</p>
+        <p class="csw-sum">She drove a truck for FedEx Ground. 90 days later her profile read Data Analyst, and the route optimization she had been doing behind the wheel was written down in a language a hiring manager could read.</p>
+      </article>
+    </li>
+
+    <li>
+      <article class="csw-card">
+        <div class="csw-person">
+          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f59c1e1ff9023ee421e.jpeg" alt="" loading="lazy" decoding="async"></span>
+          <div>
+            <h3 class="csw-name">Shantel W.</h3>
+            <p class="csw-cat">No Bachelor&rsquo;s Degree</p>
+          </div>
+        </div>
+        <p class="csw-stat">No Bachelor&rsquo;s Degree <span class="csw-arrow">&rarr;</span> A Role at Microsoft</p>
+        <p class="csw-statlab">Python Challenges Posted Publicly, Almost Daily, for Months</p>
+        <p class="csw-sum">She did not have the credential the job descriptions all ask for. She had reps. Python challenges completed and posted in public almost every day, for months, without waiting to feel ready. She landed a software engineering role at Microsoft.</p>
+      </article>
+    </li>
+
+  </ul>
+</div>

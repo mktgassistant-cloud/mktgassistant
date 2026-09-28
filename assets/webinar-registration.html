@@ -7,7 +7,7 @@
      Before publishing, search this file for  EDIT:  — those are the only
      spots that need your real details (date, host, photos, videos, quotes).
 
-     Every button scrolls to the form. The form is your GHL form
+     "Save my free seat" glides back up to the form and highlights it. The form is your GHL form
      (ZkrcIfuDSWtu0DTOPbeu), so contacts, tags and the thank-you redirect
      keep working exactly as set up in GHL.
      ============================================================ -->
@@ -42,7 +42,7 @@
           <p class="dim-host__role">Founder of Data in Motion</p>
         </div>
 
-        <div class="dim-form">
+        <div class="dim-form" id="dim-form">
           <iframe
             src="https://go.datacareerblueprint.com/widget/form/ZkrcIfuDSWtu0DTOPbeu"
             style="width:100%;height:834px;border:none;border-radius:10px;display:block"
@@ -108,7 +108,7 @@
         <p>Data and AI changed my life, and I built Data in Motion to help people like you make the same move.</p>
         <p>Today, over 60,000 people are part of the Data in Motion community. We have 1,000+ success stories, and our graduates work at companies like Microsoft, Roku, phData, Zendesk, and Cigna.</p>
         <p>In this live masterclass I'll show you exactly what's working right now for people breaking into data analytics and AI. No recycled advice, no theory for the sake of theory. Just the path, the skills, and the projects that get you hired.</p>
-        <a class="dim-btn" href="#dim-register">Save my free seat &rarr;</a>
+        <a class="dim-btn" href="#dim-form" onclick="var f=document.getElementById('dim-form');if(!f)return;event.preventDefault();var y=f.getBoundingClientRect().top+window.pageYOffset-24;window.scrollTo({top:y<0?0:y,behavior:'smooth'});f.classList.remove('is-flash');void f.offsetWidth;f.classList.add('is-flash');setTimeout(function(){var i=document.getElementById('inline-ZkrcIfuDSWtu0DTOPbeu');if(i)i.focus({preventScroll:true});},700);">Save my free seat &rarr;</a>
       </div>
     </div>
   </section>
@@ -223,7 +223,14 @@
   .dim .dim-photo--hero { aspect-ratio: 4 / 5; }
   .dim .dim-host__name { color: #fff; font-weight: 700; font-size: 16px; margin-top: 18px; }
   .dim .dim-host__role { color: #c9d6ea; font-size: 15px; }
-  .dim .dim-form { background: #fff; border-radius: 14px; padding: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.28); }
+  .dim .dim-form { background: #fff; border-radius: 14px; padding: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.28); scroll-margin-top: 24px; }
+  /* brief glow after a "Save my free seat" click, so the eye lands on the form */
+  .dim .dim-form.is-flash { animation: dim-flash 1.6s ease .45s 1; }
+  @keyframes dim-flash {
+    0%, 100% { box-shadow: 0 16px 40px rgba(0,0,0,.28); }
+    30%      { box-shadow: 0 0 0 6px var(--dim-sky), 0 16px 40px rgba(0,0,0,.28); }
+  }
+  @media (prefers-reduced-motion: reduce) { .dim .dim-form.is-flash { animation: none; } }
 
   /* ---------- shared section styles ---------- */
   .dim .dim-sec { padding: 64px 0; background: #fff; }

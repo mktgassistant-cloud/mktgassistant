@@ -396,6 +396,20 @@ window.dimVideo = function (id) {
   document.body.appendChild(lb);
   lb.querySelector(".dim-lb__x").focus();
 };
+
+/* The form lives in a frame on go.datacareerblueprint.com, so on its own it
+   only knows its widget URL. Hand it this page's URL (and its UTMs) so Hyros
+   and GHL record the real landing page instead of the widget. The Hyros
+   script inside the form reads parent_url and reports it as ref_url. */
+(function () {
+  var f = document.getElementById("inline-ZkrcIfuDSWtu0DTOPbeu");
+  if (!f || f.getAttribute("data-dim-src")) return;
+  var base = f.getAttribute("src").split("?")[0];
+  var q = window.location.search.replace(/^\?/, "");
+  f.setAttribute("data-dim-src", "1");
+  f.setAttribute("src", base + "?" + (q ? q + "&" : "") +
+    "parent_url=" + encodeURIComponent(window.location.href));
+})();
 </script>
 <!-- GHL inserts custom code via innerHTML, and browsers don't run <script>
      tags added that way. This handler re-adds the script above as a real one. -->

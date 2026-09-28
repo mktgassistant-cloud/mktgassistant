@@ -1,52 +1,50 @@
 <!-- ============================================================
      WEBINAR REGISTRATION PAGE — "Data Analyst in 6 Months"
-     Paste this whole block into ONE GHL "Custom HTML/Javascript" element
-     on a blank page (full width, no section padding). It also opens as a
-     normal web page if you double-click the file.
+     Paste this whole block into ONE GHL "Custom HTML/Javascript" element.
+     Put that element in a section with 0 padding and full width; the page
+     also stretches itself edge to edge so it works inside a boxed section.
 
      Before publishing, search this file for  EDIT:  — those are the only
-     spots that need your real details (date, host name/photo/bio, quotes).
+     spots that need your real details (date, host, photos, videos, quotes).
 
-     Every button scrolls to the form. The form itself is your GHL form
+     Every button scrolls to the form. The form is your GHL form
      (6Q00jjqTragPyWr6Nv1j), so contacts, tags and the thank-you redirect
      keep working exactly as set up in GHL.
      ============================================================ -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <div class="dim">
 
-  <!-- TOP BAR -->
+  <!-- 1. TOP BAR -->
   <div class="dim-topbar">Live FREE Data Analytics Training</div>
 
-  <!-- HERO -->
+  <!-- 2. HERO -->
   <section class="dim-hero" id="dim-register">
     <div class="dim-wrap">
-      <!-- EDIT: webinar date + time -->
+      <!-- EDIT: webinar date + time (also in the page title below) -->
       <div class="dim-pill">
         <span>&#128197; Thursday, October 1st</span>
-        <span class="dim-pill__dot" aria-hidden="true"></span>
         <span>&#128339; 7:00 PM ET</span>
       </div>
 
       <h1 class="dim-h1">How To Become a <span class="dim-hl">Data Analyst</span> in 6&nbsp;Months</h1>
-      <p class="dim-sub">Discover the step-by-step path career changers use to land their first data analyst role, <span class="dim-underline">without going back to school</span>.</p>
+      <p class="dim-sub">Discover the step-by-step system career changers use to land data analyst roles in 2026, without going back to school.</p>
 
       <div class="dim-hero__grid">
         <div class="dim-host">
-          <!-- EDIT: host photo. Replace the div below with
-               <img class="dim-host__photo" src="YOUR-PHOTO-URL" alt="Host name"> -->
-          <div class="dim-host__photo dim-host__photo--empty">Host photo</div>
-          <p class="dim-host__name">Led by <strong>[Host Name]</strong></p> <!-- EDIT -->
-          <p class="dim-host__role">Founder of Data in Motion</p>          <!-- EDIT -->
+          <!-- EDIT: host photo URL (landscape works best) -->
+          <div class="dim-photo dim-photo--hero" style="background-image:url('')">Host photo</div>
+          <p class="dim-host__name">Led by [Host Name]</p>                  <!-- EDIT -->
+          <p class="dim-host__role">Data Analyst &amp; Founder of Data in Motion</p> <!-- EDIT -->
         </div>
 
         <div class="dim-form">
           <iframe
             src="https://go.datacareerblueprint.com/widget/form/6Q00jjqTragPyWr6Nv1j"
-            style="width:100%;height:560px;border:none;border-radius:12px"
+            style="width:100%;height:760px;border:none;border-radius:10px;display:block"
             id="inline-6Q00jjqTragPyWr6Nv1j"
             data-layout="{'id':'INLINE'}"
             data-trigger-type="alwaysShow"
@@ -56,7 +54,7 @@
             data-deactivation-type="neverDeactivate"
             data-deactivation-value=""
             data-form-name="Webinar Registration Form"
-            data-height="560"
+            data-height="760"
             data-layout-iframe-id="inline-6Q00jjqTragPyWr6Nv1j"
             data-form-id="6Q00jjqTragPyWr6Nv1j"
             title="Register for the free training">
@@ -66,260 +64,292 @@
     </div>
   </section>
 
-  <!-- LOGO STRIP -->
-  <section class="dim-logos">
-    <div class="dim-wrap">
-      <p class="dim-logos__label">Graduates landed roles at</p>
-      <ul class="dim-logos__row">
-        <li>Microsoft</li><li>Roku</li><li>phData</li>
-        <li>BlueCross BlueShield</li><li>Chase</li><li>Cigna</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- WHAT YOU'LL LEARN -->
+  <!-- 3. WHAT YOU'LL LEARN -->
   <section class="dim-sec">
     <div class="dim-wrap">
       <h2 class="dim-h2">What you're going to learn in this masterclass</h2>
       <div class="dim-grid4">
-        <div class="dim-card"><span class="dim-check" aria-hidden="true"></span>
+        <div class="dim-card"><span class="dim-check"></span>
           <p>The exact skills hiring managers screen for right now, and the fastest way to build them without another course</p></div>
-        <div class="dim-card"><span class="dim-check" aria-hidden="true"></span>
+        <div class="dim-card"><span class="dim-check"></span>
           <p>The positioning shift that gets recruiters coming to you instead of chasing 200 applications into silence</p></div>
-        <div class="dim-card"><span class="dim-check" aria-hidden="true"></span>
+        <div class="dim-card"><span class="dim-check"></span>
           <p>How to manufacture resume-worthy experience even if you've never held a data role</p></div>
-        <div class="dim-card"><span class="dim-check" aria-hidden="true"></span>
+        <div class="dim-card"><span class="dim-check"></span>
           <p>The interview framework that makes you the obvious hire, even against candidates with more years on paper</p></div>
       </div>
     </div>
   </section>
 
-  <!-- WHO IS THIS FOR -->
+  <!-- 4. WHO IS THIS FOR -->
   <section class="dim-sec dim-sec--dark">
     <div class="dim-wrap">
       <h2 class="dim-h2">Who is this for?</h2>
       <div class="dim-grid2">
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>Career changers who want a stable, well-paid job in data</p></div>
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>People who use Excel at work and want to turn it into a real analyst role</p></div>
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>Anyone who's taken courses or bootcamps but still can't get interviews</p></div>
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>Recent grads with the wrong degree (or no degree) who want in</p></div>
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>People who want a supportive community instead of figuring it out alone</p></div>
-        <div class="dim-item"><span class="dim-check" aria-hidden="true"></span><p>Anyone serious about landing a data analyst role in the next 6 months</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>Career changers who want to move into a stable, well-paid data role</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>People who use Excel at work but want to become real data analysts</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>Professionals stuck in their careers looking to transition into data</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>People who have taken courses but still can't land interviews</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>People who want to be part of an engaged, supportive community</p></div>
+        <div class="dim-item"><span class="dim-check"></span><p>Anyone serious about landing a data analyst role in the next 6 months</p></div>
       </div>
     </div>
   </section>
 
-  <!-- MEET THE HOST -->
+  <!-- 5. ABOUT THE HOST -->
   <section class="dim-sec">
     <div class="dim-wrap dim-about">
-      <!-- EDIT: second host photo (same swap as above) -->
-      <div class="dim-about__photo dim-host__photo--empty">Host photo</div>
-      <div>
+      <!-- EDIT: second host photo URL (portrait works best) -->
+      <div class="dim-photo dim-photo--about" style="background-image:url('')">Host photo</div>
+      <div class="dim-about__text">
         <h2 class="dim-h2 dim-h2--left">Hi, I'm [Host Name]</h2> <!-- EDIT -->
-        <!-- EDIT: your story in 2–3 short paragraphs -->
-        <p>[Your story: where you started, how you broke into data, and why you started Data in Motion.]</p>
-        <p>Today, over <strong>60,000 people</strong> are part of the Data in Motion community, and our graduates work at companies like Microsoft, Roku, phData, BlueCross BlueShield, Chase, and Cigna.</p>
+        <p>[Your story in one or two sentences: where you started and how you broke into data.]</p> <!-- EDIT -->
+        <p>Today, over 60,000 people are part of the Data in Motion community, and our graduates work at companies like Microsoft, Roku, phData, BlueCross BlueShield, Chase, and Cigna.</p>
         <p>In this live masterclass I'll show you exactly what's working right now for people breaking into data analytics. No recycled advice, no theory for the sake of theory. Just the path, the skills, and the projects that get you hired.</p>
         <a class="dim-btn" href="#dim-register">Save my free seat &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="dim-sec dim-sec--tint">
+  <!-- 6. TESTIMONIALS -->
+  <section class="dim-sec dim-sec--testi">
     <div class="dim-wrap">
-      <h2 class="dim-h2">What our graduates say</h2>
+      <h2 class="dim-h2 dim-h2--big">What our graduates say</h2>
+
+      <!-- EDIT: for each video card set
+             data-video  = the embed link (YouTube: https://www.youtube.com/embed/VIDEO_ID,
+                           Vimeo: https://player.vimeo.com/video/VIDEO_ID, or an .mp4 link)
+             background-image = a thumbnail image URL
+             the two badge lines and the first name -->
       <div class="dim-grid3">
-        <!-- EDIT: paste 3 real graduate quotes, names and new roles -->
-        <figure class="dim-quote">
-          <blockquote>&ldquo;[Real graduate quote. Best if it names a result: new job title, company, or salary jump.]&rdquo;</blockquote>
-          <figcaption><strong>[Name]</strong><span>[New role, Company]</span></figcaption>
-        </figure>
-        <figure class="dim-quote">
-          <blockquote>&ldquo;[Real graduate quote.]&rdquo;</blockquote>
-          <figcaption><strong>[Name]</strong><span>[New role, Company]</span></figcaption>
-        </figure>
-        <figure class="dim-quote">
-          <blockquote>&ldquo;[Real graduate quote.]&rdquo;</blockquote>
-          <figcaption><strong>[Name]</strong><span>[New role, Company]</span></figcaption>
-        </figure>
+        <div class="dim-video" data-video="" style="background-image:url('')"
+             onclick="var u=this.getAttribute('data-video');if(!u)return;this.innerHTML=/\.mp4(\?|$)/i.test(u)?'<video src=&quot;'+u+'&quot; controls autoplay playsinline></video>':'<iframe src=&quot;'+u+(u.indexOf('?')<0?'?':'&amp;')+'autoplay=1&quot; allow=&quot;autoplay; fullscreen&quot; allowfullscreen></iframe>';this.className+=' is-playing';">
+          <div class="dim-badge"><span class="dim-badge__top">[Headline hook]</span><span class="dim-badge__bot">[Result line]</span></div>
+          <span class="dim-play" aria-hidden="true"></span>
+          <span class="dim-video__name">[Name]</span>
+        </div>
+        <div class="dim-video" data-video="" style="background-image:url('')"
+             onclick="var u=this.getAttribute('data-video');if(!u)return;this.innerHTML=/\.mp4(\?|$)/i.test(u)?'<video src=&quot;'+u+'&quot; controls autoplay playsinline></video>':'<iframe src=&quot;'+u+(u.indexOf('?')<0?'?':'&amp;')+'autoplay=1&quot; allow=&quot;autoplay; fullscreen&quot; allowfullscreen></iframe>';this.className+=' is-playing';">
+          <div class="dim-badge"><span class="dim-badge__top">[Headline hook]</span><span class="dim-badge__bot">[Result line]</span></div>
+          <span class="dim-play" aria-hidden="true"></span>
+          <span class="dim-video__name">[Name]</span>
+        </div>
+        <div class="dim-video" data-video="" style="background-image:url('')"
+             onclick="var u=this.getAttribute('data-video');if(!u)return;this.innerHTML=/\.mp4(\?|$)/i.test(u)?'<video src=&quot;'+u+'&quot; controls autoplay playsinline></video>':'<iframe src=&quot;'+u+(u.indexOf('?')<0?'?':'&amp;')+'autoplay=1&quot; allow=&quot;autoplay; fullscreen&quot; allowfullscreen></iframe>';this.className+=' is-playing';">
+          <div class="dim-badge"><span class="dim-badge__top">[Headline hook]</span><span class="dim-badge__bot">[Result line]</span></div>
+          <span class="dim-play" aria-hidden="true"></span>
+          <span class="dim-video__name">[Name]</span>
+        </div>
+      </div>
+
+      <!-- EDIT: 3 written quotes. Avatar = photo URL in background-image -->
+      <div class="dim-grid3 dim-quotes">
+        <div class="dim-quote">
+          <span class="dim-quote__mark">&ldquo;&ldquo;</span>
+          <p>[Real graduate quote. Best if it names a result: new job title, company, or salary jump.]</p>
+          <div class="dim-quote__who"><span class="dim-avatar" style="background-image:url('')"></span>[Full Name]</div>
+        </div>
+        <div class="dim-quote">
+          <span class="dim-quote__mark">&ldquo;&ldquo;</span>
+          <p>[Real graduate quote.]</p>
+          <div class="dim-quote__who"><span class="dim-avatar" style="background-image:url('')"></span>[Full Name]</div>
+        </div>
+        <div class="dim-quote">
+          <span class="dim-quote__mark">&ldquo;&ldquo;</span>
+          <p>[Real graduate quote.]</p>
+          <div class="dim-quote__who"><span class="dim-avatar" style="background-image:url('')"></span>[Full Name]</div>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- FINAL CTA -->
-  <section class="dim-sec dim-sec--dark dim-final">
-    <div class="dim-wrap">
-      <h2 class="dim-h2">Your data career can start this week</h2>
-      <p class="dim-final__sub">Free live training &middot; Thursday, October 1st &middot; 7:00 PM ET</p> <!-- EDIT -->
-      <a class="dim-btn" href="#dim-register">Yes, lock in my seat &rarr;</a>
-    </div>
-  </section>
-
-  <footer class="dim-foot">&copy; Data in Motion. All rights reserved.</footer>
 </div>
 
 <style>
+  /* ---------- BRAND COLORS (sampled from your banner) ---------- */
   .dim {
-    /* --- BRAND COLORS (sampled from your banner) --- */
-    --dim-blue: #004aad;       /* headline + buttons */
-    --dim-sky: #38b5ff;        /* accent */
-    --dim-ice: #e2f4ff;        /* hero background */
-    --dim-navy: #06255a;       /* dark sections */
-    --dim-ink: #0f1729;        /* body text */
-    --dim-muted: #4a5873;
+    --dim-navy: #04214f;      /* dark sections (the reference's navy) */
+    --dim-blue: #004aad;      /* brand blue */
+    --dim-sky:  #38b5ff;      /* accent (the reference's yellow) */
+    --dim-ink:  #0f1729;      /* body text on white */
+    --dim-muted:#5b6478;
     --dim-card: #f8fafc;
     --dim-line: #dee6ed;
-
-    font-family: "Inter", system-ui, sans-serif;
-    color: var(--dim-ink);
-    background: #fff;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  .dim *, .dim *::before, .dim *::after { box-sizing: border-box; }
-  .dim p { margin: 0 0 1em; }
-  .dim-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-  .dim-topbar {
-    background: var(--dim-blue); color: #fff; text-align: center;
-    font: 600 13px/1 "Inter", sans-serif; letter-spacing: .04em; padding: 11px 16px;
   }
 
-  /* hero */
-  .dim-hero {
-    background: radial-gradient(1200px 500px at 50% -10%, #fff 0%, var(--dim-ice) 60%, #cfeaff 100%);
-    padding: 44px 0 64px; text-align: center; scroll-margin-top: 10px;
+  /* ---------- reset: GHL's own page styles leak into custom code,
+     so every rule here is scoped under .dim to win over them ---------- */
+  .dim, .dim * { box-sizing: border-box; }
+  .dim h1, .dim h2, .dim p, .dim span, .dim div, .dim a, .dim section {
+    margin: 0; padding: 0; border: 0; text-transform: none; letter-spacing: normal;
+    font-family: "Inter", Arial, sans-serif; line-height: 1.55;
   }
-  .dim-pill {
-    display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;
-    background: #fff; border: 1px solid var(--dim-line); border-radius: 999px;
-    padding: 7px 16px; font-size: 13px; font-weight: 600; color: var(--dim-blue);
-    box-shadow: 0 2px 8px rgba(0,74,173,.08);
+  .dim {
+    /* break out of GHL's boxed column so dark sections run edge to edge */
+    width: 100vw; max-width: 100vw; position: relative; left: 50%; margin-left: -50vw;
+    overflow-x: hidden; background: #fff; color: var(--dim-ink);
+    font-family: "Inter", Arial, sans-serif; font-size: 16px; -webkit-font-smoothing: antialiased;
   }
-  .dim-pill__dot { width: 4px; height: 4px; border-radius: 50%; background: var(--dim-sky); }
-  .dim-h1 {
-    font: 800 clamp(2rem, 5.2vw, 3.4rem)/1.12 "Poppins", sans-serif;
-    color: var(--dim-navy); margin: 22px auto 14px; max-width: 900px; letter-spacing: -.01em;
-  }
-  .dim-hl { color: var(--dim-blue); }
-  .dim-sub { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--dim-muted); max-width: 640px; margin: 0 auto 36px !important; }
-  .dim-underline { color: var(--dim-blue); font-weight: 600; border-bottom: 3px solid var(--dim-sky); }
+  .dim .dim-wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 
-  .dim-hero__grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; text-align: left;
-  }
-  .dim-host__photo {
-    width: 100%; aspect-ratio: 4 / 3.3; object-fit: cover; border-radius: 16px; display: block;
-    box-shadow: 0 12px 32px rgba(0,37,90,.15);
-  }
-  .dim-host__photo--empty {
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #cfeaff, #9fd6ff); color: var(--dim-blue);
-    font-weight: 600; border-radius: 16px;
-  }
-  .dim-host__name { margin: 16px 0 2px !important; font-size: 17px; }
-  .dim-host__role { color: var(--dim-muted); font-size: 15px; }
-  .dim-form {
-    background: #fff; border-radius: 16px; padding: 8px;
-    box-shadow: 0 12px 32px rgba(0,37,90,.15); border-top: 4px solid var(--dim-blue);
+  /* ---------- 1. top bar ---------- */
+  .dim .dim-topbar {
+    background: var(--dim-sky); color: var(--dim-navy); text-align: center;
+    font-size: 13px; font-weight: 600; padding: 9px 16px;
   }
 
-  /* logos */
-  .dim-logos { background: var(--dim-blue); padding: 22px 0; text-align: center; }
-  .dim-logos__label { color: #cfe6ff; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px !important; }
-  .dim-logos__row {
-    list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 36px;
-    font: 700 18px/1.3 "Poppins", sans-serif; color: #fff;
+  /* ---------- 2. hero ---------- */
+  .dim .dim-hero { background: var(--dim-navy); padding: 36px 0 56px; text-align: center; scroll-margin-top: 0; }
+  .dim .dim-pill {
+    display: inline-flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center;
+    border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06);
+    border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: #fff;
   }
+  .dim .dim-pill span { color: #fff; font-size: 12px; font-weight: 600; }
+  .dim .dim-h1 {
+    font-family: "Poppins", Arial, sans-serif; font-weight: 800; color: #fff;
+    font-size: clamp(30px, 5vw, 52px); line-height: 1.12; letter-spacing: -0.01em;
+    margin: 20px auto 14px; max-width: 900px;
+  }
+  .dim .dim-hl { font-family: inherit; font-weight: inherit; line-height: inherit; color: var(--dim-sky); }
+  .dim .dim-sub { color: #c9d6ea; font-size: 16px; max-width: 560px; margin: 0 auto 36px; }
 
-  /* sections */
-  .dim-sec { padding: 72px 0; }
-  .dim-sec--dark { background: var(--dim-navy); color: #fff; }
-  .dim-sec--tint { background: #f3f9ff; }
-  .dim-h2 {
-    font: 700 clamp(1.5rem, 3.4vw, 2.1rem)/1.25 "Poppins", sans-serif;
-    text-align: center; margin: 0 0 36px; color: var(--dim-navy);
+  .dim .dim-hero__grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; text-align: left;
+    max-width: 940px; margin: 0 auto;
   }
-  .dim-sec--dark .dim-h2 { color: #fff; }
-  .dim-h2--left { text-align: left; margin-bottom: 18px; }
+  .dim .dim-photo {
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    background-color: #0c3a7d; background-size: cover; background-position: center;
+    color: #9fc9ff; font-weight: 600; border-radius: 12px;
+  }
+  /* hides the "Host photo" label once a real image is set */
+  .dim .dim-photo[style*="url('http"] { color: transparent; }
+  .dim .dim-photo--hero { aspect-ratio: 1 / 1.04; }
+  .dim .dim-host__name { color: #fff; font-weight: 700; font-size: 16px; margin-top: 18px; }
+  .dim .dim-host__role { color: #c9d6ea; font-size: 15px; }
+  .dim .dim-form { background: #fff; border-radius: 14px; padding: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.28); }
 
-  /* check icon: outlined circle + tick, drawn in CSS */
-  .dim-check {
-    flex: 0 0 20px; width: 20px; height: 20px; margin-top: 2px; border-radius: 50%;
-    border: 2px solid var(--dim-blue); position: relative;
+  /* ---------- shared section styles ---------- */
+  .dim .dim-sec { padding: 64px 0; background: #fff; }
+  .dim .dim-sec--dark { background: var(--dim-navy); }
+  .dim .dim-h2 {
+    font-family: "Poppins", Arial, sans-serif; font-weight: 700; color: var(--dim-navy);
+    font-size: clamp(22px, 3vw, 28px); line-height: 1.25; text-align: center; margin-bottom: 32px;
   }
-  .dim-check::after {
-    content: ""; position: absolute; left: 5px; top: 2px; width: 5px; height: 9px;
+  .dim .dim-sec--dark .dim-h2 { color: #fff; }
+  .dim .dim-h2--left { text-align: left; margin-bottom: 16px; }
+  .dim .dim-h2--big { font-size: clamp(26px, 3.6vw, 36px); }
+
+  /* outlined check icon, drawn in CSS so there's no image to break */
+  .dim .dim-check {
+    flex: 0 0 18px; width: 18px; height: 18px; margin-top: 2px; border-radius: 50%;
+    border: 2px solid var(--dim-blue); position: relative; display: block;
+  }
+  .dim .dim-check::after {
+    content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px;
     border: solid var(--dim-blue); border-width: 0 2px 2px 0; transform: rotate(45deg);
   }
-  .dim-sec--dark .dim-check { border-color: var(--dim-sky); }
-  .dim-sec--dark .dim-check::after { border-color: var(--dim-sky); }
+  .dim .dim-sec--dark .dim-check, .dim .dim-sec--dark .dim-check::after { border-color: var(--dim-sky); }
 
-  .dim-grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .dim-card {
-    display: flex; gap: 12px; background: var(--dim-card); border: 1px solid var(--dim-line);
-    border-radius: 12px; padding: 20px; font-size: 15px;
+  /* ---------- 3. learn cards ---------- */
+  .dim .dim-grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .dim .dim-card {
+    display: flex; gap: 10px; background: var(--dim-card); border: 1px solid var(--dim-line);
+    border-radius: 10px; padding: 18px 16px;
   }
-  .dim-card p, .dim-item p { margin: 0 !important; }
+  .dim .dim-card p { font-size: 14px; color: var(--dim-ink); }
 
-  .dim-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 880px; margin: 0 auto; }
-  .dim-item {
-    display: flex; gap: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
-    border-radius: 12px; padding: 16px 18px; font-size: 15px; color: #e6f0ff;
+  /* ---------- 4. who is this for ---------- */
+  .dim .dim-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 760px; margin: 0 auto; }
+  .dim .dim-item {
+    display: flex; gap: 10px; align-items: flex-start; background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.14); border-radius: 10px; padding: 14px 16px;
   }
+  .dim .dim-item p { font-size: 14px; color: #e3ecf8; }
 
-  .dim-about { display: grid; grid-template-columns: 300px 1fr; gap: 44px; align-items: center; max-width: 900px; }
-  .dim-about__photo { aspect-ratio: 3 / 4; box-shadow: 0 12px 32px rgba(0,37,90,.15); }
-  .dim-about p { color: var(--dim-muted); }
-
-  .dim-btn {
-    display: inline-block; background: var(--dim-blue); color: #fff !important; text-decoration: none;
-    font: 700 15px/1 "Inter", sans-serif; letter-spacing: .02em; text-transform: uppercase;
-    padding: 16px 28px; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,74,173,.3);
-    transition: transform .15s ease, box-shadow .15s ease;
+  /* ---------- 5. about ---------- */
+  .dim .dim-about { display: grid; grid-template-columns: 220px 1fr; gap: 36px; align-items: start; max-width: 760px; }
+  .dim .dim-photo--about { aspect-ratio: 3 / 4; box-shadow: 0 10px 28px rgba(4,33,79,.18); background-color: #dcecff; color: var(--dim-blue); }
+  .dim .dim-about__text p { color: var(--dim-muted); font-size: 15px; margin-bottom: 14px; }
+  .dim .dim-btn {
+    display: inline-block; margin-top: 8px; background: var(--dim-sky); color: var(--dim-navy);
+    font-size: 14px; font-weight: 700; text-transform: uppercase; text-decoration: none;
+    padding: 13px 22px; border-radius: 8px; box-shadow: 0 8px 20px rgba(56,181,255,.35);
+    transition: transform .15s ease;
   }
-  .dim-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,74,173,.38); }
-  .dim-sec--dark .dim-btn { background: var(--dim-sky); color: var(--dim-navy) !important; }
+  .dim .dim-btn:hover { transform: translateY(-2px); }
 
-  .dim-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .dim-quote {
-    margin: 0; background: #fff; border: 1px solid var(--dim-line); border-radius: 12px; padding: 24px;
-    display: flex; flex-direction: column; justify-content: space-between; gap: 18px;
+  /* ---------- 6. testimonials ---------- */
+  .dim .dim-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 940px; margin: 0 auto; }
+  .dim .dim-video {
+    position: relative; aspect-ratio: 9 / 16; max-height: 520px; width: 100%; overflow: hidden; cursor: pointer;
+    border-radius: 12px; background-color: #0c2a55; background-size: cover; background-position: center;
+    box-shadow: 0 10px 28px rgba(4,33,79,.18);
   }
-  .dim-quote blockquote { margin: 0; font-size: 15px; }
-  .dim-quote figcaption { border-top: 1px solid var(--dim-line); padding-top: 14px; font-size: 14px; }
-  .dim-quote figcaption span { display: block; color: var(--dim-muted); }
+  .dim .dim-video::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0) 40%, rgba(0,0,0,.45));
+  }
+  .dim .dim-video iframe, .dim .dim-video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  .dim .dim-video.is-playing::before { display: none; }
+  .dim .dim-badge {
+    position: absolute; top: 34px; left: 10px; right: 10px; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+  }
+  .dim .dim-badge__top {
+    background: var(--dim-blue); color: #fff; font-family: "Poppins", Arial, sans-serif; font-weight: 800;
+    font-size: 15px; line-height: 1.2; text-transform: uppercase; padding: 5px 8px; border-radius: 4px;
+  }
+  .dim .dim-badge__bot {
+    background: var(--dim-sky); color: var(--dim-navy); font-weight: 700; font-size: 12px; line-height: 1.2;
+    padding: 4px 8px; border-radius: 4px;
+  }
+  .dim .dim-play {
+    position: absolute; z-index: 1; top: 50%; left: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px;
+    border-radius: 50%; background: var(--dim-sky); box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  }
+  .dim .dim-play::after {
+    content: ""; position: absolute; left: 21px; top: 16px;
+    border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent var(--dim-navy);
+  }
+  .dim .dim-video__name { position: absolute; z-index: 1; left: 12px; bottom: 10px; color: #fff; font-size: 12px; font-weight: 700; }
 
-  .dim-final { text-align: center; }
-  .dim-final .dim-h2 { margin-bottom: 10px; }
-  .dim-final__sub { color: #b9d4f5; margin-bottom: 28px !important; }
-
-  .dim-foot { text-align: center; font-size: 13px; color: var(--dim-muted); padding: 22px 16px; background: #fff; }
+  .dim .dim-quotes { margin-top: 28px; }
+  .dim .dim-quote {
+    display: flex; flex-direction: column; background: var(--dim-card); border: 1px solid var(--dim-line);
+    border-radius: 12px; padding: 20px;
+  }
+  .dim .dim-quote__mark { color: var(--dim-sky); font-family: Georgia, serif; font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: -4px; }
+  .dim .dim-quote p { font-size: 14px; color: var(--dim-ink); margin: 8px 0 18px; flex: 1; }
+  .dim .dim-quote__who {
+    display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600;
+    border-top: 1px solid var(--dim-line); padding-top: 14px;
+  }
+  .dim .dim-avatar {
+    flex: 0 0 34px; width: 34px; height: 34px; border-radius: 50%; display: block;
+    background-color: #cfe3fb; background-size: cover; background-position: center;
+  }
 
   html { scroll-behavior: smooth; }
 
+  /* ---------- responsive ---------- */
   @media (max-width: 900px) {
-    .dim-grid4 { grid-template-columns: 1fr 1fr; }
-    .dim-grid3 { grid-template-columns: 1fr; }
+    .dim .dim-grid4 { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 760px) {
-    .dim-hero { padding-top: 32px; }
-    /* form first on phones: it's the whole point of the page */
-    .dim-hero__grid { grid-template-columns: 1fr; }
-    .dim-form { order: -1; }
-    .dim-host { display: none; }
-    .dim-grid2, .dim-grid4 { grid-template-columns: 1fr; }
-    .dim-about { grid-template-columns: 1fr; gap: 24px; }
-    .dim-about__photo { max-width: 260px; }
-    .dim-sec { padding: 56px 0; }
+  @media (max-width: 720px) {
+    .dim .dim-hero__grid, .dim .dim-grid2, .dim .dim-grid4, .dim .dim-about { grid-template-columns: 1fr; }
+    .dim .dim-form { order: -1; }            /* form first on phones */
+    .dim .dim-photo--hero { aspect-ratio: 4 / 3; }
+    .dim .dim-photo--about { max-width: 240px; }
+    .dim .dim-grid3 { grid-template-columns: 1fr; max-width: 340px; }
+    .dim .dim-sec { padding: 48px 0; }
   }
 </style>
 
-<!-- GHL's form script auto-sizes the iframe to the form's real height.
-     GHL inserts custom code via innerHTML, which blocks <script src> tags,
-     so if the tag below doesn't run, the onerror handler loads it instead.
-     If neither runs, the form still works at the fixed 560px height. -->
+<!-- GHL's form script auto-sizes the form to its real height. GHL inserts
+     custom code via innerHTML, which blocks <script src> tags, so if the tag
+     below doesn't run, the onerror handler loads it instead. If neither runs,
+     the form still works at the fixed height set on the iframe. -->
 <script src="https://link.msgsndr.com/js/form_embed.js" onload="window.__dimEmbed=1"></script>
 <img src="data:," alt="" aria-hidden="true" width="0" height="0"
      style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"

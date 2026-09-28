@@ -1,81 +1,107 @@
 <!--
   ============================================================================
-  WEBINAR OPT-IN PAGE: first 6 case study cards, NO "Full case study" link
+  WEBINAR OPT-IN PAGE: first 6 case study cards, clickable, NO "Full case
+  study" link
   ============================================================================
   For https://datacareerblueprint.com/optin-page-229917
 
   Paste this whole file into ONE Custom HTML/Javascript element where the
-  cards should appear. That is it.
+  cards should appear. Nothing else to add.
 
   How it differs from the main case study block:
-    * No "Full case study" button, no modal, no JavaScript at all. The cards
-      are plain HTML, so nothing on them pulls people off the opt-in.
-    * Cards do not lift or show a pointer on hover, since they are not
-      clickable.
-    * Everything is namespaced .csw-* (not .cs-*), so it cannot clash with
-      the main block if both ever end up on the same page.
+    * The "Full case study" link is gone from every card. The whole card is
+      the click target instead: click (or Tab to it and press Enter) and the
+      full story opens in the modal, same as the main block.
+    * Only the 6 case studies this page shows are included.
 
-  To edit a card, change its text directly below. Same copy rules as the
-  main block: no em dashes, numerals not words.
+  Everything else (modal layout, arrows, deep links like #case=larita, the
+  CTA button inside the modal) works exactly like the main block. To change
+  where the modal's button goes, edit CONFIG.ctaHref below.
+
+  COPY RULES: no em dashes, numerals not words.
   ============================================================================
 -->
+
+<div class="cs-mount"
+  data-cs="larita,caitlin,katherine,jose,jacinda,shantel"></div>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
 >
 
 <style>
-  .csw-wrap {
-    --csw-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  /* Design tokens live on BOTH roots: the modal is relocated to <body> at
+     runtime, so it can't inherit variables from .cs-wrap. */
+  .cs-wrap,
+  .cs-modal {
+    --cs-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
       Helvetica, Arial, sans-serif;
-    --csw-a: #0038ff;
-    --csw-b: #ff6240;
-    --csw-coral: #ff6240;
-    --csw-card-bg: #0d1336;
-    --csw-card-bg-2: #0a0e29;
-    --csw-line: #232c5e;
-    --csw-text: #f6f6ff;
-    --csw-body: #c9d8e0;
-    --csw-muted: #8893a8;
-    --csw-cols: 3;
-    --csw-gap: 18px;
-    --csw-max: 1180px;
+
+    --cs-blue: #0038ff;
+    --cs-blue-lift: #4d7bff;
+    --cs-coral: #ff6240;
+    --cs-coral-soft: #ff8163;
+
+    --cs-card-bg: #0d1336;
+    --cs-card-bg-2: #0a0e29;
+    --cs-modal-bg: #080c26;
+    --cs-tile-bg: #131a3c;
+    --cs-line: #232c5e;
+    --cs-text: #f6f6ff;
+    --cs-body: #c9d8e0;
+    --cs-muted: #8893a8;
+
+    --cs-gap: 18px;
+    --cs-max: 1180px;
+    --cs-radius: 16px;
+  }
+
+  .cs-wrap {
+    --cs-cols: 3;
 
     display: block;
     width: 100%;
+    max-width: 100%;
     margin: 0 auto;
     padding: 8px 0;
-    color: var(--csw-text);
-    font-family: var(--csw-font);
+    color: var(--cs-text);
+    font-family: var(--cs-font, inherit);
     -webkit-font-smoothing: antialiased;
   }
 
-  .csw-wrap *,
-  .csw-wrap *::before,
-  .csw-wrap *::after {
+  .cs-wrap *,
+  .cs-wrap *::before,
+  .cs-wrap *::after {
     box-sizing: border-box;
   }
 
-  .csw-grid {
+  /* ---------------------------------------------------------------- grid -- */
+  .cs-grid {
     display: grid;
-    grid-template-columns: repeat(var(--csw-cols), minmax(0, 1fr));
-    gap: var(--csw-gap);
+    grid-template-columns: repeat(var(--cs-cols), minmax(0, 1fr));
+    gap: var(--cs-gap);
     width: 100%;
-    max-width: var(--csw-max);
+    max-width: var(--cs-max);
     margin: 0 auto;
     padding: 0;
     list-style: none;
   }
 
-  .csw-grid > li {
-    margin: 0;
-    padding: 0;
+  .cs-wrap.cs-n1 {
+    --cs-cols: 1;
+    --cs-max: 400px;
   }
 
-  .csw-card {
+  .cs-wrap.cs-n2 {
+    --cs-cols: 2;
+    --cs-max: 780px;
+  }
+
+  /* --------------------------------------------------------------- card -- */
+  .cs-card {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -83,212 +109,1727 @@
     padding: 26px 22px 24px;
     overflow: hidden;
     text-align: left;
-    background: linear-gradient(180deg, var(--csw-card-bg), var(--csw-card-bg-2));
-    border: 1px solid var(--csw-line);
-    border-radius: 16px;
+    background: linear-gradient(180deg, var(--cs-card-bg), var(--cs-card-bg-2));
+    border: 1px solid var(--cs-line);
+    border-radius: var(--cs-radius);
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease,
+      border-color 0.22s ease;
   }
 
-  .csw-card::before {
+  .cs-card::before {
     content: "";
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--csw-a), var(--csw-b));
+    background: linear-gradient(90deg, var(--cs-a), var(--cs-b));
   }
 
-  .csw-person {
+  /* the whole card is the button now, so it carries the hover lift and the
+     keyboard focus ring that used to sit on the "Full case study" link */
+  .cs-card:hover,
+  .cs-card:focus-visible {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--cs-a) 55%, var(--cs-line));
+    box-shadow: 0 18px 44px rgba(0, 12, 60, 0.75),
+      0 0 0 1px color-mix(in srgb, var(--cs-a) 22%, transparent);
+  }
+
+  .cs-card:focus {
+    outline: none;
+  }
+
+  .cs-card:focus-visible {
+    outline: 2px solid var(--cs-coral);
+    outline-offset: 3px;
+  }
+
+  .cs-person {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 18px;
   }
 
-  .csw-avatar {
-    display: block;
+  .cs-avatar {
+    display: flex;
     width: 46px;
     height: 46px;
     flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    color: var(--cs-blue-lift);
     background: #151d45;
-    border: 2px solid #3a5bd9;
-    border: 2px solid color-mix(in srgb, var(--csw-a) 65%, #6f7cb0);
+    border: 2px solid color-mix(in srgb, var(--cs-a) 65%, #6f7cb0);
     border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
   }
 
-  .csw-avatar img {
-    display: block;
+  .cs-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
   }
 
-  .csw-name {
+  .cs-name {
     margin: 0 0 3px;
-    color: var(--csw-text);
+    color: var(--cs-text);
     font-size: 16px;
     font-weight: 700;
     line-height: 1.2;
   }
 
-  .csw-cat {
+  .cs-cat {
     margin: 0;
-    color: var(--csw-muted);
+    color: var(--cs-muted);
     font-size: 12px;
     font-weight: 500;
     line-height: 1.35;
   }
 
-  .csw-stat {
+  .cs-stat {
     margin: 0 0 6px;
-    color: #7f95ff;
-    color: color-mix(in srgb, var(--csw-a) 58%, #ffffff);
-    font-size: 19px;
+    color: var(--cs-a);
+    color: color-mix(in srgb, var(--cs-a) 58%, #ffffff);
+    font-size: 30px;
     font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+  }
+
+  .cs-stat.is-long {
+    font-size: 24px;
+  }
+
+  .cs-stat.is-xlong {
+    font-size: 21px;
+    letter-spacing: -0.2px;
+  }
+
+  .cs-stat.is-xxlong {
+    font-size: 19px;
     line-height: 1.25;
     letter-spacing: -0.1px;
   }
 
-  .csw-stat.is-xlong {
-    font-size: 21px;
-    line-height: 1.12;
-    letter-spacing: -0.2px;
-  }
-
-  .csw-arrow {
+  .cs-arrow {
+    color: var(--cs-coral);
     padding: 0 3px;
-    color: var(--csw-coral);
     font-weight: 700;
   }
 
-  .csw-statlab {
+  .cs-tile-v .cs-arrow {
+    padding: 0 2px;
+  }
+
+  .cs-qual {
+    display: inline-block;
+    color: var(--cs-body);
+    font-size: 0.74em;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .cs-stat.is-solo {
+    margin-bottom: 18px;
+  }
+
+  .cs-statlab {
     margin: 0 0 16px;
-    color: var(--csw-muted);
+    color: var(--cs-muted);
     font-size: 12.5px;
     line-height: 1.45;
   }
 
-  .csw-sum {
+  /* no link underneath any more, so the summary is the last thing on the
+     card and needs no bottom margin */
+  .cs-sum {
     margin: 0;
-    color: var(--csw-body);
+    color: var(--cs-body);
     font-size: 14px;
     line-height: 1.6;
   }
 
+  .cs-nav:focus-visible,
+  .cs-close:focus-visible,
+  .cs-cta:focus-visible {
+    outline: 2px solid var(--cs-coral);
+    outline-offset: 3px;
+  }
+
+  /* -------------------------------------------------------------- modal -- */
+  .cs-modal {
+    position: fixed;
+    z-index: 2147483000;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 20px;
+    font-family: var(--cs-font, inherit);
+  }
+
+  .cs-modal.is-open {
+    display: flex;
+  }
+
+  .cs-modal *,
+  .cs-modal *::before,
+  .cs-modal *::after {
+    box-sizing: border-box;
+  }
+
+  .cs-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 3, 33, 0.86);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    animation: cs-fade 0.2s ease both;
+  }
+
+  .cs-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(780px, 100%);
+    max-height: min(88vh, 900px);
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    color: var(--cs-text);
+    background: var(--cs-modal-bg);
+    border: 1px solid var(--cs-line);
+    border-radius: 20px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
+    animation: cs-rise 0.24s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+    scrollbar-width: thin;
+  }
+
+  .cs-dialog::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cs-a), var(--cs-b));
+  }
+
+  @keyframes cs-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes cs-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px) scale(0.985);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-card,
+    .cs-overlay,
+    .cs-dialog {
+      transition: none;
+      animation: none;
+    }
+
+    .cs-card:hover,
+    .cs-card:focus-visible {
+      transform: none;
+    }
+  }
+
+  .cs-inner {
+    padding: 56px 34px 34px;
+  }
+
+  .cs-topbar {
+    position: sticky;
+    top: 4px;
+    z-index: 3;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 8px;
+    height: 0;
+    padding: 0 16px;
+    pointer-events: none;
+  }
+
+  .cs-nav,
+  .cs-close {
+    margin-top: 14px;
+    pointer-events: auto;
+    display: flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0;
+    color: #c9d8e0;
+    background: rgba(19, 26, 60, 0.94);
+    border: 1px solid var(--cs-line);
+    border-radius: 50%;
+    font: inherit;
+    font-size: 17px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.18s ease, background 0.18s ease;
+  }
+
+  .cs-close {
+    font-size: 22px;
+  }
+
+  .cs-nav[hidden],
+  .cs-close[hidden] {
+    display: none;
+  }
+
+  .cs-topbar::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 0;
+    left: 0;
+    height: 62px;
+    background: linear-gradient(
+      to bottom,
+      var(--cs-modal-bg) 40%,
+      rgba(8, 12, 38, 0)
+    );
+    pointer-events: none;
+  }
+
+  .cs-nav:hover,
+  .cs-close:hover {
+    color: #fff;
+    background: #1e2650;
+  }
+
+  .cs-modal-person {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 0 0 22px;
+  }
+
+  .cs-modal-name {
+    margin: 0 0 3px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .cs-verify {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--cs-blue-lift);
+    color: color-mix(in srgb, var(--cs-a) 62%, #ffffff);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .cs-verify:hover,
+  .cs-verify:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  .cs-headline {
+    margin: 0 0 22px;
+    font-size: clamp(21px, 2.5vw, 27px);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
+  }
+
+  .cs-subhead {
+    margin: -8px 0 24px;
+    color: var(--cs-body);
+    font-size: 16.5px;
+    line-height: 1.55;
+  }
+
+  .cs-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs-tile {
+    padding: 18px 12px;
+    text-align: center;
+    background: var(--cs-tile-bg);
+    border: 1px solid var(--cs-line);
+    border-radius: 12px;
+  }
+
+  .cs-tile-v {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .cs-tile-l {
+    display: block;
+    margin-top: 5px;
+    color: var(--cs-muted);
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+
+  .cs-quote {
+    margin: 0 0 26px;
+    padding: 18px 20px;
+    color: #eef2ff;
+    background: var(--cs-tile-bg);
+    border: 0;
+    border-left: 3px solid color-mix(in srgb, var(--cs-a) 55%, #ffffff);
+    border-radius: 10px;
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.65;
+  }
+
+  .cs-quote.is-closing {
+    margin: 30px 0 0;
+  }
+
+  .cs-quote footer {
+    margin-top: 10px;
+    color: var(--cs-muted);
+    font-size: 13px;
+    font-style: normal;
+  }
+
+  .cs-proof {
+    display: grid;
+    gap: 16px;
+    margin: 30px 0 0;
+  }
+
+  .cs-proof figure {
+    margin: 0;
+  }
+
+  .cs-proof img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 440px;
+    object-fit: cover;
+    object-position: top center;
+    background: #ffffff;
+    border: 1px solid var(--cs-line);
+    border-radius: 10px;
+  }
+
+  .cs-proof figcaption {
+    margin-top: 8px;
+    color: var(--cs-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .cs-video {
+    position: relative;
+    margin: 30px 0 0;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background: #000;
+    border-radius: 12px;
+  }
+
+  .cs-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .cs-video.is-wistia {
+    padding-top: 0;
+  }
+
+  .cs-video wistia-player:not(:defined) {
+    display: block;
+    padding-top: 56.25%;
+    background: center / contain no-repeat var(--cs-swatch, none);
+    filter: blur(5px);
+  }
+
+  .cs-body {
+    color: var(--cs-body);
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  .cs-sec-label {
+    margin: 0 0 8px;
+    color: var(--cs-coral);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+
+  .cs-sec + .cs-sec {
+    margin-top: 24px;
+  }
+
+  .cs-sec p {
+    margin: 0 0 12px;
+  }
+
+  .cs-sec p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cs-sec ul {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+
+  .cs-sec li {
+    margin-bottom: 7px;
+  }
+
+  .cs-sec strong {
+    color: #fff;
+  }
+
+  .cs-sec .cs-pull {
+    margin: 18px 0;
+    padding-left: 16px;
+    color: #fff;
+    border-left: 2px solid color-mix(in srgb, var(--cs-a) 50%, #ffffff);
+    font-size: 15.5px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .cs-disclaimer {
+    margin: 24px 0 0;
+    color: var(--cs-muted);
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+
+  .cs-cta {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 14px 28px;
+    color: #ffffff;
+    background: var(--cs-blue);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(0, 56, 255, 0.35);
+    transition: filter 0.18s ease, transform 0.18s ease;
+  }
+
+  .cs-cta:hover {
+    filter: brightness(1.12);
+    transform: translateY(-2px);
+  }
+
+  /* --------------------------------------------------------- responsive -- */
   @media (max-width: 1080px) {
-    .csw-wrap.csw-wrap {
-      --csw-cols: 2;
-      --csw-max: 760px;
+    .cs-wrap.cs-wrap {
+      --cs-cols: 2;
+      --cs-max: 760px;
     }
   }
 
   @media (max-width: 620px) {
-    .csw-wrap.csw-wrap {
-      --csw-cols: 1;
-      --csw-max: 460px;
-      --csw-gap: 14px;
+    .cs-wrap.cs-wrap {
+      --cs-cols: 1;
+      --cs-max: 460px;
+      --cs-gap: 14px;
     }
 
-    .csw-card {
+    .cs-card {
       padding: 24px 20px 22px;
+    }
+
+    .cs-modal {
+      padding: 0;
+    }
+
+    .cs-dialog {
+      width: 100%;
+      max-height: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .cs-inner {
+      padding: 54px 20px 44px;
+    }
+
+    .cs-stats {
+      gap: 10px;
+    }
+
+    .cs-tile {
+      padding: 14px 8px;
+    }
+
+    .cs-tile-v {
+      font-size: 18px;
     }
   }
 </style>
 
-<div class="csw-wrap">
-  <ul class="csw-grid">
+<div class="cs-modal" id="cs-modal" hidden>
+  <div class="cs-overlay" data-cs-close></div>
 
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d0f27290fb04997ac.jpeg" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">LaRita W.</h3>
-            <p class="csw-cat">Former Classroom Teacher, Laid Off</p>
-          </div>
-        </div>
-        <p class="csw-stat">Laid Off Teacher <span class="csw-arrow">&rarr;</span> Sr. People Analyst at Roku</p>
-        <p class="csw-statlab">3 Months &middot; 5 Offers to Choose From</p>
-        <p class="csw-sum">She was already teaching herself SQL, Python, and Tableau, and she was still stuck. 3 months after building the stack in the right order she had dozens of interviews and 5 data analyst offers. She now mentors Data In Motion students herself.</p>
-      </article>
-    </li>
+  <div
+    class="cs-dialog"
+    id="cs-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cs-headline"
+    tabindex="-1"
+  >
+    <div class="cs-topbar">
+      <button class="cs-nav" type="button" id="cs-prev" aria-label="Previous case study">&#8249;</button>
+      <button class="cs-nav" type="button" id="cs-next" aria-label="Next case study">&#8250;</button>
+      <button class="cs-close" type="button" data-cs-close aria-label="Close case study">&times;</button>
+    </div>
 
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722cfad59e6cfed08185d.jpeg" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">Caitlin U.</h3>
-            <p class="csw-cat">Former High School Math Teacher, Texas</p>
-          </div>
-        </div>
-        <p class="csw-stat is-xlong">Math Teacher <span class="csw-arrow">&rarr;</span> Finance Analyst</p>
-        <p class="csw-statlab">Without Ever Applying &middot; Offer 1 Week After a Recruiter Found Her</p>
-        <p class="csw-sum">She never applied for the job. Her LinkedIn led with analyst instead of teacher, her Tableau projects were public on her profile, and a recruiter from Mustang Cat reached out to her. She had an offer within a week.</p>
-      </article>
-    </li>
-
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ed8cde54706c14ed492b.jfif" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">Catherine L.</h3>
-            <p class="csw-cat">Former Healthcare Operations</p>
-          </div>
-        </div>
-        <p class="csw-stat">Overwhelmed Job Search <span class="csw-arrow">&rarr;</span> Healthcare Data Analyst in 27 Days</p>
-        <p class="csw-statlab">Stayed in Healthcare, Changed What She Did in It &middot; Fastest Placement on Record</p>
-        <p class="csw-sum">Rewriting the resume, prepping interviews, fixing her online presence, all at once and no way to tell if any of it was working. Her mentor turned her operations experience into quantifiable impact. Offer in 27 days.</p>
-      </article>
-    </li>
-
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37741b35065942ea20.png" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">Jose M.</h3>
-            <p class="csw-cat">15 Years in Sales</p>
-          </div>
-        </div>
-        <p class="csw-stat">15 Years in Sales <span class="csw-arrow">&rarr;</span> Senior Business Analyst</p>
-        <p class="csw-statlab">Applied Monday. Offered Friday.</p>
-        <p class="csw-sum">Spent a year looking at programs and never enrolling, held in place by the fear that he was too far into his career to start over. Applied for a Senior Business Analyst role just to see what would happen. Offer in hand 4 days later.</p>
-      </article>
-    </li>
-
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8720df8f3f0ab510a57a37.jpeg" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">Jacinda L.</h3>
-            <p class="csw-cat">Former CDL A Truck Driver, FedEx Ground</p>
-          </div>
-        </div>
-        <p class="csw-stat">Truck Driver <span class="csw-arrow">&rarr;</span> Data Analyst in 90 Days</p>
-        <p class="csw-statlab">No Tech Background &middot; SQL, Python, Excel, Tableau</p>
-        <p class="csw-sum">She drove a truck for FedEx Ground. 90 days later her profile read Data Analyst, and the route optimization she had been doing behind the wheel was written down in a language a hiring manager could read.</p>
-      </article>
-    </li>
-
-    <li>
-      <article class="csw-card">
-        <div class="csw-person">
-          <span class="csw-avatar"><img src="https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f59c1e1ff9023ee421e.jpeg" alt="" loading="lazy" decoding="async"></span>
-          <div>
-            <h3 class="csw-name">Shantel W.</h3>
-            <p class="csw-cat">No Bachelor&rsquo;s Degree</p>
-          </div>
-        </div>
-        <p class="csw-stat">No Bachelor&rsquo;s Degree <span class="csw-arrow">&rarr;</span> A Role at Microsoft</p>
-        <p class="csw-statlab">Python Challenges Posted Publicly, Almost Daily, for Months</p>
-        <p class="csw-sum">She did not have the credential the job descriptions all ask for. She had reps. Python challenges completed and posted in public almost every day, for months, without waiting to feel ready. She landed a software engineering role at Microsoft.</p>
-      </article>
-    </li>
-
-  </ul>
+    <div class="cs-inner" id="cs-inner"><!-- detail renders here --></div>
+  </div>
 </div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ==========================================================================
+     1. CONFIG
+     ========================================================================== */
+  var CONFIG = {
+    deepLink: true,  // support /page#case=larita and update the hash on open
+    arrowKeys: true, // ← / → move between case studies while the modal is open
+
+    // Where every "Book a Free Call" button in the modal goes.
+    ctaHref: "https://datacareerblueprint.com/apply-page",
+
+    ctaUTM: false
+  };
+
+  /* ==========================================================================
+     2. CASE STUDIES (the 6 shown on this page)
+     ========================================================================== */
+  var CASE_STUDIES = [
+    {
+      id: "larita",
+      name: "LaRita W.",
+      category: "Former Classroom Teacher, Laid Off",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d0f27290fb04997ac.jpeg",
+      linkedin: "https://www.linkedin.com/in/laritawilliams/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Laid Off Teacher → Sr. People Analyst at Roku",
+      statLabel: "3 Months · 5 Offers to Choose From",
+      summary:
+        "She was already teaching herself SQL, Python, and Tableau, and she " +
+        "was still stuck. 3 months after building the stack in the right " +
+        "order she had dozens of interviews and 5 data analyst offers. She " +
+        "now mentors Data In Motion students herself.",
+      modal: {
+        name: "LaRita W., Roku",
+        category: "Former Classroom Teacher, Austin, Texas",
+        headline:
+          "Laid Off Teacher to Sr. People Analyst at Roku, With 5 Offers to " +
+          "Choose From",
+        stats: [
+          { value: "5", label: "Job Offers Received" },
+          { value: "Dozens", label: "Interviews" },
+          { value: "3 Months", label: "To 5 Offers" },
+          { value: "Student → Mentor", label: "Now a Senior Mentor at Data In Motion" }
+        ],
+        images: [
+          {
+            src: "", // TODO: upload the LinkedIn profile screenshot, paste URL
+            alt:
+              "LinkedIn profile of LaRita Williams, Sr. People Analyst at " +
+              "Roku, Austin, Texas, with 500+ connections. Listed companies " +
+              "are Roku and Georgia Institute of Technology.",
+            caption:
+              "The profile now used in Data In Motion trainings as the " +
+              "example of correct positioning."
+          },
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a87221d67ecc8731d244e78.png",
+            alt: "Roku’s own LinkedIn post featuring LaRita Williams as Sr. " +
+              "People Analyst on its People Shared Services team in " +
+              "Austin",
+            caption: "Roku posted this about her. She did not have to say it " +
+              "herself."
+          }
+        ],
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>LaRita was a classroom teacher, and then she was laid " +
+              "off.</p>" +
+
+              "<p>She did not sit still. By the time she found Data In " +
+              "Motion she was already teaching herself SQL, Python, and " +
+              "Tableau on her own. She had the discipline and she was " +
+              "putting in the hours.</p>" +
+
+              "<p>She was also stuck. No feedback on anything she produced, " +
+              "no sense of whether she was learning the right things or " +
+              "learning them in a useful order, and no idea what was " +
+              "missing. Effort was never the problem. Direction was.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Took the skills she was already building and put them in " +
+              "an order that produced a hireable analyst rather than a " +
+              "longer list of tutorials.</p>" +
+
+              "<ul>" +
+                "<li>Sequenced the stack deliberately: what to learn, in " +
+                "what order, and what to stop spending time on</li>" +
+                "<li>Gave her feedback on the work itself, which was the " +
+                "thing completely absent from teaching herself</li>" +
+                "<li>Rebuilt how she presented the skills. Her LinkedIn " +
+                "profile is now the example used in Data In Motion trainings " +
+                "for what correct positioning looks like</li>" +
+                "<li>Advanced SQL practice series to push past the level she " +
+                "had reached on her own</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>3 months later she had dozens of interviews and 5 data " +
+              "analyst job offers.</p>" +
+
+              "<p>Read that again. Five. She was not deciding whether to " +
+              "accept an offer. She was deciding which one to take, which " +
+              "meant she negotiated from leverage instead of relief.</p>" +
+
+              "<p>She is now Sr. People Analyst at Roku. Classroom to one of " +
+              "the largest companies in streaming.</p>" +
+
+              "<p>She also finished an advanced SQL practice series after she " +
+              "was already hired, and posted about it. She did not cram for " +
+              "an interview and stop. She kept leveling up, and she is now a " +
+              "senior mentor at Data In Motion, coaching students who are " +
+              "sitting exactly where she was.</p>" +
+
+              "<p>The part worth sitting with: the skills alone did not get " +
+              "her hired. She already had skills, and she was still stuck. " +
+              "What changed was the order she built them in, the feedback " +
+              "she got on them, and how she packaged and presented them once " +
+              "she had them.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    },
+
+    {
+      id: "caitlin",
+      name: "Caitlin U.",
+      category: "Former High School Math Teacher, Texas",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722cfad59e6cfed08185d.jpeg",
+      linkedin: "https://www.linkedin.com/in/caitlin-ursino/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Math Teacher → Finance Analyst",
+      statLabel:
+        "Without Ever Applying · Offer 1 Week After a Recruiter Found Her",
+      summary:
+        "She never applied for the job. Her LinkedIn led with analyst instead " +
+        "of teacher, her Tableau projects were public on her profile, and a " +
+        "recruiter from Mustang Cat reached out to her. She had an offer " +
+        "within a week.",
+      modal: {
+        name: "Caitlin U., Mustang Cat",
+        category: "Former High School Math Teacher, Sugar Land, Texas",
+        headline:
+          "High School Math Teacher to Finance Analyst, Without Ever " +
+          "Applying for the Job",
+        stats: [
+          { value: "0", label: "Applications Sent for This Role" },
+          { value: "1 Week", label: "Recruiter Contact to Offer" },
+          { value: "3", label: "Tableau Projects Public on Her Profile" },
+          { value: "Math Teacher", label: "Prior Career" }
+        ],
+        quote: {
+          text:
+            "Thank you to everyone who helped and supported me during my " +
+            "transition out of the classroom.",
+          author: "Caitlin U., Finance Analyst at Mustang Cat"
+        },
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8722d0ea6d6d189c7446ec.png",
+            alt: "Caitlin Ursino’s LinkedIn post announcing she is a finance " +
+              "analyst at Mustang Cat",
+            caption: ""
+          }
+        ],
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>Caitlin taught high school math in Sugar Land, Texas, and " +
+              "she wanted out of the classroom.</p>" +
+
+              "<p>The structural problem for a teacher looking at analyst " +
+              "roles is not effort. It is invisibility. A recruiter searching " +
+              "for analysts has no reason to surface a math teacher, and " +
+              "even if they did, there is nothing on the profile to look at. " +
+              "No proof, nothing built, no evidence she could do the work. " +
+              "She could apply into the void like everyone else, or she " +
+              "could become findable.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Made her discoverable, then gave recruiters something to " +
+              "find.</p>" +
+
+              "<ul>" +
+                "<li>Rewrote her LinkedIn headline analyst first: Data " +
+                "Analyst, Data Storyteller, transforming numbers into " +
+                "insights, using data to improve processes, SQL, Tableau, " +
+                "Excel, and only then former high school math teacher. Most " +
+                "career changers write that in the exact opposite order and " +
+                "disappear from search</li>" +
+                "<li>Built a banner that says analyst in the first 15 " +
+                "seconds someone spends on the page</li>" +
+                "<li>Put a portfolio link directly on her profile, above the " +
+                "fold, so proof was one click away rather than buried</li>" +
+                "<li>Had her publish real Tableau work into her Featured " +
+                "section as she built it: dynamic zone visibility, a " +
+                "dashboard using backgrounds and containers, and more</li>" +
+                "<li>Posted her projects publicly and inside the community " +
+                "while she was still learning, before she felt finished</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>A recruiter at Mustang Cat found her. She did not apply. " +
+              "She did not send a message. They reached out to her, and she " +
+              "had an offer as a finance analyst within a week.</p>" +
+
+              "<p>She announced it out of the classroom, tagged " +
+              "#transitioningteachers, and got 44 reactions and 20 comments " +
+              "from people watching a teacher do the thing they were trying " +
+              "to do.</p>" +
+
+              "<p>Her proof had been sitting in the open the whole time. " +
+              "That is the difference between being desperate and being " +
+              "discoverable. When the brand does the talking, the " +
+              "opportunities arrive instead of being chased.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    },
+
+    {
+      id: "katherine",
+      name: "Catherine L.",
+      category: "Former Healthcare Operations",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ed8cde54706c14ed492b.jfif",
+      linkedin: "https://www.linkedin.com/in/catherinelanger/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Overwhelmed Job Search → Healthcare Data Analyst in 27 Days",
+      statLabel:
+        "Stayed in Healthcare, Changed What She Did in It · Fastest " +
+        "Placement on Record",
+      summary:
+        "Rewriting the resume, prepping interviews, fixing her online " +
+        "presence, all at once and no way to tell if any of it was working. " +
+        "Her mentor turned her operations experience into quantifiable " +
+        "impact. Offer in 27 days.",
+      modal: {
+        name: "Catherine L., Healthcare Data Analyst",
+        category: "Former Healthcare Operations",
+        headline:
+          "Overwhelmed Job Search → Healthcare Data Analyst in 27 Days",
+        stats: [
+          { value: "27 Days", label: "Start to Offer" },
+          { value: "Fastest", label: "Placement on Record at Data In Motion" },
+          { value: "Healthcare", label: "Domain She Stayed In" },
+          { value: "Duties → Impact", label: "What Changed on Her Resume" }
+        ],
+        quote: {
+          text:
+            "For the first time, I wasn’t memorizing. I was " +
+            "communicating confidently.",
+          author: "Catherine L., Healthcare Data Analyst"
+        },
+        closingQuote: {
+          text:
+            "If you’re in a stressful search right now, remember you " +
+            "don’t have to do it alone.",
+          author: "Catherine L., Healthcare Data Analyst"
+        },
+        wistia: "p6g63rj9rj",
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a85ee005113a1715ffe5a69.jpg",
+            alt: "Catherine Langer’s LinkedIn post announcing she is " +
+              "starting as Healthcare Data Analyst at Kootenai Health",
+            caption: "65 reactions, 40 comments, 2 reposts."
+          }
+        ],
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              '<p class="cs-pull">&ldquo;When I started my job search for a ' +
+              "healthcare data analyst role, I was overwhelmed.&rdquo;</p>" +
+
+              "<p>Three jobs at once, all of them unfamiliar. Rewrite the " +
+              "resume. Prepare for interviews. Work out how to stand out " +
+              "online. Each one a project in itself, none of them the thing " +
+              "she was actually trained to do, and no way to tell whether " +
+              "any of it was working.</p>" +
+
+              "<p>She had healthcare operations behind her, and she had " +
+              "touched data. On paper it read as a list of duties. A hiring " +
+              "manager scanning it saw tasks performed, not results " +
+              "delivered, and there was no way to tell from the page whether " +
+              "she had improved anything. Her LinkedIn had the same problem, " +
+              "a timeline of jobs and nothing more.</p>" +
+
+              "<p>The experience was real. It was written down in a form " +
+              "that proved nothing.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Turned what she had already done into evidence, then " +
+              "prepared her to speak about it.</p>" +
+
+              "<ul>" +
+                "<li>Rewrote every resume bullet as quantifiable impact. In " +
+                "her words, it stopped being a list of duties and became " +
+                "proof of results: outcomes improved, workflows streamlined, " +
+                "decisions supported by data</li>" +
+                "<li>Rebuilt the LinkedIn from a timeline of jobs into a " +
+                "showcase of projects, certifications, and data " +
+                "storytelling</li>" +
+                "<li>Interview coaching on behavioral questions with " +
+                "structured STAR responses, and on technical questions in a " +
+                "way that sounded like her rather than a script</li>" +
+                "<li>Practical resources behind all of it: templates, " +
+                "training, mock interviews, project guidance, continuing " +
+                "education</li>" +
+                "<li>Mentors and peers who understood the stress of the " +
+                "search itself, which she names as the thing that mattered " +
+                "most</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>27 days from starting to a healthcare data analyst offer. " +
+              "The fastest placement Data In Motion has recorded.</p>" +
+
+              "<p>She did not leave healthcare. She changed what she does " +
+              "inside it, which meant her operations background stopped " +
+              "reading as a detour and started reading as the reason to hire " +
+              "her.</p>" +
+
+              '<p class="cs-pull">&ldquo;When I got my offer as a healthcare ' +
+              "data analyst, I realized it wasn&rsquo;t luck. It was " +
+              "preparation and community.&rdquo;</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    },
+
+    {
+      id: "jose",
+      name: "Jose M.",
+      category: "15 Years in Sales",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37741b35065942ea20.png",
+      linkedin: "https://www.linkedin.com/in/jose-martinez-b766b3359/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "15 Years in Sales → Senior Business Analyst",
+      statLabel: "Applied Monday. Offered Friday.",
+      summary:
+        "Spent a year looking at programs and never enrolling, held in place " +
+        "by the fear that he was too far into his career to start over. " +
+        "Applied for a Senior Business Analyst role just to see what would " +
+        "happen. Offer in hand 4 days later.",
+      modal: {
+        name: "Jose M.",
+        category: "15 Years in Sales, Career Changer",
+        headline:
+          "15 Years in Sales to Senior Business Analyst, Offered in 4 Days",
+        stats: [
+          { value: "Senior", label: "Title Level on First Role" },
+          { value: "4 Days", label: "Application to Offer" },
+          { value: "1", label: "Interview" },
+          { value: "15 Years", label: "Prior Career, Zero Tech Background" }
+        ],
+        quote: {
+          text:
+            "You’re really not starting over at a fresh start. " +
+            "You’re starting over with experience.",
+          author: "Jose M., Senior Business Analyst"
+        },
+        images: [
+          {
+            src: "", // TODO: upload the Thursday Slack screenshot, paste URL
+            alt:
+              "Slack message from Jose Martinez: applied for a Senior " +
+              "Business Analyst role on Monday just to see, was called back " +
+              "and interviewed that morning, follow up call tomorrow.",
+            caption: "Posted in the community the day of the interview."
+          },
+          {
+            src: "", // TODO: upload the Friday Slack screenshot, paste URL
+            alt:
+              "Slack message from Jose Martinez: offered the Senior Business " +
+              "Analyst position with a training start date of July 2nd.",
+            caption: "The next morning, 4 days after applying."
+          },
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870c37ad59e6cfede4065e.png",
+            alt: "Jose Martinez’s LinkedIn post about returning to school " +
+              "through Data In Motion",
+            caption: ""
+          }
+        ],
+        wistia: "udpai65364",
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>15 years in sales, most of it on the road. Then a bad " +
+              "accident, and the driving that had been the job for 15 years " +
+              "became a question he could not keep avoiding. He needed " +
+              "options and did not have any.</p>" +
+
+              "<p>He spent the following year looking at schools. Not " +
+              "applying, not enrolling. Looking. What kept him in place was " +
+              "not a lack of information.</p>" +
+
+              '<p class="cs-pull">&ldquo;I think with most of us that are ' +
+              "older, one of the big things is it&rsquo;s fear. We&rsquo;re " +
+              "like, man, I&rsquo;m starting all over.&rdquo;</p>" +
+
+              "<p>15 years of sales experience was not an asset he could " +
+              "use. On a resume aimed at data roles it read as 15 years of " +
+              "the wrong thing.</p>" +
+
+              "<p>He chose Data In Motion over the programs he had been " +
+              "circling for a year for 3 reasons: the 1-on-1 mentoring, the " +
+              "fact that the path was laid out end to end instead of handed " +
+              "over as a pile of courses, and the branding work.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>The plan was built around the problem he actually had, " +
+              "which was not skills. It was 15 years of experience that read " +
+              "as the wrong 15 years.</p>" +
+
+              "<ul>" +
+                "<li>1-on-1 mentoring with a plan built around his " +
+                "situation</li>" +
+                "<li>A structured path laid out end to end instead of a pile " +
+                "of courses to work through alone</li>" +
+                "<li>The branding module</li>" +
+                "<li><strong>The positioning statement</strong>, which " +
+                "reframed 15 years of sales into a reason to hire him for a " +
+                "data role instead of a reason to pass</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>He applied for 1 Senior Business Analyst role on a Monday. " +
+              "His words: &ldquo;just to see.&rdquo;</p>" +
+
+              "<p>Callback Wednesday. Interview Thursday morning. Offer " +
+              "Friday morning, 4 days after he applied, off a single " +
+              "interview.</p>" +
+
+              "<p>The title matters as much as the speed. Not junior " +
+              "analyst. Not entry level. Senior Business Analyst, on the way " +
+              "in, from a candidate with zero tech background and 15 years " +
+              "in an unrelated field.</p>" +
+
+              "<p>He starts training July 2nd.</p>" +
+
+              "<p>The part worth sitting with is that he applied " +
+              "&ldquo;just to see.&rdquo; He did not think he was ready. His " +
+              "positioning had already made him competitive before he " +
+              "believed he was.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    },
+
+    {
+      id: "jacinda",
+      name: "Jacinda L.",
+      category: "Former CDL A Truck Driver, FedEx Ground",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a8720df8f3f0ab510a57a37.jpeg",
+      linkedin: "https://www.linkedin.com/in/jacindal321/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "Truck Driver → Data Analyst in 90 Days",
+      statLabel: "No Tech Background · SQL, Python, Excel, Tableau",
+      summary:
+        "She drove a truck for FedEx Ground. 90 days later her profile read " +
+        "Data Analyst, and the route optimization she had been doing behind " +
+        "the wheel was written down in a language a hiring manager could " +
+        "read.",
+      modal: {
+        category: "Former CDL A Truck Driver, Troy, Alabama",
+        headline: "Truck Driver → Data Analyst in 90 Days",
+        stats: [
+          { value: "90 Days", label: "Start to Data Analyst" },
+          { value: "CDL A Truck Driver", label: "Prior Career" },
+          {
+            value: "10%",
+            label:
+              "Delivery Reduction She Drove With Route Data, Before Anyone " +
+              "Called It Analysis"
+          },
+          {
+            value: "SQL, Python, Excel, Tableau",
+            label: "Stack Built From Zero"
+          }
+        ],
+        video: "https://www.loom.com/embed/6a035187106e4561b9c772e45bb5e58d",
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>Jacinda drove a truck. CDL Class A, full time at FedEx " +
+              "Ground, out of Brooklyn.</p>" +
+
+              "<p>There is no version of that resume that gets read by a " +
+              "company hiring analysts. Not because she could not do the " +
+              "work, but because nothing on the page said she could. 11 " +
+              "months of driving, a CDL, doubles and triples endorsements, " +
+              "and zero signal to anyone screening for data roles.</p>" +
+
+              "<p>Here is the part worth stopping on. She had already been " +
+              "doing analysis. She was using GPS data to look at travel " +
+              "times and work out better routes. Nobody had ever called that " +
+              "analysis, least of all her, and it certainly was not written " +
+              "down anywhere in those terms.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Built the technical stack from zero, and translated the " +
+              "work she had already done into language the market " +
+              "recognizes.</p>" +
+
+              "<ul>" +
+                "<li>SQL, Python, Excel, and Tableau, starting from no " +
+                "technical background at all</li>" +
+                "<li>Rewrote the FedEx role as what it actually was. The " +
+                "bullet on her profile now reads that she used GPS data to " +
+                "analyze travel time and optimize routes, reducing average " +
+                "scheduled deliveries by 10 percent. Same job, same 11 " +
+                "months, finally described in a way a hiring manager can " +
+                "evaluate</li>" +
+                "<li>Repositioned the profile analyst first. Headline reads " +
+                "Data Analyst with the 4 tools, and the banner says Data " +
+                "Analyst before anyone reads a word</li>" +
+                "<li>Attached a number to the outcome, because a claim " +
+                "without a figure is an opinion</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>90 days from starting to a profile that reads Data " +
+              "Analyst, with SQL, Python, Excel, and Tableau behind it.</p>" +
+
+              "<p>The translation is the mechanism here, and it is the one " +
+              "most career changers never do. Jacinda did not invent " +
+              "experience she did not have. She had genuinely reduced " +
+              "scheduled deliveries by 10 percent using route data. What " +
+              "changed is that it went from being something she did on the " +
+              "job to something documented in terms an employer could " +
+              "assess.</p>" +
+
+              "<p>Almost everyone has a version of this. The nurse who " +
+              "tracked patient outcomes. The manager who built the " +
+              "spreadsheet the whole team relied on. The driver who figured " +
+              "out the faster route. The work is real. It is just sitting in " +
+              "a language nobody hiring for data roles is reading, and " +
+              "translating it is a learnable process rather than a " +
+              "talent.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    },
+
+    {
+      id: "shantel",
+      name: "Shantel W.",
+      category: "No Bachelor’s Degree",
+      avatar: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f59c1e1ff9023ee421e.jpeg",
+      linkedin: "https://www.linkedin.com/in/shantel-williams-software-developer/",
+      accent: "#0038ff",
+      accent2: "#ff6240",
+      stat: "No Bachelor’s Degree → A Role at Microsoft",
+      statLabel:
+        "Python Challenges Posted Publicly, Almost Daily, for Months",
+      summary:
+        "She did not have the credential the job descriptions all ask for. " +
+        "She had reps. Python challenges completed and posted in public " +
+        "almost every day, for months, without waiting to feel ready. She " +
+        "landed a software engineering role at Microsoft.",
+      modal: {
+        name: "Shantel W., Microsoft",
+        category: "Software Engineer",
+        headline:
+          "No Bachelor’s Degree → A Software Engineering Role at " +
+          "Microsoft",
+        stats: [
+          { value: "No Degree", label: "What She Did Not Have" },
+          { value: "Microsoft", label: "Where She Landed" },
+          { value: "Daily", label: "How Often She Posted Her Work" },
+          { value: "Months", label: "How Long She Kept It Up" }
+        ],
+        images: [
+          {
+            src: "https://assets.cdn.filesafe.space/AAXZRurOCCMZK3EneJA7/media/6a870f5fad59e6cfede7fd9a.png",
+            alt: "Shantel Williams’s LinkedIn post announcing she is " +
+              "starting at Microsoft as a Software Engineer",
+            caption: "Her profile headline reads Software Engineer at Microsoft."
+          }
+        ],
+        sections: [
+          {
+            label: "Their path before DIM",
+            html:
+              "<p>Shantel did not have a bachelor&rsquo;s degree.</p>" +
+
+              "<p>Almost every posting she would have looked at listed one " +
+              "as a requirement, which meant the filter came before anyone " +
+              "ever looked at what she could do. No degree, no interview, no " +
+              "chance to prove anything. The credential was standing where " +
+              "the evidence should have been.</p>"
+          },
+          {
+            label: "What we did",
+            html:
+              "<p>Built the evidence that made the credential beside the " +
+              "point.</p>" +
+
+              "<ul>" +
+                "<li>Python challenges from the challenge library, worked " +
+                "one at a time</li>" +
+                "<li>Had her post the work publicly almost every day, " +
+                "unfinished and imperfect, rather than waiting until it " +
+                "looked good enough. Months of it</li>" +
+                "<li>Community around her on the days motivation was not " +
+                "there, which is where people learning alone actually " +
+                "fail</li>" +
+                "<li>Turned the accumulation into a visible track record, so " +
+                "what a recruiter saw was months of dated, public, working " +
+                "code rather than a line on a resume that was not " +
+                "there</li>" +
+              "</ul>"
+          },
+          {
+            label: "Results",
+            html:
+              "<p>She landed a software engineering role at Microsoft.</p>" +
+
+              "<p>No degree. One of the largest technology companies in the " +
+              "world.</p>" +
+
+              "<p>The mechanism was not talent and it was not a shortcut. It " +
+              "was daily reps done in public over months. The challenges " +
+              "supplied the practice, posting supplied the visibility, and " +
+              "the community supplied the reason to keep going on the days " +
+              "she did not want to.</p>" +
+
+              "<p>She did not start special. She started consistent.</p>"
+          }
+        ],
+        cta: { text: "Book a Free Call" },
+        disclaimer:
+          "Individual results vary. Outcomes depend on effort, prior " +
+          "experience, and market conditions. Not all students secure offers."
+      }
+    }
+  ];
+
+  /* ==========================================================================
+     3. ENGINE: no need to touch anything below this line
+     ========================================================================== */
+  if (window.__csCaseStudiesLive) return;
+  window.__csCaseStudiesLive = true;
+
+  var modal = document.getElementById("cs-modal");
+  var dialog = document.getElementById("cs-dialog");
+  var inner = document.getElementById("cs-inner");
+  var prevBtn = document.getElementById("cs-prev");
+  var nextBtn = document.getElementById("cs-next");
+
+  if (!modal) return;
+
+  var current = -1;
+  var active = [];
+  var lastFocus = null;
+  var scrollLocked = false;
+
+  function esc(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function initials(name) {
+    return String(name || "")
+      .replace(/\(.*?\)/g, "")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (w) { return w.charAt(0).toUpperCase(); })
+      .join("");
+  }
+
+  function avatarHTML(cs) {
+    if (cs.avatar) {
+      return '<span class="cs-avatar"><img src="' + esc(cs.avatar) +
+        '" alt="" loading="lazy" decoding="async"></span>';
+    }
+    return '<span class="cs-avatar" aria-hidden="true">' +
+      esc(initials(cs.name)) + "</span>";
+  }
+
+  function addScript(src, isModule) {
+    if (document.querySelector(
+      'script[data-cs-src="' + src + '"], script[src="' + src + '"]'
+    )) return;
+    var el = document.createElement("script");
+    el.src = src;
+    el.async = true;
+    el.setAttribute("data-cs-src", src);
+    if (isModule) el.type = "module";
+    document.head.appendChild(el);
+  }
+
+  function ensureWistia(id) {
+    addScript("https://fast.wistia.com/player.js", false);
+    addScript("https://fast.wistia.com/embed/" + id + ".js", true);
+  }
+
+  function arrows(safeHTML) {
+    return safeHTML.replace(/→/g, '<span class="cs-arrow">→</span>');
+  }
+
+  function statHTML(safeHTML) {
+    return arrows(safeHTML).replace(
+      /\(([^)]*)\)/g,
+      '<span class="cs-qual">($1)</span>'
+    );
+  }
+
+  function quoteHTML(q, extraClass) {
+    return '<blockquote class="cs-quote' + (extraClass ? " " + extraClass : "") +
+      '">&ldquo;' + esc(q.text) + "&rdquo;" +
+      (q.author ? "<footer>" + esc(q.author) + "</footer>" : "") +
+      "</blockquote>";
+  }
+
+  /* ---------------------------------------------------------------- cards -- */
+  function listFor(mount) {
+    var raw = (mount.getAttribute("data-cs") || "").trim();
+    if (!raw) return CASE_STUDIES.map(function (c, i) { return i; });
+
+    var ids = CASE_STUDIES.map(function (c) { return c.id; });
+    var out = [];
+
+    raw.split(",").forEach(function (part) {
+      var i = ids.indexOf(part.trim());
+      if (i > -1 && out.indexOf(i) < 0) out.push(i);
+    });
+
+    return out;
+  }
+
+  /* No "Full case study" link: the card itself is the button. role, tabindex
+     and aria-label keep it reachable and announced for keyboard and screen
+     reader users, which the link used to handle. */
+  function renderCards(mount, list) {
+    mount.className = "cs-mount cs-wrap" +
+      (list.length < 3 ? " cs-n" + list.length : "");
+
+    mount.innerHTML = '<ul class="cs-grid">' + list.map(function (i) {
+      var cs = CASE_STUDIES[i];
+      var len = String(cs.stat).length;
+      var longStat = len > 30 ? " is-xxlong"
+        : len > 18 ? " is-xlong"
+        : len > 11 ? " is-long" : "";
+      if (!cs.statLabel) longStat += " is-solo";
+
+      return (
+        '<li>' +
+          '<article class="cs-card" data-cs-index="' + i + '" ' +
+            'role="button" tabindex="0" aria-haspopup="dialog" ' +
+            'aria-label="Read ' + esc(cs.name) + '’s full story" ' +
+            'style="--cs-a:' + esc(cs.accent) + ";--cs-b:" +
+            esc(cs.accent2 || cs.accent) + '">' +
+            '<div class="cs-person">' +
+              avatarHTML(cs) +
+              "<div>" +
+                '<h3 class="cs-name">' + esc(cs.name) + "</h3>" +
+                '<p class="cs-cat">' + esc(cs.category) + "</p>" +
+              "</div>" +
+            "</div>" +
+            '<p class="cs-stat' + longStat + '">' + statHTML(esc(cs.stat)) +
+              "</p>" +
+            (cs.statLabel
+              ? '<p class="cs-statlab">' + esc(cs.statLabel) + "</p>"
+              : "") +
+            '<p class="cs-sum">' + esc(cs.summary) + "</p>" +
+          "</article>" +
+        "</li>"
+      );
+    }).join("") + "</ul>";
+  }
+
+  function ctaHref(cta, cs) {
+    var href = cta.href || CONFIG.ctaHref || "#";
+    if (!CONFIG.ctaUTM || href.charAt(0) === "#" || !cs.id) return href;
+
+    return href + (href.indexOf("?") > -1 ? "&" : "?") +
+      "utm_source=website&utm_medium=case-study" +
+      "&utm_campaign=student-stories&utm_content=" +
+      encodeURIComponent(cs.id);
+  }
+
+  /* ---------------------------------------------------------------- modal -- */
+  function renderModal(i) {
+    var cs = CASE_STUDIES[i];
+    var m = cs.modal || {};
+    var html = "";
+
+    dialog.style.setProperty("--cs-a", cs.accent);
+    dialog.style.setProperty("--cs-b", cs.accent2 || cs.accent);
+
+    html +=
+      '<div class="cs-modal-person">' + avatarHTML(cs) +
+        "<div>" +
+          '<p class="cs-modal-name">' + esc(m.name || cs.name) + "</p>" +
+          '<p class="cs-cat">' + esc(m.category || cs.category) + "</p>" +
+          (cs.linkedin
+            ? '<a class="cs-verify" href="' + esc(cs.linkedin) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              "Verify on LinkedIn ↗</a>"
+            : "") +
+        "</div>" +
+      "</div>";
+
+    html += '<h2 class="cs-headline" id="cs-headline">' +
+      arrows(esc(m.headline || cs.stat + ": " + cs.name)) + "</h2>";
+
+    if (m.subhead) {
+      html += '<p class="cs-subhead">' + esc(m.subhead) + "</p>";
+    }
+
+    if (m.stats && m.stats.length) {
+      html += '<ul class="cs-stats">' + m.stats.map(function (s) {
+        return '<li class="cs-tile"><span class="cs-tile-v">' +
+          arrows(esc(s.value)) + '</span><span class="cs-tile-l">' +
+          esc(s.label) + "</span></li>";
+      }).join("") + "</ul>";
+    }
+
+    if (m.quote && m.quote.text) html += quoteHTML(m.quote, "");
+
+    var secs = (m.sections || []).filter(function (s) {
+      return s && s.html && s.html.trim();
+    });
+
+    if (secs.length) {
+      html += '<div class="cs-body">' + secs.map(function (s) {
+        return '<div class="cs-sec"><p class="cs-sec-label">' + esc(s.label) +
+          "</p>" + s.html + "</div>";
+      }).join("") + "</div>";
+    }
+
+    if (m.closingQuote && m.closingQuote.text) {
+      html += quoteHTML(m.closingQuote, "is-closing");
+    }
+
+    var imgs = (m.images || []).filter(function (im) { return im && im.src; });
+
+    if (imgs.length) {
+      html += '<div class="cs-proof">' + imgs.map(function (im) {
+        return "<figure><img src=\"" + esc(im.src) + '" alt="' +
+          esc(im.alt || "") + '" loading="lazy" decoding="async">' +
+          (im.caption ? "<figcaption>" + esc(im.caption) + "</figcaption>" : "") +
+          "</figure>";
+      }).join("") + "</div>";
+    }
+
+    if (m.wistia) {
+      ensureWistia(m.wistia);
+      html += '<div class="cs-video is-wistia">' +
+        '<wistia-player media-id="' + esc(m.wistia) +
+        '" aspect="1.7777777777777777" style="--cs-swatch:url(' +
+        "'https://fast.wistia.com/embed/medias/" + esc(m.wistia) +
+        "/swatch')\"></wistia-player></div>";
+    } else if (m.video) {
+      html += '<div class="cs-video"><iframe src="' + esc(m.video) +
+        '" title="' + esc(cs.name) + ' case study video" loading="lazy" ' +
+        'allow="autoplay; fullscreen; picture-in-picture" ' +
+        "allowfullscreen></iframe></div>";
+    }
+
+    if (m.cta && m.cta.text) {
+      html += '<a class="cs-cta" href="' + esc(ctaHref(m.cta, cs)) + '">' +
+        esc(m.cta.text) + "</a>";
+    }
+
+    if (m.disclaimer) {
+      html += '<p class="cs-disclaimer">' + esc(m.disclaimer) + "</p>";
+    }
+
+    inner.innerHTML = html;
+    current = i;
+
+    var multiple = active.length > 1;
+    prevBtn.hidden = !multiple;
+    nextBtn.hidden = !multiple;
+
+    if (CONFIG.deepLink && cs.id) {
+      try {
+        history.replaceState(null, "", "#case=" + cs.id);
+      } catch (e) { /* file:// or blocked history, harmless */ }
+    }
+  }
+
+  function lockScroll() {
+    if (scrollLocked) return;
+    var bar = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.overflow = "hidden";
+    if (bar > 0) document.body.style.paddingRight = bar + "px";
+    scrollLocked = true;
+  }
+
+  function unlockScroll() {
+    if (!scrollLocked) return;
+    document.documentElement.style.overflow = "";
+    document.body.style.paddingRight = "";
+    scrollLocked = false;
+  }
+
+  function open(i, list) {
+    if (i < 0 || i >= CASE_STUDIES.length) return;
+    active = list && list.length ? list : [i];
+    lastFocus = document.activeElement;
+    renderModal(i);
+    modal.hidden = false;
+    modal.classList.add("is-open");
+    lockScroll();
+    dialog.scrollTop = 0;
+    dialog.focus();
+  }
+
+  function close() {
+    if (!modal.classList.contains("is-open")) return;
+    modal.classList.remove("is-open");
+    modal.hidden = true;
+    inner.innerHTML = "";
+    unlockScroll();
+    current = -1;
+
+    if (CONFIG.deepLink && /#case=/.test(location.hash)) {
+      try {
+        history.replaceState(null, "", location.pathname + location.search);
+      } catch (e) { /* noop */ }
+    }
+
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function step(delta) {
+    if (current < 0 || !active.length) return;
+    var at = active.indexOf(current);
+    if (at < 0) return;
+    var n = active.length;
+    var i = active[((at + delta) % n + n) % n];
+    renderModal(i);
+    dialog.scrollTop = 0;
+    dialog.focus();
+  }
+
+  function openFromCard(card) {
+    var mount = card.closest(".cs-mount");
+    open(Number(card.getAttribute("data-cs-index")),
+      mount ? listFor(mount) : null);
+  }
+
+  /* ---------------------------------------------------------------- events -- */
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    var card = e.target.closest("[data-cs-index]");
+    if (!card) return;
+    if (e.target.closest("a")) return;
+    openFromCard(card);
+  });
+
+  /* Enter / Space on a focused card opens it, the way the old link button
+     did for keyboard users */
+  document.addEventListener("keydown", function (e) {
+    if (modal.classList.contains("is-open")) return;
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var card = e.target.closest && e.target.closest("[data-cs-index]");
+    if (!card || card !== e.target) return;
+    e.preventDefault();
+    openFromCard(card);
+  });
+
+  modal.addEventListener("click", function (e) {
+    if (e.target.closest("[data-cs-close]")) close();
+  });
+
+  prevBtn.addEventListener("click", function () { step(-1); });
+  nextBtn.addEventListener("click", function () { step(1); });
+
+  document.addEventListener("keydown", function (e) {
+    if (!modal.classList.contains("is-open")) return;
+
+    if (e.key === "Escape") {
+      close();
+      return;
+    }
+
+    if (CONFIG.arrowKeys && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) {
+      if (e.key === "ArrowLeft") { step(-1); return; }
+      if (e.key === "ArrowRight") { step(1); return; }
+    }
+
+    if (e.key !== "Tab") return;
+
+    var f = dialog.querySelectorAll(
+      'a[href], button:not([disabled]):not([hidden]), iframe, [tabindex]:not([tabindex="-1"])'
+    );
+    var list = Array.prototype.filter.call(f, function (el) {
+      return el.offsetParent !== null || el === dialog;
+    });
+    if (!list.length) return;
+
+    var first = list[0];
+    var last = list[list.length - 1];
+
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
+  /* ------------------------------------------------------------------ boot -- */
+  if (modal.parentNode !== document.body) document.body.appendChild(modal);
+
+  function scan() {
+    var found = [].slice.call(document.querySelectorAll(".cs-mount"));
+    var lists = [];
+
+    found.forEach(function (mount) {
+      var list = listFor(mount);
+      lists.push(list);
+      if (mount.getAttribute("data-cs-ready")) return;
+      renderCards(mount, list);
+      mount.setAttribute("data-cs-ready", "1");
+    });
+
+    return lists;
+  }
+
+  function deepLink(lists) {
+    if (!CONFIG.deepLink || current > -1) return;
+
+    var match = /#case=([\w-]+)/.exec(location.hash);
+    if (!match) return;
+
+    var idx = CASE_STUDIES.map(function (c) { return c.id; }).indexOf(match[1]);
+    if (idx < 0) return;
+
+    var owner = null;
+    lists.forEach(function (l) {
+      if (!owner && l.indexOf(idx) > -1) owner = l;
+    });
+
+    open(idx, owner);
+  }
+
+  function boot() { deepLink(scan()); }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("load", function () { deepLink(scan()); });
+})();
+</script>

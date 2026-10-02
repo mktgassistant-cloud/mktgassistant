@@ -968,7 +968,11 @@
      1. CONFIG
      ========================================================================== */
   var CONFIG = {
-    deepLink: true,  // support /page#case=ronnie and update the hash on open
+    /* Off. With it on, opening a card puts #case=amanda in the address bar,
+       which looks like the visitor was sent somewhere even though the page
+       never changed, and it leaves a trail in the back button. Turn it back
+       on only where shareable links to one case study are worth that. */
+    deepLink: false,
     arrowKeys: true, // ← / → move between case studies while the modal is open
 
     // Where every "Book a Free Call" button goes. One place, all 15 cards.
@@ -1011,11 +1015,15 @@
     // form.typeform.com/to/01KVR..., which is not a form and bounces to
     // Typeform's "incorrect URL" page, which is a popup that opens onto
     // nothing.
-    // Empty, so the button is a plain redirect to ctaHref. Put a form id
-    // back in here and it opens in the lightbox instead, without leaving
-    // the page. Note the two are different forms: the lightbox one was
-    // QDe2w79Q, the redirect above goes to GQwNt5sA.
-    ctaTypeform: "",
+    /* true: Book a Free Call opens ctaHref in a lightbox over the page, so
+       nobody ever leaves. false: it navigates there like a normal link.
+       Works with any form URL that allows framing, which Typeform does. */
+    ctaInPage: true,
+
+    /* Show the "Verify on LinkedIn" link under the name in a case study.
+       It opens in a new tab rather than navigating away, but it is still a
+       link off the site, so it is off here. */
+    showVerify: false,
 
     // Turn on to have the console explain every CTA click: whether the embed
     // loaded, whether the popup opened, or why it fell back to the link.
@@ -2847,26 +2855,21 @@
   /* Forward whatever campaign parameters the page was opened with, then add
      which case study produced the click. Typeform reads these off the query
      string straight into its hidden fields. */
+  /* Same URL the button points at, so there is only ever one to maintain,
+     plus the embed flag and anything the page was opened with. */
   function formURL(cardId) {
-    var base = "https://form.typeform.com/to/" + encodeURIComponent(CONFIG.ctaTypeform);
+    var href = ctaHref({}, { id: cardId });   // already carries utm_content
+    var add = ["typeform-embed=popup-blank"];
     var search = window.location.search || "";
-    var out = {};
 
-    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-      "gclid"].forEach(function (key) {
-      var hit = new RegExp("[?&]" + key + "=([^&#]*)").exec(search);
-      if (hit) out[key] = decodeURIComponent(hit[1].replace(/\+/g, " "));
-    });
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"]
+      .forEach(function (key) {
+        if (new RegExp("[?&]" + key + "=").test(href)) return;  // already set
+        var hit = new RegExp("[?&]" + key + "=([^&#]*)").exec(search);
+        if (hit) add.push(key + "=" + hit[1]);
+      });
 
-    var field = CONFIG.ctaUTMField || "utm_content";
-    if (CONFIG.ctaUTM && cardId && !out[field]) out[field] = cardId;
-
-    var qs = ["typeform-embed=popup-blank"];
-    Object.keys(out).forEach(function (k) {
-      qs.push(encodeURIComponent(k) + "=" + encodeURIComponent(out[k]));
-    });
-
-    return base + "?" + qs.join("&");
+    return href + (href.indexOf("?") > -1 ? "&" : "?") + add.join("&");
   }
 
   function buildFormBox() {
@@ -2878,8 +2881,10 @@
           'aria-label="Close the form">&times;</button>' +
         '<iframe title="Application form" allow="camera; microphone; ' +
           'autoplay; encrypted-media;"></iframe>' +
-        '<a class="cs-form-alt" href="' + esc(CONFIG.ctaHref || "#") + '">' +
-          "Trouble loading? Open the application page</a>" +
+        (CONFIG.showFormFallback === false ? "" :
+          '<a class="cs-form-alt" href="' + esc(CONFIG.ctaHref || "#") +
+          '" target="_blank" rel="noopener noreferrer">' +
+          "Trouble loading? Open the form in a new tab</a>") +
       "</div>";
 
     el.addEventListener("click", function (e) {
@@ -3033,7 +3038,7 @@
         "<div>" +
           '<p class="cs-modal-name">' + esc(m.name || cs.name) + "</p>" +
           '<p class="cs-cat">' + esc(m.category || cs.category) + "</p>" +
-          (cs.linkedin
+          (cs.linkedin && CONFIG.showVerify
             ? '<a class="cs-verify" href="' + esc(cs.linkedin) +
               '" target="_blank" rel="noopener noreferrer">' +
               "Verify on LinkedIn ↗</a>"
@@ -3201,9 +3206,9 @@
     var cta = e.target.closest(".cs-cta");
     if (!cta) return;
 
-    log("CTA clicked. form id:", CONFIG.ctaTypeform || "(none)");
+    log("CTA clicked. in page:", !!CONFIG.ctaInPage);
 
-    if (!CONFIG.ctaTypeform) return;        // plain link, let it navigate
+    if (!CONFIG.ctaInPage) return;          // plain link, let it navigate
 
     // let people open the apply page in a new tab if they want to
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.which === 2) return;

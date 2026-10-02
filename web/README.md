@@ -89,6 +89,30 @@ If your account's code element strips `<script>`, put the `<style>` + modal
 markup in the code element and paste the `<script>` block into
 **Settings → Tracking Code → Footer** instead. Nothing else changes.
 
+## Keeping people on the page
+
+Three switches at the top of `CONFIG` decide whether anything can take a
+visitor away. All three are currently set so nothing does.
+
+| Switch | Now | What the other setting does |
+|---|---|---|
+| `deepLink` | `false` | `true` puts `#case=amanda` in the address bar when a card opens. The page never actually changes, but it reads like a redirect and leaves a back button trail. |
+| `ctaInPage` | `true` | `false` makes Book a Free Call a normal link that navigates to `ctaHref`. |
+| `showVerify` | `false` | `true` shows the "Verify on LinkedIn" link under the name in a case study. New tab, so it does not navigate away, but it is still a link off the site. |
+
+With these settings a visitor can open all fifteen case studies, watch the
+videos, read the proof screenshots and fill in the application without the
+address bar ever changing. Verified: 0 main frame navigations.
+
+The one external `href` left in the markup is on the CTA itself. It is never
+followed, because the click handler cancels it and opens the lightbox
+instead. It is there so the button still works if the script fails, and so
+a deliberate cmd or middle click can open the form in a new tab, which
+leaves the page itself open. Delete `ctaHref` from the anchor if you want it
+gone entirely, at the cost of that fallback.
+
+Videos and proof screenshots are embeds and images, never links.
+
 ## Pre-rendering
 
 The per-group builds ship with their cards already written out as HTML, so a

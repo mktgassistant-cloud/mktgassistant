@@ -1,0 +1,478 @@
+<!--
+  $100K Work-From-Home Skill Audit
+  Paste this whole file into a GoHighLevel "Custom HTML/Javascript" element
+  on https://datacareerblueprint.com/mass-market-opt-in-page
+  Settings to fill in are in the CONFIG block near the bottom.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* Data Career Blueprint / Data in Motion brand. Everything is scoped to #dcb-audit. */
+  html, body, .hl_page-preview--content { background: #07080d !important; }
+  .c-section, .c-row, .c-column { background: transparent !important; }
+  #dcb-audit {
+    --bg: #07080d;
+    --panel: #0d1336;
+    --line: rgba(102, 126, 234, .28);
+    --ink: #ffffff;
+    --muted: #a3abc4;
+    --blue: #0038ff;
+    --violet: #667eea;
+    --coral: #ff6240;
+    --green: #37ca37;
+    --radius: 14px;
+    background: radial-gradient(1200px 600px at 50% -200px, rgba(0, 56, 255, .18), transparent 70%), var(--bg);
+    color: var(--ink);
+    font: 17px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-align: left;
+    min-height: 100vh;
+  }
+  #dcb-audit *, #dcb-audit *::before, #dcb-audit *::after { box-sizing: border-box; }
+  #dcb-audit .dcb-wrap { max-width: 600px; margin: 0 auto; padding: 22px 16px 40px; }
+  #dcb-audit .dcb-logo { display: block; width: 64px; height: 64px; margin: 0 auto 22px; border-radius: 50%; box-shadow: 0 0 28px rgba(24, 139, 246, .35); }
+  #dcb-audit .dcb-screen { display: none; }
+  #dcb-audit .dcb-screen.dcb-active { display: block; animation: dcb-fade .25s ease; }
+  @keyframes dcb-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  #dcb-audit h1, #dcb-audit h2, #dcb-audit h3, #dcb-audit p { color: var(--ink); font-family: inherit; padding: 0; }
+  #dcb-audit .dcb-eyebrow { display: block; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--coral); margin-bottom: 12px; }
+  #dcb-audit h1 { font-size: 34px; line-height: 1.1; font-weight: 900; letter-spacing: -.025em; margin: 0 0 14px; text-align: center; }
+  #dcb-audit h2 { font-size: 23px; line-height: 1.25; font-weight: 800; letter-spacing: -.01em; margin: 0 0 18px; }
+  #dcb-audit h3 { font-size: 17px; line-height: 1.4; font-weight: 800; margin: 26px 0 10px; }
+  #dcb-audit p { font-size: 17px; line-height: 1.6; margin: 0 0 12px; }
+  #dcb-audit em { font-style: normal; color: var(--violet); font-weight: 600; }
+  #dcb-audit b { font-weight: 700; }
+  #dcb-audit .dcb-sub { color: var(--muted); font-size: 18px; text-align: center; margin: 0 auto 20px; max-width: 520px; }
+  #dcb-audit .dcb-checks { list-style: none; padding: 0; margin: 0 auto 24px; max-width: 360px; }
+  #dcb-audit .dcb-checks li { padding-left: 30px; position: relative; margin-bottom: 8px; font-weight: 600; }
+  #dcb-audit .dcb-checks li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--coral); font-weight: 900; font-size: 18px; }
+
+  /* GoHighLevel form sits in a white card, same as on the main site */
+  #dcb-audit .dcb-form-card { background: #fff; border-radius: var(--radius); padding: 6px; box-shadow: 0 10px 40px rgba(0, 56, 255, .25); min-height: 380px; }
+  #dcb-audit .dcb-form-card iframe { display: block; width: 100%; min-height: 380px; border: none; border-radius: 8px; }
+  #dcb-audit .dcb-trust { text-align: center; color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  #dcb-audit .dcb-panel { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 22px; overflow: hidden; }
+  #dcb-audit .dcb-panel::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--violet), var(--coral)); }
+
+  #dcb-audit .dcb-btn {
+    display: block; width: 100%; text-align: center; text-decoration: none; cursor: pointer; white-space: normal;
+    font: inherit; font-weight: 800; font-size: 18px; line-height: 1.3; color: #fff;
+    background: linear-gradient(135deg, var(--blue), #2952e3); border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 10px; padding: 17px 18px; box-shadow: 0 6px 24px rgba(0, 56, 255, .45); transition: transform .08s, box-shadow .15s;
+  }
+  #dcb-audit .dcb-btn:hover { color: #fff; text-decoration: none; box-shadow: 0 8px 32px rgba(0, 56, 255, .6); }
+  #dcb-audit .dcb-btn:active { transform: translateY(1px); }
+  #dcb-audit .dcb-arrow { color: var(--coral); }
+
+  /* Quiz */
+  #dcb-audit .dcb-progress { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+  #dcb-audit .dcb-bar { height: 6px; background: rgba(255, 255, 255, .08); border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
+  #dcb-audit .dcb-bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--violet)); transition: width .3s ease; }
+  #dcb-audit .dcb-opts { display: grid; gap: 10px; }
+  #dcb-audit .dcb-opt {
+    display: block; width: 100%; text-align: left; font: inherit; font-size: 17px; line-height: 1.45; color: var(--ink);
+    background: rgba(255, 255, 255, .03); border: 1.5px solid var(--line); border-radius: 10px;
+    padding: 15px 16px; margin: 0; cursor: pointer; white-space: normal; transition: border-color .15s, background .15s;
+  }
+  @media (hover: hover) { #dcb-audit .dcb-opt:hover { border-color: var(--violet); background: rgba(102, 126, 234, .08); } }
+  #dcb-audit .dcb-opt.dcb-picked { border-color: var(--violet); background: rgba(102, 126, 234, .18); font-weight: 700; }
+  #dcb-audit .dcb-back { background: none; border: 0; color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; padding: 0; }
+  #dcb-audit .dcb-back[hidden] { visibility: hidden; display: inline; }
+
+  /* Loading */
+  #dcb-audit .dcb-loading { text-align: center; padding: 40px 0; }
+  #dcb-audit .dcb-spinner { width: 46px; height: 46px; border: 4px solid rgba(255, 255, 255, .1); border-top-color: var(--violet); border-radius: 50%; margin: 0 auto 18px; animation: dcb-spin .8s linear infinite; }
+  @keyframes dcb-spin { to { transform: rotate(360deg); } }
+
+  /* Result */
+  #dcb-audit .dcb-score { text-align: center; margin-bottom: 20px; }
+  #dcb-audit .dcb-dial { width: 136px; height: 136px; border-radius: 50%; margin: 0 auto 10px; display: grid; place-items: center;
+    background: conic-gradient(var(--dial-color) calc(var(--p) * 1%), rgba(255, 255, 255, .08) 0); }
+  #dcb-audit .dcb-dial > div { width: 110px; height: 110px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-size: 32px; font-weight: 900; }
+  #dcb-audit .dcb-score small { color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  #dcb-audit .dcb-result h1 { font-size: 29px; }
+  #dcb-audit .dcb-strength { background: rgba(102, 126, 234, .1); border-left: 3px solid var(--coral); padding: 12px 14px; border-radius: 8px; margin: 18px 0; }
+  #dcb-audit .dcb-skills { list-style: none; padding: 0; margin: 0 0 8px; }
+  #dcb-audit .dcb-skills li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; background: rgba(255, 255, 255, .02); }
+  #dcb-audit .dcb-skills li.dcb-top { border-color: var(--green); background: rgba(55, 202, 55, .08); }
+  #dcb-audit .dcb-skills b { display: block; }
+  #dcb-audit .dcb-skills span { color: var(--muted); font-size: 15px; }
+  #dcb-audit .dcb-steps p { margin-bottom: 6px; }
+  #dcb-audit .dcb-cta { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+  #dcb-audit .dcb-note { text-align: center; color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  #dcb-audit .dcb-disclaimer { color: #6b7391; font-size: 12px; text-align: center; margin-top: 26px; line-height: 1.5; }
+
+  @media (min-width: 640px) {
+    #dcb-audit .dcb-wrap { padding-top: 40px; }
+    #dcb-audit .dcb-panel { padding: 36px 34px; }
+    #dcb-audit h1 { font-size: 42px; }
+    #dcb-audit .dcb-result h1 { font-size: 34px; }
+  }
+</style>
+
+<div id="dcb-audit">
+  <div class="dcb-wrap">
+    <img class="dcb-logo" src="data:image/webp;base64,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" alt="Data in Motion" width="64" height="64">
+
+    <!-- 1. OPT-IN (GoHighLevel form) -->
+    <section class="dcb-screen dcb-active" id="dcb-optin">
+      <span class="dcb-eyebrow">FREE 60-SECOND AUDIT</span>
+      <h1>The $100K Work-From-Home Skill Audit</h1>
+      <p class="dcb-sub">Find out which remote skill you already have the best shot at, and which one could actually replace your income.</p>
+      <ul class="dcb-checks">
+        <li>Takes about 60 seconds</li>
+        <li>No tech background needed</li>
+        <li>Get your personalized skill score + next steps</li>
+      </ul>
+      <div class="dcb-form-card" id="dcb-form-card"></div>
+      <p class="dcb-trust">No spam. Unsubscribe anytime.</p>
+    </section>
+
+    <!-- 2. QUIZ -->
+    <section class="dcb-screen dcb-panel" id="dcb-quiz">
+      <div class="dcb-progress">
+        <button class="dcb-back" id="dcb-back" type="button">← Back</button>
+        <span id="dcb-qcount">Question 1 of 7</span>
+      </div>
+      <div class="dcb-bar"><span id="dcb-bar"></span></div>
+      <h2 id="dcb-qtext"></h2>
+      <div class="dcb-opts" id="dcb-opts"></div>
+    </section>
+
+    <!-- 3. LOADING -->
+    <section class="dcb-screen dcb-panel" id="dcb-loading">
+      <div class="dcb-loading">
+        <div class="dcb-spinner"></div>
+        <p><b>Scoring your answers…</b></p>
+        <p style="color:var(--muted);font-size:15px">Comparing you against 4 work-from-home paths.</p>
+      </div>
+    </section>
+
+    <!-- 4. RESULT -->
+    <section class="dcb-screen dcb-panel dcb-result" id="dcb-result"></section>
+
+    <p class="dcb-disclaimer">Results vary. Income figures reflect what some people in these roles earn and are not a promise or guarantee of earnings. Your results depend on your effort, experience and the job market.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+/* ==========================================================
+   SETTINGS: fill these in before going live
+   ========================================================== */
+const CONFIG = {
+  // GoHighLevel opt-in form ("Mass Market Lead Mag Opt In")
+  ghlFormId: "jHLG6cDRBPe9IeZiC6m4",
+  ghlDomain: "https://go.datacareerblueprint.com",
+
+  // GoHighLevel Workflow "Inbound Webhook" URL. Receives the quiz score,
+  // tier and answers so the right follow-up email goes out.
+  // Leave empty to test the page without sending anything.
+  webhookUrl: "",
+
+  // High tier button
+  callUrl: "[CALENDAR LINK]",
+  // Medium tier button
+  vslUrl: "[VSL LINK]",
+  vslMinutes: "[XX]",
+  // Low tier button (an existing YouTube video)
+  videoUrl: "[YOUTUBE VIDEO LINK]",
+  videoTitle: "How to Land Your First Remote Job",
+};
+
+/* ==========================================================
+   QUESTIONS + POINTS (0-3 each, max 21)
+   ========================================================== */
+const QUESTIONS = [
+  { id: "q1_situation", text: "What best describes your current work situation?", options: [
+    ["I'm working full-time, but I'm underpaid or burned out", 2],
+    ["I'm not working right now (between jobs, at home, or in school)", 1],
+    ["My job already has me working with numbers, reports, orders or customer info", 3],
+    ["I do part-time or gig work", 1],
+  ]},
+  { id: "q2_spreadsheets", text: "How comfortable are you with spreadsheets like Excel or Google Sheets?", options: [
+    ["Basic: I can type in info and make simple lists", 1],
+    ["Pretty good: I've built budgets, trackers or charts", 3],
+    ["I've never really used them", 0],
+    ["Comfortable: I can sort, filter and use simple formulas like SUM", 2],
+  ]},
+  { id: "q3_problems", text: "When you have to solve a problem, how do you usually approach it?", options: [
+    ["I look up the steps and follow them", 1],
+    ["I look at the facts or numbers first, then decide", 3],
+    ["I ask someone else to handle it", 0],
+    ["I break it into pieces and try things until it works", 2],
+  ]},
+  { id: "q4_time", text: "How much time could you realistically put into building a new skill each week?", options: [
+    ["3–5 hours", 1],
+    ["Less than 2 hours", 0],
+    ["10+ hours", 3],
+    ["5–10 hours", 2],
+  ]},
+  { id: "q5_priority", text: "What matters most to you right now?", options: [
+    ["A stable remote job with real benefits", 2],
+    ["Making some extra cash on the side, fast", 0],
+    ["A career that could replace or double my income", 3],
+    ["Flexibility: working from home on my own schedule", 1],
+  ]},
+  { id: "q6_personality", text: "Which of these sounds most like you?", options: [
+    ["I'm organized. I keep things on track.", 1, "organized"],
+    ["I'm curious. I like figuring out why things happen.", 3, "curious"],
+    ["I'm a people person. I'd rather talk than sit at a computer.", 0, "people"],
+    ["I notice details. I can tell when something looks off.", 2, "details"],
+  ]},
+  { id: "q7_data_interest", text: "Have you ever thought about a career in data, analytics, or tech?", options: [
+    ["It's crossed my mind", 2],
+    ["Never thought about it, but I'm open", 1],
+    ["Yes, I've looked into it or started learning", 3],
+    ["Not really. Tech isn't my thing.", 0],
+  ]},
+];
+
+const STRENGTH_LINES = {
+  organized: "You're organized. That's the #1 thing companies look for when they hand someone their numbers.",
+  curious: "You like figuring out <em>why</em> things happen. That's exactly what companies pay analysts to do.",
+  people: "You're good with people. That matters more than you think: the best number people can explain what they found.",
+  details: "You notice when something looks off. That's the skill that catches costly mistakes in a company's numbers.",
+};
+
+/* ==========================================================
+   SCORING
+   ========================================================== */
+function scoreAudit(answers) {
+  const total = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a][1], 0);
+  let tier = total >= 16 ? "high" : total >= 10 ? "medium" : "low";
+  let percent = Math.round(total / 21 * 100);
+
+  // Override rules: never used spreadsheets, or under 2 hrs/week -> max Medium
+  const neverSheets = QUESTIONS[1].options[answers[1]][1] === 0;
+  const noTime = QUESTIONS[3].options[answers[3]][1] === 0;
+  let capped = false;
+  if (tier === "high" && (neverSheets || noTime)) {
+    tier = "medium";
+    percent = Math.min(percent, 71);
+    capped = true;
+  }
+  const strengthKey = QUESTIONS[5].options[answers[5]][2];
+  return { total, percent, tier, capped, strengthKey };
+}
+
+/* ==========================================================
+   RESULT PAGES
+   ========================================================== */
+function resultHTML(r, name) {
+  const hi = name ? `Hi ${name},` : "Hi there,";
+  const strength = `<div class="dcb-strength">${STRENGTH_LINES[r.strengthKey]}</div>`;
+  const dialColor = { high: "#37ca37", medium: "#667eea", low: "#ff6240" }[r.tier];
+  const dial = `
+    <div class="dcb-score">
+      <div class="dcb-dial" style="--p:${r.percent};--dial-color:${dialColor}"><div>${r.percent}%</div></div>
+      <small>Your Data Analytics Fit Score</small>
+    </div>`;
+
+  if (r.tier === "high") return `${dial}
+    <h1>You're closer to a $100K remote career than you think.</h1>
+    <p>${hi}</p>
+    <p>Your answers put you in the top group of people who take this audit.</p>
+    <p>You already think in a way most companies pay a lot for. You look at the facts. You like knowing <em>why</em>. You're not scared of a spreadsheet.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="dcb-skills">
+      <li class="dcb-top"><b>🥇 Business number analysis</b><span>Best fit. Highest income ceiling.</span></li>
+      <li><b>🥈 Freelance research</b></li>
+      <li><b>🥉 Virtual assisting</b></li>
+    </ul>
+    <h3>What "business number analysis" actually means</h3>
+    <p>Companies are full of numbers: sales, customers, costs, orders. Most of them don't know what those numbers are telling them.</p>
+    <p>People who can look at those numbers and say "here's what's working, here's what's not, here's what to do next" get paid well, and a lot of them do it from home. Experienced people in these roles can earn $100K or more.</p>
+    <p>You don't need a degree in it. You need the right next steps in the right order.</p>
+    <div class="dcb-cta">
+      <p><b>Your next step:</b> Book a free 20-minute Clarity Call. We'll look at your results together and map out what your path to a remote analytics role could look like, including how long it would realistically take <em>you</em>.</p>
+      <a class="dcb-btn" href="${CONFIG.callUrl}" data-cta="clarity_call">Book My Free Clarity Call <span class="dcb-arrow">→</span></a>
+      <p class="dcb-note">No pressure, no hard sell. If it's not a fit, we'll tell you.</p>
+    </div>`;
+
+  if (r.tier === "medium") return `${dial}
+    <h1>You already have pieces of a high-income remote skill.</h1>
+    <p>${hi}</p>
+    <p>Good news: you're further along than most people who take this audit.</p>
+    <p>You've got some of the habits that remote companies pay for. You're just missing a few pieces to turn them into real income.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="dcb-skills">
+      <li><b>Data entry / virtual assisting / freelance research</b><span>You could start here now.</span></li>
+      <li class="dcb-top"><b>Business number analysis</b><span>Your strongest long-term play.</span></li>
+    </ul>
+    <h3>Here's the honest truth about those first three</h3>
+    <p>They're real jobs, and you could probably land one. But most of them top out around $15–$25 an hour, and you're competing with thousands of people for each gig.</p>
+    <p><b>Business number analysis</b> is different. You'd be the person who looks at a company's numbers and tells them what to do next. It uses the same skills you already have, taken one step further, and the pay ceiling is a lot higher.</p>
+    <div class="dcb-cta">
+      <p><b>Your next step:</b> Watch this short video. It shows how regular people (no tech background) go from "decent with spreadsheets" to getting paid to analyze business numbers from home.</p>
+      <a class="dcb-btn" href="${CONFIG.vslUrl}" data-cta="vsl">▶ Watch the Free Video <span class="dcb-arrow">→</span></a>
+      <p class="dcb-note">About ${CONFIG.vslMinutes} minutes. Watch it before you apply to another $15/hour gig.</p>
+    </div>`;
+
+  return `${dial}
+    <h1>You're just getting started.</h1>
+    <p>${hi}</p>
+    <p>That's not a bad thing. Everyone who works from home started exactly where you are now.</p>
+    <p>Your best move right now isn't to chase the highest-paying skill. It's to land your <b>first</b> remote paycheck, then build from there.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="dcb-skills">
+      <li class="dcb-top"><b>1. Beginner remote work</b><span>Like customer support or online admin. Easiest to start.</span></li>
+      <li><b>2. Data entry</b><span>A great first step. It gets you comfortable with spreadsheets.</span></li>
+      <li><b>3. Business number analysis</b><span>Your "next level" once you've got the basics.</span></li>
+    </ul>
+    <h3>Here's the path that works</h3>
+    <div class="dcb-steps">
+      <p><b>Step 1:</b> Get a simple remote job and get comfortable working online.</p>
+      <p><b>Step 2:</b> Get good with spreadsheets. (Data entry teaches you this while paying you.)</p>
+      <p><b>Step 3:</b> Learn to analyze business numbers. That's where the $100K jobs are.</p>
+    </div>
+    <div class="dcb-cta">
+      <p><b>Your next step:</b> Watch this free video. It walks you through how to land your first remote job, even with no experience.</p>
+      <a class="dcb-btn" href="${CONFIG.videoUrl}" data-cta="youtube_video">▶ Watch: ${CONFIG.videoTitle} <span class="dcb-arrow">→</span></a>
+      <p class="dcb-note">Free. Opens on YouTube.</p>
+    </div>`;
+}
+
+/* ==========================================================
+   LEAD INFO
+   The GoHighLevel form creates the contact, then redirects back to
+   this page with ?step=quiz. Name/email are picked up from the URL
+   when GoHighLevel passes them.
+   ========================================================== */
+const params = new URLSearchParams(location.search);
+const clean = v => (v && !/[{}]/.test(v)) ? v.trim() : "";
+const lead = {
+  first_name: clean(params.get("first_name")) || clean(params.get("name")).split(" ")[0],
+  email: clean(params.get("email")),
+  phone: clean(params.get("phone")),
+  page_url: location.href.split("?")[0],
+};
+["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
+  if (params.get(k)) lead[k] = params.get(k);
+});
+
+function send(event, data) {
+  const payload = { event, submitted_at: new Date().toISOString(), ...lead, ...data };
+  if (!CONFIG.webhookUrl) { console.log("[test mode] would send:", payload); return; }
+  try {
+    fetch(CONFIG.webhookUrl, {
+      method: "POST",
+      mode: "no-cors",
+      keepalive: true,
+      body: new URLSearchParams(payload),
+    });
+  } catch (e) { console.warn("Lead send failed", e); }
+}
+
+/* ==========================================================
+   PAGE FLOW
+   ========================================================== */
+const el = id => document.getElementById("dcb-" + id);
+const answers = [];
+let current = 0;
+
+function show(id) {
+  document.querySelectorAll("#dcb-audit .dcb-screen").forEach(s => s.classList.toggle("dcb-active", s.id === "dcb-" + id));
+  el(id).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+const escapeHTML = s => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function startQuiz() {
+  if (el("quiz").classList.contains("dcb-active")) return;
+  renderQuestion();
+  show("quiz");
+}
+
+function mountForm() {
+  const id = CONFIG.ghlFormId;
+  el("form-card").innerHTML = `
+    <iframe src="${CONFIG.ghlDomain}/widget/form/${id}" id="inline-${id}"
+      data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value=""
+      data-activation-type="alwaysActivated" data-activation-value=""
+      data-deactivation-type="neverDeactivate" data-deactivation-value=""
+      data-form-name="Mass Market Lead Mag Opt In" data-height="400"
+      data-layout-iframe-id="inline-${id}" data-form-id="${id}"
+      title="Mass Market Lead Mag Opt In"></iframe>`;
+  const s = document.createElement("script");
+  s.src = `${CONFIG.ghlDomain}/js/form_embed.js`;
+  document.body.appendChild(s);
+
+  // Backup in case the redirect isn't set: the form saves the contact to
+  // the page ("set-sticky-contacts") right after a successful submit.
+  window.addEventListener("message", e => {
+    if (e.origin !== CONFIG.ghlDomain || !Array.isArray(e.data)) return;
+    if (e.data[0] === "set-sticky-contacts") setTimeout(startQuiz, 1500);
+  });
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  el("qcount").textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  el("bar").style.width = `${(current / QUESTIONS.length) * 100}%`;
+  el("back").hidden = current === 0;
+  el("qtext").textContent = q.text;
+  el("opts").innerHTML = "";
+  q.options.forEach(([label], i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "dcb-opt" + (answers[current] === i ? " dcb-picked" : "");
+    b.textContent = label;
+    b.addEventListener("click", () => pick(i, b));
+    el("opts").appendChild(b);
+  });
+}
+
+let locked = false;
+function pick(i, btn) {
+  if (locked) return;
+  locked = true;
+  answers[current] = i;
+  btn.classList.add("dcb-picked");
+  setTimeout(() => {
+    locked = false;
+    if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+    else finish();
+  }, 220);
+}
+
+el("back").addEventListener("click", () => {
+  if (current > 0) { current--; renderQuestion(); }
+});
+
+function finish() {
+  el("bar").style.width = "100%";
+  const r = scoreAudit(answers);
+  const answerData = {};
+  QUESTIONS.forEach((q, i) => { answerData[q.id] = q.options[answers[i]][0]; });
+
+  send("audit_complete", {
+    audit_score: r.percent,
+    audit_points: r.total,
+    audit_tier: r.tier,
+    audit_capped: r.capped ? "yes" : "no",
+    strength_line: STRENGTH_LINES[r.strengthKey].replace(/<[^>]+>/g, ""),
+    ...answerData,
+  });
+
+  show("loading");
+  setTimeout(() => {
+    el("result").innerHTML = resultHTML(r, escapeHTML(lead.first_name));
+    el("result").querySelectorAll("[data-cta]").forEach(a =>
+      a.addEventListener("click", () => send("cta_click", { cta: a.dataset.cta, audit_tier: r.tier }))
+    );
+    show("result");
+  }, 1400);
+}
+
+if (params.get("step") === "quiz") startQuiz();
+else mountForm();
+})();
+</script>

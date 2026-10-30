@@ -471,9 +471,9 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 3. Quiz tool sends tags + fields to the ESP, which fires the matching Email 1.
 4. Calendar bookings tag the subscriber `booked-clarity-call` to stop the sequence.
 
-**The page:** `funnels/skill-audit/index.html` (+ `logo.png`) is the whole funnel, styled to match datacareerblueprint.com.
+**The page:** `funnels/skill-audit/ghl-custom-html.html` is the whole funnel, styled to match datacareerblueprint.com. Paste it into a Custom HTML/Javascript element on https://datacareerblueprint.com/mass-market-opt-in-page. Styles are scoped to `#dcb-audit` and the script is self-contained, so it won't clash with the GoHighLevel page.
 - Step 1 embeds the GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`), which creates the contact.
-- In GoHighLevel, set that form's **On Submit → Redirect URL** to this page with `?step=quiz` on the end, e.g. `https://YOUR-PAGE-URL/?step=quiz`. (It currently redirects to the Roadmap PDF.) If you can, add `&first_name={{contact.first_name}}&email={{contact.email}}` so the result page greets them by name and the quiz results can be matched to the contact. The page ignores those values if GoHighLevel doesn't fill them in.
+- In GoHighLevel, set that form's **On Submit → Redirect URL** to this page with `?step=quiz` on the end, `https://datacareerblueprint.com/mass-market-opt-in-page?step=quiz`. (It currently redirects to the Roadmap PDF.) If you can, add `&first_name={{contact.first_name}}&email={{contact.email}}` so the result page greets them by name and the quiz results can be matched to the contact. The page ignores those values if GoHighLevel doesn't fill them in.
 - Backup: if the redirect isn't set, the page also starts the quiz when the form reports a successful submit.
 - Quiz results go to `CONFIG.webhookUrl` (a GoHighLevel Workflow "Inbound Webhook" trigger) as `audit_complete` (email, score, tier, strength line, every answer) and `cta_click`.
 

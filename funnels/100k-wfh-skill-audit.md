@@ -132,7 +132,7 @@ The difference between people who make $80K+ in this field and people who stay s
 
 **Your next step:** Watch the free training. It walks you through the exact roadmap from where you are now to a $100K+ data + AI career, including the mistakes that slow most people down.
 
-> **[ ▶ Watch the Free Training → ]** → `[VSL LINK]`
+> **[ ▶ Watch the Free Training → ]** → `https://datacareerblueprint.com`
 
 ### High (15–21)
 
@@ -195,7 +195,7 @@ Your answers show you're not starting from zero. You already have some of the pi
 
 That's exactly what the free training covers:
 
-**[Watch the Free Training →]([VSL LINK])**
+**[Watch the Free Training →](https://datacareerblueprint.com)**
 
 Watch it before you apply to another $15/hour job.
 

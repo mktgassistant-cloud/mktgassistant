@@ -239,7 +239,7 @@ That third step is where most people get stuck. They don't know which skills mat
 
 **Want the roadmap?** Watch our free training. It shows how regular people with no tech background make the switch into data analytics, step by step.
 
-> **[ ▶ Watch the Free Training → ]** `[VSL LINK]`
+> **[ ▶ Watch the Free Training → ]** `https://datacareerblueprint.com`
 
 ---
 
@@ -271,7 +271,7 @@ Here's the simplest plan we know:
 **Not sure if you're ready for #10?** Retake the $100K Work-From-Home Skill Audit in a few weeks. Watch your score go up as your skills grow.
 
 > **[ Retake the Audit → ]** `https://datacareerblueprint.com/mass-market-opt-in-page`
-> **[ ▶ Watch the Free Training → ]** `[VSL LINK]`
+> **[ ▶ Watch the Free Training → ]** `https://datacareerblueprint.com`
 
 ---
 

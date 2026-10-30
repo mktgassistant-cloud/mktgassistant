@@ -10,7 +10,7 @@ import pathlib
 import subprocess
 
 HERE = pathlib.Path(__file__).parent
-VSL_URL = "[VSL LINK]"
+VSL_URL = "https://datacareerblueprint.com"
 AUDIT_URL = "https://datacareerblueprint.com/mass-market-opt-in-page"
 
 JOBS = [

@@ -95,6 +95,7 @@
   #dcb-audit .dcb-dial > div { width: 110px; height: 110px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-size: 32px; font-weight: 900; }
   #dcb-audit .dcb-score small { color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
   #dcb-audit .dcb-result h1 { font-size: 29px; }
+  #dcb-audit .dcb-result .dcb-eyebrow { margin-top: 4px; }
   #dcb-audit .dcb-strength { background: rgba(102, 126, 234, .1); border-left: 3px solid var(--coral); padding: 12px 14px; border-radius: 8px; margin: 18px 0; }
   #dcb-audit .dcb-skills { list-style: none; padding: 0; margin: 0 0 8px; }
   #dcb-audit .dcb-skills li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; background: rgba(255, 255, 255, .02); }
@@ -123,14 +124,9 @@
     <section class="dcb-screen dcb-active" id="dcb-landing">
       <span class="dcb-eyebrow">FREE 60-SECOND AUDIT</span>
       <h1>The $100K Work-From-Home Skill Audit</h1>
-      <p class="dcb-sub">Find out which remote skill you already have the best shot at, and which one could actually replace your income.</p>
-      <ul class="dcb-checks">
-        <li>Takes about 60 seconds</li>
-        <li>No tech background needed</li>
-        <li>Get your personalized skill score + next steps</li>
-      </ul>
-      <button class="dcb-btn" id="dcb-start" type="button">Show Me My Highest-Paying Remote Skill <span class="dcb-arrow">→</span></button>
-      <p class="dcb-trust">Free. 7 quick questions. No sign-up to start.</p>
+      <p class="dcb-sub">Find out which remote skill you already have the best shot at - and which one could actually replace your income.</p>
+      <button class="dcb-btn" id="dcb-start" type="button">Start My 60-Second Audit <span class="dcb-arrow">→</span></button>
+      <p class="dcb-trust">Free. 7 quick questions. No tech background needed.</p>
     </section>
 
     <!-- 2. QUIZ -->
@@ -147,8 +143,8 @@
     <!-- 3. FORM (GoHighLevel) -->
     <section class="dcb-screen" id="dcb-gate">
       <span class="dcb-eyebrow">✓ AUDIT COMPLETE</span>
-      <h1>Your results are ready!</h1>
-      <p class="dcb-sub">Enter your info to see your skill score and the remote skill you have the best shot at. We'll email you a copy too.</p>
+      <h1>Where should we send your result?</h1>
+      <p class="dcb-sub">Enter your first name and email to see your result now. We'll send you a copy too.</p>
       <div class="dcb-form-card" id="dcb-form-card"></div>
       <p class="dcb-trust">No spam. Unsubscribe anytime.</p>
     </section>
@@ -187,9 +183,8 @@ const CONFIG = {
   // Medium tier button
   vslUrl: "[VSL LINK]",
   vslMinutes: "[XX]",
-  // Low tier button (an existing YouTube video)
-  videoUrl: "[YOUTUBE VIDEO LINK]",
-  videoTitle: "How to Land Your First Remote Job",
+  // Low tier button (free "Top 10 Remote Jobs" PDF guide)
+  guideUrl: "[TOP 10 REMOTE JOBS PDF LINK]",
 };
 
 /* ==========================================================
@@ -282,69 +277,66 @@ function resultHTML(r, name) {
     </div>`;
 
   if (r.tier === "high") return `${dial}
-    <h1>You're closer to a $100K remote career than you think.</h1>
+    <span class="dcb-eyebrow">YOUR BEST-FIT SKILL</span>
+    <h1>You're built for Data Analytics</h1>
     <p>${hi}</p>
     <p>Your answers put you in the top group of people who take this audit.</p>
-    <p>You already think in a way most companies pay a lot for. You look at the facts. You like knowing <em>why</em>. You're not scared of a spreadsheet.</p>
+    <p>You look at the facts before you decide. You're comfortable in a spreadsheet. And you have time to put into a new skill. That's the kind of person companies hire to make sense of their numbers.</p>
     ${strength}
-    <h3>Your best-fit remote skills</h3>
+    <h3>What the work actually looks like</h3>
     <ul class="dcb-skills">
-      <li class="dcb-top"><b>🥇 Business number analysis</b><span>Best fit. Highest income ceiling.</span></li>
-      <li><b>🥈 Freelance research</b></li>
-      <li><b>🥉 Virtual assisting</b></li>
+      <li><b>Dig into a company's numbers</b><span>Sales, customers, costs, orders.</span></li>
+      <li><b>Spot what's working and what isn't</b><span>And why.</span></li>
+      <li><b>Explain it in plain English</b><span>So the people in charge can make better decisions.</span></li>
     </ul>
-    <h3>What "business number analysis" actually means</h3>
-    <p>Companies are full of numbers: sales, customers, costs, orders. Most of them don't know what those numbers are telling them.</p>
-    <p>People who can look at those numbers and say "here's what's working, here's what's not, here's what to do next" get paid well, and a lot of them do it from home. Experienced people in these roles can earn $100K or more.</p>
-    <p>You don't need a degree in it. You need the right next steps in the right order.</p>
+    <h3>Why this is your path</h3>
+    <p>You don't need a degree or a tech background. You need the right skills, in the right order, and proof you can do the work.</p>
+    <p>Experienced people in data analytics can earn $100K or more, and a lot of these jobs are remote.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Book a free 20-minute Clarity Call. We'll look at your results together and map out what your path to a remote analytics role could look like, including how long it would realistically take <em>you</em>.</p>
+      <p><b>Your next step:</b> Book a free 20-minute Clarity Call. We'll go over your result and map out what your path into data analytics could look like, including how long it would realistically take <em>you</em>.</p>
       <a class="dcb-btn" href="${CONFIG.callUrl}">Book My Free Clarity Call <span class="dcb-arrow">→</span></a>
       <p class="dcb-note">No pressure, no hard sell. If it's not a fit, we'll tell you.</p>
     </div>`;
 
   if (r.tier === "medium") return `${dial}
-    <h1>You already have pieces of a high-income remote skill.</h1>
+    <span class="dcb-eyebrow">YOUR HIGHEST-LEVERAGE SKILL</span>
+    <h1>Data Analytics</h1>
     <p>${hi}</p>
-    <p>Good news: you're further along than most people who take this audit.</p>
-    <p>You've got some of the habits that remote companies pay for. You're just missing a few pieces to turn them into real income.</p>
+    <p>You could probably land admin or data entry work right now. But your answers show you have more to work with than that.</p>
     ${strength}
-    <h3>Your best-fit remote skills</h3>
+    <h3>What data analytics actually is</h3>
+    <p>Every company is full of numbers: sales, customers, costs. Most don't know what those numbers are telling them.</p>
+    <p>A data analyst looks at those numbers and tells the company what's working, what isn't, and what to do next. It's mostly laptop work, and a lot of it is remote.</p>
+    <h3>Why it's your highest-leverage skill</h3>
     <ul class="dcb-skills">
-      <li><b>Data entry / virtual assisting / freelance research</b><span>You could start here now.</span></li>
-      <li class="dcb-top"><b>Business number analysis</b><span>Your strongest long-term play.</span></li>
+      <li><b>Admin / data entry</b><span>Fast to start. Usually tops out around $15–$25 an hour, with thousands of people competing for each job.</span></li>
+      <li class="dcb-top"><b>Data analytics</b><span>Takes longer to learn. Experienced people can earn $100K or more. Builds on habits you already have.</span></li>
     </ul>
-    <h3>Here's the honest truth about those first three</h3>
-    <p>They're real jobs, and you could probably land one. But most of them top out around $15–$25 an hour, and you're competing with thousands of people for each gig.</p>
-    <p><b>Business number analysis</b> is different. You'd be the person who looks at a company's numbers and tells them what to do next. It uses the same skills you already have, taken one step further, and the pay ceiling is a lot higher.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Watch this short video. It shows how regular people (no tech background) go from "decent with spreadsheets" to getting paid to analyze business numbers from home.</p>
+      <p><b>Your next step:</b> Watch this short video. It shows how regular people, with no tech background, make the switch into data analytics.</p>
       <a class="dcb-btn" href="${CONFIG.vslUrl}">▶ Watch the Free Video <span class="dcb-arrow">→</span></a>
-      <p class="dcb-note">About ${CONFIG.vslMinutes} minutes. Watch it before you apply to another $15/hour gig.</p>
+      <p class="dcb-note">About ${CONFIG.vslMinutes} minutes. Watch it before you apply to another $15/hour job.</p>
     </div>`;
 
-  return `${dial}
-    <h1>You're just getting started.</h1>
+  // No score dial on Low: lead with the skill, not a low number
+  return `
+    <span class="dcb-eyebrow">YOUR FASTEST REMOTE SKILL</span>
+    <h1>Admin / Data Entry</h1>
     <p>${hi}</p>
-    <p>That's not a bad thing. Everyone who works from home started exactly where you are now.</p>
-    <p>Your best move right now isn't to chase the highest-paying skill. It's to land your <b>first</b> remote paycheck, then build from there.</p>
+    <p>Good news: there's a remote path you can start on fast. Based on your answers, admin and data entry work is your quickest way to a first work-from-home paycheck.</p>
     ${strength}
-    <h3>Your best-fit remote skills</h3>
+    <h3>Why it fits you right now</h3>
     <ul class="dcb-skills">
-      <li class="dcb-top"><b>1. Beginner remote work</b><span>Like customer support or online admin. Easiest to start.</span></li>
-      <li><b>2. Data entry</b><span>A great first step. It gets you comfortable with spreadsheets.</span></li>
-      <li><b>3. Business number analysis</b><span>Your "next level" once you've got the basics.</span></li>
+      <li><b>No experience needed</b><span>Most companies train you on their tools.</span></li>
+      <li><b>Clear, simple tasks</b><span>Updating spreadsheets and records, organizing files, entering orders and invoices.</span></li>
+      <li><b>Companies hire for it all the time</b><span>Full-time, part-time and freelance.</span></li>
     </ul>
-    <h3>Here's the path that works</h3>
-    <div class="dcb-steps">
-      <p><b>Step 1:</b> Get a simple remote job and get comfortable working online.</p>
-      <p><b>Step 2:</b> Get good with spreadsheets. (Data entry teaches you this while paying you.)</p>
-      <p><b>Step 3:</b> Learn to analyze business numbers. That's where the $100K jobs are.</p>
-    </div>
+    <h3>The bonus most people miss</h3>
+    <p>Every hour you spend in a spreadsheet builds the skill behind higher-paying work later. A lot of people who now analyze business numbers for a living started right here.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Watch this free video. It walks you through how to land your first remote job, even with no experience.</p>
-      <a class="dcb-btn" href="${CONFIG.videoUrl}">▶ Watch: ${CONFIG.videoTitle} <span class="dcb-arrow">→</span></a>
-      <p class="dcb-note">Free. Opens on YouTube.</p>
+      <p><b>Your next step:</b> Grab the free guide: <b>Top 10 Remote Jobs You Can Start With No Experience</b>. What each one pays, where to find them, and how to get hired.</p>
+      <a class="dcb-btn" href="${CONFIG.guideUrl}">Get My Free Guide <span class="dcb-arrow">→</span></a>
+      <p class="dcb-note">Free PDF. Opens right away.</p>
     </div>`;
 }
 

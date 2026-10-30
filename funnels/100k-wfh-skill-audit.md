@@ -24,6 +24,8 @@ Placeholders are in `[BRACKETS]`.
 
 ## 1. Opt-in page
 
+> **Updated:** the live page is now quiz-first. Landing (headline, subhead, "Start My 60-Second Audit") → 7 questions → email gate ("Where should we send your result?", first name + email, "Show Me My Highest-Paying Remote Skill") → result. The final copy lives in `funnels/skill-audit/ghl-custom-html.html`. The opt-in copy below is the original email-first version.
+
 Put everything above the fold on mobile: headline, bullets, form, button. Most of this traffic comes from YouTube on a phone.
 
 ### Layout (top to bottom)
@@ -167,11 +169,11 @@ Line under the table:
 
 ### Tiers
 
-| Total (0–21) | Tier | Result headline | Recommended path |
+| Total (0–21) | Tier | Result headline | CTA |
 |---|---|---|---|
-| 0–9 | **Low** | You're just getting started. | Beginner remote work or admin/data entry, with data skills as the next level |
-| 10–15 | **Medium** | You already have pieces of a high-income remote skill. | Data entry, virtual assisting or freelance research, with data analytics as the stronger long-term play |
-| 16–21 | **High** | You're closer to a $100K remote career than you think. | Data analytics directly |
+| 0–9 | **Low** | Your fastest remote skill: Admin / Data Entry | Free "Top 10 Remote Jobs" PDF guide |
+| 10–15 | **Medium** | Your highest-leverage skill: Data Analytics | Watch the VSL |
+| 16–21 | **High** | You're built for Data Analytics | Book a Clarity Call |
 
 ### Two override rules (and that's all)
 
@@ -212,6 +214,8 @@ Drop this line into the result page and Email 1 under the score. It makes the re
 ---
 
 ## 3. Result pages
+
+> **Updated:** the live result pages use the named-skill tiers above (Admin / Data Entry, Data Analytics, Data Analytics). Their final copy is in `funnels/skill-audit/ghl-custom-html.html`, in `resultHTML()`. The Low page hides the score dial. The versions below are the originals.
 
 All three pages use the same layout. Only the words and the single button change.
 
@@ -424,11 +428,11 @@ Your smartest move right now is to land your **first** remote paycheck. Then bui
 
 {{strength_line}}
 
-To help you get that first win, start with this video:
+To help you get that first win, here's your free guide:
 
-**[Watch: [VIDEO TITLE] →]([YOUTUBE VIDEO LINK])**
+**[Get the Top 10 Remote Jobs guide →]([TOP 10 REMOTE JOBS PDF LINK])**
 
-It walks you through how to land your first remote job, even with no experience.
+What each job pays, where to find them, and how to get hired with no experience.
 
 I'll send you a few more tips over the next couple of weeks to help you level up.
 
@@ -454,7 +458,7 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 
 **Exit rules:** Stop the sequence as soon as someone books a call. Non-bookers move to long-term nurture after the last email.
 
-**Low tier:** Email 1 → YouTube video, then straight into long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
+**Low tier:** Email 1 → Top 10 Remote Jobs guide, then straight into long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
 
 ---
 
@@ -478,13 +482,13 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 **GoHighLevel setup:**
 - Add hidden fields to the form with these query keys. The page passes them into the form, so every contact arrives with its result: `audit_tier` (high / medium / low), `audit_score` (0–100), `audit_strength`, and optionally the 7 answers (`q1_situation` … `q7_data_interest`).
 - Form **On Submit → Redirect URL**: `https://datacareerblueprint.com/mass-market-opt-in-page?step=results`. (It currently redirects to the Roadmap PDF.) The page saves the result in the browser and shows it after the redirect. If the form shows a thank-you message instead, the page still shows the result in place.
-- Change the form button to "Show My Results →".
+- Form fields: First name + Email only (remove Phone or make it optional). Button text: "Show Me My Highest-Paying Remote Skill".
 - Workflow: trigger "Form Submitted" (this form) → If/Else on Audit Tier → add tag `audit-wfh-high` / `-medium` / `-low` → send that tier's Email 1.
 
 **What to track first:**
 - Opt-in rate (visitors → emails)
 - Audit completion rate (emails → finished all 7)
 - Tier split. If more than ~40% land in High, raise the High cutoff to 17.
-- High: call booking rate. Medium: VSL play rate → call booking rate. Low: video click rate.
+- High: call booking rate. Medium: VSL play rate → call booking rate. Low: guide click rate.
 
 **Compliance:** Keep the earnings disclaimer on the opt-in page and all result pages. Never say "you will earn $100K." Say "could," "some people earn," or "the path to."

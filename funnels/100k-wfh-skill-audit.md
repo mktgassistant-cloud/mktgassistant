@@ -24,7 +24,7 @@ Placeholders are in `[BRACKETS]`.
 
 ## 1. Opt-in page
 
-> **Updated:** the live page is now quiz-first. Landing (headline, subhead, "Start My 60-Second Audit") → 7 questions → email gate ("Where should we send your result?", first name + email, "Show Me My Highest-Paying Remote Skill") → result. The final copy lives in `funnels/skill-audit/ghl-custom-html.html`. The opt-in copy below is the original email-first version.
+> **Updated:** the live page is now quiz-first. Landing (headline, subhead, "Start My 60-Second Audit") → 10 questions → email gate ("Where should we send your result?", first name + email, "Show Me My Highest-Paying Remote Skill") → result. The final copy lives in `funnels/skill-audit/ghl-custom-html.html`. The opt-in copy below is the original email-first version.
 
 Put everything above the fold on mobile: headline, bullets, form, button. Most of this traffic comes from YouTube on a phone.
 
@@ -96,126 +96,40 @@ Line under the table:
 
 ## 2. Audit questions and scoring
 
-### How it works
+10 questions, one per screen, with a progress bar. The questions are built to create urgency and self-awareness, not just to score. The full answer text and points are in `funnels/skill-audit/ghl-custom-html.html` (`QUESTIONS`).
 
-- 7 questions, multiple choice, one tap each. Show **one question per screen** with a progress bar ("Question 3 of 7").
-- Every answer is worth **0–3 points**. Max score = **21**.
-- Answers are listed below in the order they appear on screen. **Don't** sort answers by points. Shuffle the order if your quiz tool allows it, or use the order below, which already mixes them up.
+| # | Question | Scoring |
+|---|---|---|
+| 1 | What's your biggest reason for wanting a work-from-home skill right now? | 3 / 2 / 1 / 0 |
+| 2 | How much time could you realistically put into building a new skill each week? | 2 / 1 / 0 / 0 |
+| 3 | When you have to solve a problem at work or home, how do you usually approach it? | 3 / 2 / 1 / 0 |
+| 4 | How comfortable are you with spreadsheets like Excel or Google Sheets? | 3 / 2 / 1 / 0 |
+| 5 | Which of these tasks sounds most interesting to you? | 3 / 2 / 1 / 0 |
+| 6 | What best describes your current work situation? | Not scored (messaging) |
+| 7 | Have you ever thought about a career in data, analytics, or tech? | 3 / 2 / 1 / 0 |
+| 8 | What's the highest income you've made in a single year so far? | 2 / 1 / 0 / 0 |
+| 9 | How long have you been thinking about making a change? | 2 / 1 / 0 / 0 |
+| 10 | If you could land a remote career making $80K to $150K in the next 6 to 12 months, what's the main thing stopping you? | Not scored (messaging) |
 
-### Questions
-
-**Q1. What best describes your current work situation?**
-
-| Answer | Pts |
-|---|---|
-| I'm working full-time, but I'm underpaid or burned out | 2 |
-| I'm not working right now (between jobs, at home, or in school) | 1 |
-| My job already has me working with numbers, reports, orders or customer info | 3 |
-| I do part-time or gig work | 1 |
-
-**Q2. How comfortable are you with spreadsheets like Excel or Google Sheets?**
-
-| Answer | Pts |
-|---|---|
-| Basic: I can type in info and make simple lists | 1 |
-| Pretty good: I've built budgets, trackers or charts | 3 |
-| I've never really used them | 0 |
-| Comfortable: I can sort, filter and use simple formulas like SUM | 2 |
-
-**Q3. When you have to solve a problem, how do you usually approach it?**
-
-| Answer | Pts |
-|---|---|
-| I look up the steps and follow them | 1 |
-| I look at the facts or numbers first, then decide | 3 |
-| I ask someone else to handle it | 0 |
-| I break it into pieces and try things until it works | 2 |
-
-**Q4. How much time could you realistically put into building a new skill each week?**
-
-| Answer | Pts |
-|---|---|
-| 3–5 hours | 1 |
-| Less than 2 hours | 0 |
-| 10+ hours | 3 |
-| 5–10 hours | 2 |
-
-**Q5. What matters most to you right now?**
-
-| Answer | Pts |
-|---|---|
-| A stable remote job with real benefits | 2 |
-| Making some extra cash on the side, fast | 0 |
-| A career that could replace or double my income | 3 |
-| Flexibility: working from home on my own schedule | 1 |
-
-**Q6. Which of these sounds most like you?**
-
-| Answer | Pts |
-|---|---|
-| I'm organized. I keep things on track. | 1 |
-| I'm curious. I like figuring out *why* things happen. | 3 |
-| I'm a people person. I'd rather talk than sit at a computer. | 0 |
-| I notice details. I can tell when something looks off. | 2 |
-
-**Q7. Have you ever thought about a career in data, analytics, or tech?**
-
-| Answer | Pts |
-|---|---|
-| It's crossed my mind | 2 |
-| Never thought about it, but I'm open | 1 |
-| Yes, I've looked into it or started learning | 3 |
-| Not really. Tech isn't my thing. | 0 |
+Points are listed in the order the answers appear. **Max = 21.** Q6 and Q10 go into GoHighLevel as hidden fields, so emails can speak to the person's situation and main objection.
 
 ### Tiers
 
 | Total (0–21) | Tier | Result headline | CTA |
 |---|---|---|---|
 | 0–9 | **Low** | Your fastest remote skill: Admin / Data Entry | Free "Top 10 Remote Jobs" PDF guide |
-| 10–15 | **Medium** | Your highest-leverage skill: Data Analytics | Watch the VSL |
+| 10–15 | **Medium** | Your highest-leverage skill: Data Analytics | Watch the free training (VSL) |
 | 16–21 | **High** | You're built for Data Analytics | Book a Clarity Call |
 
-### Two override rules (and that's all)
+**Override rule:** "Less than 2 hours" (Q2) or "I avoid them" (Q4) → highest possible tier is Medium. This keeps the call calendar for people who are ready.
 
-These keep people out of the High tier when they really aren't ready, so you don't fill the calendar with calls that won't close:
-
-1. **Q2 = "never really used them"** → highest possible tier is **Medium**.
-2. **Q4 = "less than 2 hours"** → highest possible tier is **Medium**.
-
-Nothing ever pushes someone *down* to Low except their score.
-
-### The "skill score" people see
-
-Show one number: the **Data Analytics Fit Score** = `round(total ÷ 21 × 100)`, shown as a percent.
-
-- Low tier will land around 5–43%, Medium around 48–71%, High around 76–100%.
-- If an override drops someone from High to Medium, cap the shown score at **71%** so the number matches the tier.
-
-### One personal line (based on Q6)
-
-Drop this line into the result page and Email 1 under the score. It makes the result feel personal without building more segments.
-
-| Q6 answer | `{{strength_line}}` |
-|---|---|
-| Organized | "You're organized. That's the #1 thing companies look for when they hand someone their numbers." |
-| Curious | "You like figuring out *why* things happen. That's exactly what companies pay analysts to do." |
-| People person | "You're good with people. That matters more than you think: the best number people can explain what they found." |
-| Notice details | "You notice when something looks off. That's the skill that catches costly mistakes in a company's numbers." |
-
-### Reference examples
-
-| Profile | Answers (pts) | Total | Tier |
-|---|---|---|---|
-| Burned-out office worker, decent at Sheets, wants more money | 2, 2, 3, 2, 3, 3, 2 | 17 | High |
-| Typical side-hustle viewer, basic Sheets, open to data | 2, 1, 2, 1, 3, 2, 1 | 12 | Medium |
-| Wants quick side cash, rarely uses a computer | 1, 0, 1, 0, 0, 0, 1 | 3 | Low |
-| Strong answers but under 2 hrs/week | 3, 3, 3, **0**, 3, 3, 3 | 18 → capped | Medium (shows 71%) |
+**Score shown:** Data Analytics Fit Score = `round(total ÷ 21 × 100)`. It's shown on Medium and High only. The Low page leads with the skill, not a low number. A capped result shows at most 71%.
 
 ---
 
 ## 3. Result pages
 
-> **Updated:** the live result pages use the named-skill tiers above (Admin / Data Entry, Data Analytics, Data Analytics). Their final copy is in `funnels/skill-audit/ghl-custom-html.html`, in `resultHTML()`. The Low page hides the score dial. The versions below are the originals.
+> **Updated:** the live result pages use the named-skill tiers and copy from section 2 (Admin / Data Entry, Data Analytics, "You're built for Data Analytics"). Their final copy is in `funnels/skill-audit/ghl-custom-html.html`, in `resultHTML()`. The Low page hides the score dial. The versions below are the originals.
 
 All three pages use the same layout. Only the words and the single button change.
 
@@ -480,7 +394,7 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 **Flow (quiz first):** landing (headline, bullets, "Show Me My Highest-Paying Remote Skill" button) → 7 questions → "Your results are ready!" + GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`) → result page.
 
 **GoHighLevel setup:**
-- Add hidden fields to the form with these query keys. The page passes them into the form, so every contact arrives with its result: `audit_tier` (high / medium / low), `audit_score` (0–100), `audit_strength`, and optionally the 7 answers (`q1_situation` … `q7_data_interest`).
+- Add hidden fields to the form with these query keys. The page passes them into the form, so every contact arrives with its result: `audit_tier` (high / medium / low), `audit_score` (0–100), and optionally the 10 answers (`q1_reason` … `q10_blocker`). `q6_situation` and `q10_blocker` are the most useful for emails.
 - Form **On Submit → Redirect URL**: `https://datacareerblueprint.com/mass-market-opt-in-page?step=results`. (It currently redirects to the Roadmap PDF.) The page saves the result in the browser and shows it after the redirect. If the form shows a thank-you message instead, the page still shows the result in place.
 - Form fields: First name + Email only (remove Phone or make it optional). Button text: "Show Me My Highest-Paying Remote Skill".
 - Workflow: trigger "Form Submitted" (this form) → If/Else on Audit Tier → add tag `audit-wfh-high` / `-medium` / `-low` → send that tier's Email 1.

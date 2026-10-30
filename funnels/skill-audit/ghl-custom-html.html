@@ -2,7 +2,7 @@
   $100K Work-From-Home Skill Audit
   Paste this whole file into a GoHighLevel "Custom HTML/Javascript" element
   on https://datacareerblueprint.com/mass-market-opt-in-page
-  Flow: landing -> 7 questions -> GoHighLevel form -> result page.
+  Flow: landing -> 10 questions -> GoHighLevel form -> result page.
   Settings to fill in are in the CONFIG block near the bottom.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,7 +96,7 @@
   #dcb-audit .dcb-score small { color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
   #dcb-audit .dcb-result h1 { font-size: 29px; }
   #dcb-audit .dcb-result .dcb-eyebrow { margin-top: 4px; }
-  #dcb-audit .dcb-strength { background: rgba(102, 126, 234, .1); border-left: 3px solid var(--coral); padding: 12px 14px; border-radius: 8px; margin: 18px 0; }
+  #dcb-audit .dcb-result .dcb-sub { font-size: 18px; margin-bottom: 22px; }
   #dcb-audit .dcb-skills { list-style: none; padding: 0; margin: 0 0 8px; }
   #dcb-audit .dcb-skills li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; background: rgba(255, 255, 255, .02); }
   #dcb-audit .dcb-skills li.dcb-top { border-color: var(--green); background: rgba(55, 202, 55, .08); }
@@ -126,14 +126,14 @@
       <h1>The $100K Work-From-Home Skill Audit</h1>
       <p class="dcb-sub">Find out which remote skill you already have the best shot at - and which one could actually replace your income.</p>
       <button class="dcb-btn" id="dcb-start" type="button">Start My 60-Second Audit <span class="dcb-arrow">→</span></button>
-      <p class="dcb-trust">Free. 7 quick questions. No tech background needed.</p>
+      <p class="dcb-trust">Free. 10 quick questions. No tech background needed.</p>
     </section>
 
     <!-- 2. QUIZ -->
     <section class="dcb-screen dcb-panel" id="dcb-quiz">
       <div class="dcb-progress">
         <button class="dcb-back" id="dcb-back" type="button">← Back</button>
-        <span id="dcb-qcount">Question 1 of 7</span>
+        <span id="dcb-qcount">Question 1 of 10</span>
       </div>
       <div class="dcb-bar"><span id="dcb-bar"></span></div>
       <h2 id="dcb-qtext"></h2>
@@ -188,88 +188,101 @@ const CONFIG = {
 };
 
 /* ==========================================================
-   QUESTIONS + POINTS (0-3 each, max 21)
+   QUESTIONS + POINTS (max 21)
+   Q1, 3, 4, 5, 7: 3 / 2 / 1 / 0
+   Q2, 8, 9:       2 / 1 / 0 / 0
+   Q6, Q10:        not scored (used for messaging only)
    ========================================================== */
 const QUESTIONS = [
-  { id: "q1_situation", text: "What best describes your current work situation?", options: [
-    ["I'm working full-time, but I'm underpaid or burned out", 2],
-    ["I'm not working right now (between jobs, at home, or in school)", 1],
-    ["My job already has me working with numbers, reports, orders or customer info", 3],
-    ["I do part-time or gig work", 1],
+  { id: "q1_reason", text: "What's your biggest reason for wanting a work-from-home skill right now?", options: [
+    ["I'm tired of my job and want out", 3],
+    ["I need more income for my family", 2],
+    ["I want flexibility and control over my schedule", 1],
+    ["I'm unemployed or worried about my job", 0],
   ]},
-  { id: "q2_spreadsheets", text: "How comfortable are you with spreadsheets like Excel or Google Sheets?", options: [
-    ["Basic: I can type in info and make simple lists", 1],
-    ["Pretty good: I've built budgets, trackers or charts", 3],
-    ["I've never really used them", 0],
-    ["Comfortable: I can sort, filter and use simple formulas like SUM", 2],
+  { id: "q2_time", text: "How much time could you realistically put into building a new skill each week?", options: [
+    ["10+ hours", 2],
+    ["5 to 10 hours", 1],
+    ["2 to 5 hours", 0],
+    ["Less than 2 hours", 0, "cap"],
   ]},
-  { id: "q3_problems", text: "When you have to solve a problem, how do you usually approach it?", options: [
-    ["I look up the steps and follow them", 1],
-    ["I look at the facts or numbers first, then decide", 3],
-    ["I ask someone else to handle it", 0],
-    ["I break it into pieces and try things until it works", 2],
+  { id: "q3_problems", text: "When you have to solve a problem at work or home, how do you usually approach it?", options: [
+    ["I look for patterns and try to understand the root cause", 3],
+    ["I ask someone who's done it before", 2],
+    ["I Google until I find something that works", 1],
+    ["I try one thing and hope it works out", 0],
   ]},
-  { id: "q4_time", text: "How much time could you realistically put into building a new skill each week?", options: [
-    ["3–5 hours", 1],
-    ["Less than 2 hours", 0],
-    ["10+ hours", 3],
-    ["5–10 hours", 2],
+  { id: "q4_spreadsheets", text: "How comfortable are you with spreadsheets like Excel or Google Sheets?", options: [
+    ["I use them regularly for work or personal stuff", 3],
+    ["I know the basics", 2],
+    ["I've opened them but don't really use them", 1],
+    ["I avoid them", 0, "cap"],
   ]},
-  { id: "q5_priority", text: "What matters most to you right now?", options: [
-    ["A stable remote job with real benefits", 2],
-    ["Making some extra cash on the side, fast", 0],
-    ["A career that could replace or double my income", 3],
-    ["Flexibility: working from home on my own schedule", 1],
+  { id: "q5_interest", text: "Which of these tasks sounds most interesting to you?", options: [
+    ["Finding trends in numbers and helping a business make better decisions", 3],
+    ["Talking to customers and closing sales", 2],
+    ["Writing content or designing graphics", 1],
+    ["Organizing files, schedules, or admin work", 0],
   ]},
-  { id: "q6_personality", text: "Which of these sounds most like you?", options: [
-    ["I'm organized. I keep things on track.", 1, "organized"],
-    ["I'm curious. I like figuring out why things happen.", 3, "curious"],
-    ["I'm a people person. I'd rather talk than sit at a computer.", 0, "people"],
-    ["I notice details. I can tell when something looks off.", 2, "details"],
+  { id: "q6_situation", text: "What best describes your current work situation?", options: [
+    ["I work a 9-to-5 job I want to leave", null],
+    ["I do gig work, retail, warehouse, or shift work", null],
+    ["I'm a stay-at-home parent or caregiver", null],
+    ["I'm unemployed or between jobs", null],
   ]},
   { id: "q7_data_interest", text: "Have you ever thought about a career in data, analytics, or tech?", options: [
-    ["It's crossed my mind", 2],
-    ["Never thought about it, but I'm open", 1],
-    ["Yes, I've looked into it or started learning", 3],
-    ["Not really. Tech isn't my thing.", 0],
+    ["Yes, but I didn't think I was qualified", 3],
+    ["A little, but it seems complicated", 2],
+    ["No, but I'm open to it", 1],
+    ["Not interested at all", 0],
+  ]},
+  { id: "q8_income", text: "What's the highest income you've made in a single year so far?", options: [
+    ["$80K or more", 2],
+    ["$50K to $80K", 1],
+    ["$30K to $50K", 0],
+    ["Less than $30K", 0],
+  ]},
+  { id: "q9_how_long", text: "How long have you been thinking about making a change?", options: [
+    ["Over a year", 2],
+    ["A few months", 1],
+    ["A few weeks", 0],
+    ["I just started today", 0],
+  ]},
+  { id: "q10_blocker", text: "If you could land a remote career making $80K to $150K in the next 6 to 12 months, what's the main thing stopping you?", options: [
+    ["I don't know what skill to focus on", null],
+    ["I don't think I'm qualified or smart enough", null],
+    ["I don't have the time or money to go back to school", null],
+    ["I don't know where the real jobs are or how to get hired", null],
   ]},
 ];
-
-const STRENGTH_LINES = {
-  organized: "You're organized. That's the #1 thing companies look for when they hand someone their numbers.",
-  curious: "You like figuring out <em>why</em> things happen. That's exactly what companies pay analysts to do.",
-  people: "You're good with people. That matters more than you think: the best number people can explain what they found.",
-  details: "You notice when something looks off. That's the skill that catches costly mistakes in a company's numbers.",
-};
+const MAX_POINTS = 21;
 
 /* ==========================================================
    SCORING
+   Low 0-9, Medium 10-15, High 16-21
    ========================================================== */
 function scoreAudit(answers) {
-  const total = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a][1], 0);
+  const picked = answers.map((a, i) => QUESTIONS[i].options[a]);
+  const total = picked.reduce((sum, [, pts]) => sum + (pts || 0), 0);
   let tier = total >= 16 ? "high" : total >= 10 ? "medium" : "low";
-  let percent = Math.round(total / 21 * 100);
+  let percent = Math.round(total / MAX_POINTS * 100);
 
-  // Override rules: never used spreadsheets, or under 2 hrs/week -> max Medium
-  const neverSheets = QUESTIONS[1].options[answers[1]][1] === 0;
-  const noTime = QUESTIONS[3].options[answers[3]][1] === 0;
+  // Override rule: under 2 hrs/week, or avoids spreadsheets -> max Medium
   let capped = false;
-  if (tier === "high" && (neverSheets || noTime)) {
+  if (tier === "high" && picked.some(o => o[2] === "cap")) {
     tier = "medium";
-    percent = Math.min(percent, 71);
+    percent = Math.min(percent, Math.round(15 / MAX_POINTS * 100));
     capped = true;
   }
-  const strengthKey = QUESTIONS[5].options[answers[5]][2];
-  return { total, percent, tier, capped, strengthKey };
+  return { total, percent, tier, capped };
 }
 
 /* ==========================================================
    RESULT PAGES
    ========================================================== */
 function resultHTML(r, name) {
-  const hi = name ? `Hi ${name},` : "Hi there,";
-  const strength = `<div class="dcb-strength">${STRENGTH_LINES[r.strengthKey]}</div>`;
-  const dialColor = { high: "#37ca37", medium: "#667eea", low: "#ff6240" }[r.tier];
+  const hi = name ? `<p>${name}, here's your result.</p>` : "";
+  const dialColor = { high: "#37ca37", medium: "#667eea" }[r.tier];
   const dial = `
     <div class="dcb-score">
       <div class="dcb-dial" style="--p:${r.percent};--dial-color:${dialColor}"><div>${r.percent}%</div></div>
@@ -277,66 +290,42 @@ function resultHTML(r, name) {
     </div>`;
 
   if (r.tier === "high") return `${dial}
-    <span class="dcb-eyebrow">YOUR BEST-FIT SKILL</span>
+    <span class="dcb-eyebrow">YOUR RESULT</span>
     <h1>You're built for Data Analytics</h1>
-    <p>${hi}</p>
-    <p>Your answers put you in the top group of people who take this audit.</p>
-    <p>You look at the facts before you decide. You're comfortable in a spreadsheet. And you have time to put into a new skill. That's the kind of person companies hire to make sense of their numbers.</p>
-    ${strength}
-    <h3>What the work actually looks like</h3>
-    <ul class="dcb-skills">
-      <li><b>Dig into a company's numbers</b><span>Sales, customers, costs, orders.</span></li>
-      <li><b>Spot what's working and what isn't</b><span>And why.</span></li>
-      <li><b>Explain it in plain English</b><span>So the people in charge can make better decisions.</span></li>
-    </ul>
-    <h3>Why this is your path</h3>
-    <p>You don't need a degree or a tech background. You need the right skills, in the right order, and proof you can do the work.</p>
-    <p>Experienced people in data analytics can earn $100K or more, and a lot of these jobs are remote.</p>
+    <p class="dcb-sub">You have the highest probability of landing a $100K+ remote career in this field. Let's map it out.</p>
+    ${hi}
+    <p>Your answers show the combination that matters most: you're comfortable with numbers, you solve problems by looking for root causes, and you're willing to put real time behind a career change.</p>
+    <p>That's not common. Most people say they want out of their situation but won't do the work. You will.</p>
+    <p>The fastest way to turn this into an actual offer is to get a personalized roadmap. Not a generic course. A straight-line plan based on your background, your timeline, and the exact skills that get people hired right now.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Book a free 20-minute Clarity Call. We'll go over your result and map out what your path into data analytics could look like, including how long it would realistically take <em>you</em>.</p>
-      <a class="dcb-btn" href="${CONFIG.callUrl}">Book My Free Clarity Call <span class="dcb-arrow">→</span></a>
-      <p class="dcb-note">No pressure, no hard sell. If it's not a fit, we'll tell you.</p>
+      <p><b>Your next step:</b> Book a free Career Clarity Call. We'll look at where you are, where you want to be, and whether our program is the right fit. If it's not, you'll still walk away with a clear game plan.</p>
+      <a class="dcb-btn" href="${CONFIG.callUrl}">Book Your Clarity Call <span class="dcb-arrow">→</span></a>
     </div>`;
 
   if (r.tier === "medium") return `${dial}
     <span class="dcb-eyebrow">YOUR HIGHEST-LEVERAGE SKILL</span>
     <h1>Data Analytics</h1>
-    <p>${hi}</p>
-    <p>You could probably land admin or data entry work right now. But your answers show you have more to work with than that.</p>
-    ${strength}
-    <h3>What data analytics actually is</h3>
-    <p>Every company is full of numbers: sales, customers, costs. Most don't know what those numbers are telling them.</p>
-    <p>A data analyst looks at those numbers and tells the company what's working, what isn't, and what to do next. It's mostly laptop work, and a lot of it is remote.</p>
-    <h3>Why it's your highest-leverage skill</h3>
-    <ul class="dcb-skills">
-      <li><b>Admin / data entry</b><span>Fast to start. Usually tops out around $15–$25 an hour, with thousands of people competing for each job.</span></li>
-      <li class="dcb-top"><b>Data analytics</b><span>Takes longer to learn. Experienced people can earn $100K or more. Builds on habits you already have.</span></li>
-    </ul>
+    <p class="dcb-sub">You already have the mindset and some of the pieces. Here's how to turn that into a real remote career.</p>
+    ${hi}
+    <p>Based on your answers, you're not starting from zero. You think in patterns, you're open to tech, and you can put real hours behind a goal. That's the exact profile of someone who can break into data analytics without a CS degree.</p>
+    <p>The difference between people who make $80K+ in this field and people who stay stuck isn't intelligence. It's knowing which skills actually matter, which ones to ignore, and how to position yourself so companies trust you before you've even been hired.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Watch this short video. It shows how regular people, with no tech background, make the switch into data analytics.</p>
-      <a class="dcb-btn" href="${CONFIG.vslUrl}">▶ Watch the Free Video <span class="dcb-arrow">→</span></a>
-      <p class="dcb-note">About ${CONFIG.vslMinutes} minutes. Watch it before you apply to another $15/hour job.</p>
+      <p><b>Your next step:</b> Watch the free training. It walks you through the exact roadmap from where you are now to a $100K+ data + AI career, including the mistakes that slow most people down.</p>
+      <a class="dcb-btn" href="${CONFIG.vslUrl}">▶ Watch the Free Training <span class="dcb-arrow">→</span></a>
     </div>`;
 
   // No score dial on Low: lead with the skill, not a low number
   return `
     <span class="dcb-eyebrow">YOUR FASTEST REMOTE SKILL</span>
     <h1>Admin / Data Entry</h1>
-    <p>${hi}</p>
-    <p>Good news: there's a remote path you can start on fast. Based on your answers, admin and data entry work is your quickest way to a first work-from-home paycheck.</p>
-    ${strength}
-    <h3>Why it fits you right now</h3>
-    <ul class="dcb-skills">
-      <li><b>No experience needed</b><span>Most companies train you on their tools.</span></li>
-      <li><b>Clear, simple tasks</b><span>Updating spreadsheets and records, organizing files, entering orders and invoices.</span></li>
-      <li><b>Companies hire for it all the time</b><span>Full-time, part-time and freelance.</span></li>
-    </ul>
-    <h3>The bonus most people miss</h3>
-    <p>Every hour you spend in a spreadsheet builds the skill behind higher-paying work later. A lot of people who now analyze business numbers for a living started right here.</p>
+    <p class="dcb-sub">This is the easiest remote skill to land quickly - no tech background needed. But if you want to get to $100K, the next step up is data analytics.</p>
+    ${hi}
+    <p>Most people start here because it pays faster than waiting tables, gig work, or retail. The roles are real, the hours are flexible, and you can get in without a degree.</p>
+    <p>The trade-off is the ceiling. Most admin and data entry work tops out around $40K to $55K.</p>
+    <p>If your goal is to replace your income and eventually scale into six figures, the move is to add one high-value skill on top of this. Data analytics is the cleanest upgrade because companies already pay $80K to $120K for people who can turn raw numbers into decisions.</p>
     <div class="dcb-cta">
-      <p><b>Your next step:</b> Grab the free guide: <b>Top 10 Remote Jobs You Can Start With No Experience</b>. What each one pays, where to find them, and how to get hired.</p>
-      <a class="dcb-btn" href="${CONFIG.guideUrl}">Get My Free Guide <span class="dcb-arrow">→</span></a>
-      <p class="dcb-note">Free PDF. Opens right away.</p>
+      <p><b>Your next step:</b> Download the free guide below. It breaks down the top 10 remote/WFH jobs you can start with now, plus the fastest path from each one into a higher-income skill.</p>
+      <a class="dcb-btn" href="${CONFIG.guideUrl}">Get the Free Remote Jobs Guide <span class="dcb-arrow">→</span></a>
     </div>`;
 }
 
@@ -361,9 +350,7 @@ function loadResult() {
   const tier = params.get("audit_tier");
   if (!["high", "medium", "low"].includes(tier)) return null;
   const percent = Math.max(0, Math.min(100, parseInt(params.get("audit_score"), 10) || 0));
-  const strengthKey = Object.keys(STRENGTH_LINES).find(k =>
-    STRENGTH_LINES[k].replace(/<[^>]+>/g, "") === params.get("audit_strength")) || "organized";
-  return { tier, percent, strengthKey };
+  return { tier, percent };
 }
 
 // First name: from the URL if the redirect passes it, otherwise from the
@@ -406,7 +393,6 @@ function mountForm(r, answerData) {
   const hidden = new URLSearchParams({
     audit_tier: r.tier,
     audit_score: r.percent,
-    audit_strength: STRENGTH_LINES[r.strengthKey].replace(/<[^>]+>/g, ""),
     ...answerData,
   });
   el("form-card").innerHTML = `

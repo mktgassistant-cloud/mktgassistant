@@ -353,7 +353,17 @@ function saveResult(r) {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(r)); } catch (e) {}
 }
 function loadResult() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; }
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE_KEY));
+    if (saved) return saved;
+  } catch (e) {}
+  // Backup: GoHighLevel passes the form's query values on to the redirect URL
+  const tier = params.get("audit_tier");
+  if (!["high", "medium", "low"].includes(tier)) return null;
+  const percent = Math.max(0, Math.min(100, parseInt(params.get("audit_score"), 10) || 0));
+  const strengthKey = Object.keys(STRENGTH_LINES).find(k =>
+    STRENGTH_LINES[k].replace(/<[^>]+>/g, "") === params.get("audit_strength")) || "organized";
+  return { tier, percent, strengthKey };
 }
 
 // First name: from the URL if the redirect passes it, otherwise from the

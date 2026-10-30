@@ -472,10 +472,14 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 4. Calendar bookings tag the subscriber `booked-clarity-call` to stop the sequence.
 
 **The page:** `funnels/skill-audit/ghl-custom-html.html` is the whole funnel, styled to match datacareerblueprint.com. Paste it into a Custom HTML/Javascript element on https://datacareerblueprint.com/mass-market-opt-in-page. Styles are scoped to `#dcb-audit` and the script is self-contained, so it won't clash with the GoHighLevel page.
-- Step 1 embeds the GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`), which creates the contact.
-- In GoHighLevel, set that form's **On Submit → Redirect URL** to this page with `?step=quiz` on the end, `https://datacareerblueprint.com/mass-market-opt-in-page?step=quiz`. (It currently redirects to the Roadmap PDF.) If you can, add `&first_name={{contact.first_name}}&email={{contact.email}}` so the result page greets them by name and the quiz results can be matched to the contact. The page ignores those values if GoHighLevel doesn't fill them in.
-- Backup: if the redirect isn't set, the page also starts the quiz when the form reports a successful submit.
-- Quiz results go to `CONFIG.webhookUrl` (a GoHighLevel Workflow "Inbound Webhook" trigger) as `audit_complete` (email, score, tier, strength line, every answer) and `cta_click`.
+
+**Flow (quiz first):** landing (headline, bullets, "Show Me My Highest-Paying Remote Skill" button) → 7 questions → "Your results are ready!" + GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`) → result page.
+
+**GoHighLevel setup:**
+- Add hidden fields to the form with these query keys. The page passes them into the form, so every contact arrives with its result: `audit_tier` (high / medium / low), `audit_score` (0–100), `audit_strength`, and optionally the 7 answers (`q1_situation` … `q7_data_interest`).
+- Form **On Submit → Redirect URL**: `https://datacareerblueprint.com/mass-market-opt-in-page?step=results`. (It currently redirects to the Roadmap PDF.) The page saves the result in the browser and shows it after the redirect. If the form shows a thank-you message instead, the page still shows the result in place.
+- Change the form button to "Show My Results →".
+- Workflow: trigger "Form Submitted" (this form) → If/Else on Audit Tier → add tag `audit-wfh-high` / `-medium` / `-low` → send that tier's Email 1.
 
 **What to track first:**
 - Opt-in rate (visitors → emails)

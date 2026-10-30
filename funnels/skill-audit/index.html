@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The $100K Work-From-Home Skill Audit</title>
+<meta name="description" content="Find out which remote skill you already have the best shot at, and which one could actually replace your income. Takes about 60 seconds.">
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --ink: #14161f;
+    --muted: #5b6070;
+    --line: #e3e6ee;
+    --brand: #1f6feb;
+    --brand-ink: #ffffff;
+    --accent: #12a150;
+    --warn: #f59e0b;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 24px 16px 40px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 22px; box-shadow: 0 6px 24px rgba(20,22,31,.06); }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--brand); background: rgba(31,111,235,.09); padding: 5px 10px; border-radius: 999px; margin-bottom: 14px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 12px; letter-spacing: -.01em; }
+  h2 { font-size: 22px; line-height: 1.25; margin: 0 0 18px; }
+  h3 { font-size: 17px; margin: 22px 0 8px; }
+  p { margin: 0 0 12px; }
+  .sub { color: var(--muted); font-size: 18px; margin-bottom: 18px; }
+  .checks { list-style: none; padding: 0; margin: 0 0 22px; }
+  .checks li { padding-left: 30px; position: relative; margin-bottom: 8px; font-weight: 500; }
+  .checks li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: grid; place-items: center; margin-top: 3px; }
+
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  input[type=text], input[type=email] {
+    width: 100%; font: inherit; padding: 14px; border: 1.5px solid var(--line); border-radius: 10px; margin-bottom: 14px; background: #fff; color: var(--ink);
+  }
+  input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(31,111,235,.15); }
+  .err { color: #c62828; font-size: 14px; margin: -8px 0 12px; min-height: 0; }
+
+  .btn {
+    display: block; width: 100%; text-align: center; text-decoration: none; cursor: pointer;
+    font: inherit; font-weight: 700; font-size: 18px; color: var(--brand-ink); background: var(--brand);
+    border: 0; border-radius: 10px; padding: 16px 18px; box-shadow: 0 4px 0 #1655b8; transition: transform .05s, box-shadow .05s;
+  }
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1655b8; }
+  .btn.green { background: var(--accent); box-shadow: 0 4px 0 #0c7a3b; }
+  .btn.green:active { box-shadow: 0 2px 0 #0c7a3b; }
+  .trust { text-align: center; color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+  /* Quiz */
+  .progress { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+  .bar { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; margin-bottom: 22px; }
+  .bar > span { display: block; height: 100%; width: 0; background: var(--brand); transition: width .3s ease; }
+  .opts { display: grid; gap: 10px; }
+  .opt {
+    text-align: left; font: inherit; color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  @media (hover: hover) { .opt:hover { border-color: var(--brand); } }
+  .opt.picked { border-color: var(--brand); background: rgba(31,111,235,.07); font-weight: 600; }
+  .back { background: none; border: 0; color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; padding: 0; }
+  .back[hidden] { display: none; }
+
+  /* Loading */
+  .loading { text-align: center; padding: 40px 0; }
+  .spinner { width: 46px; height: 46px; border: 4px solid var(--line); border-top-color: var(--brand); border-radius: 50%; margin: 0 auto 18px; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Result */
+  .score { text-align: center; margin-bottom: 18px; }
+  .dial { --p: 0; width: 132px; height: 132px; border-radius: 50%; margin: 0 auto 8px; display: grid; place-items: center;
+    background: conic-gradient(var(--dial-color, var(--brand)) calc(var(--p) * 1%), var(--line) 0); }
+  .dial > div { width: 104px; height: 104px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 30px; font-weight: 800; }
+  .score small { color: var(--muted); font-size: 14px; font-weight: 600; }
+  .strength { background: #f2f7ff; border-left: 4px solid var(--brand); padding: 12px 14px; border-radius: 8px; margin: 16px 0; }
+  .skills { list-style: none; padding: 0; margin: 0 0 8px; }
+  .skills li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+  .skills li.top { border-color: var(--accent); background: rgba(18,161,80,.06); }
+  .skills b { display: block; }
+  .skills span { color: var(--muted); font-size: 15px; }
+  .steps p { margin-bottom: 6px; }
+  .cta { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .cta .note { text-align: center; color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+  .disclaimer { color: #8a8f9c; font-size: 12px; text-align: center; margin-top: 20px; line-height: 1.5; }
+
+  @media (min-width: 600px) {
+    .wrap { padding-top: 48px; }
+    .card { padding: 36px 34px; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="card">
+
+    <!-- 1. OPT-IN -->
+    <section class="screen active" id="s-optin">
+      <span class="eyebrow">FREE 60-SECOND AUDIT</span>
+      <h1>The $100K Work-From-Home Skill Audit</h1>
+      <p class="sub">Find out which remote skill you already have the best shot at, and which one could actually replace your income.</p>
+      <ul class="checks">
+        <li>Takes about 60 seconds</li>
+        <li>No tech background needed</li>
+        <li>Get your personalized skill score + next steps</li>
+      </ul>
+      <form id="optin" novalidate>
+        <label for="first_name">First name</label>
+        <input id="first_name" name="first_name" type="text" autocomplete="given-name" placeholder="Your first name" required>
+        <label for="email">Email <span style="font-weight:400;color:var(--muted)">(we'll send your results here)</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="Your best email" required>
+        <p class="err" id="optin-err" role="alert"></p>
+        <button class="btn" type="submit">Show Me My Highest-Paying Remote Skill →</button>
+        <p class="trust">No spam. Unsubscribe anytime.</p>
+      </form>
+    </section>
+
+    <!-- 2. QUIZ -->
+    <section class="screen" id="s-quiz">
+      <div class="progress">
+        <button class="back" id="back" type="button">← Back</button>
+        <span id="qcount">Question 1 of 7</span>
+      </div>
+      <div class="bar"><span id="bar"></span></div>
+      <h2 id="qtext"></h2>
+      <div class="opts" id="opts"></div>
+    </section>
+
+    <!-- 3. LOADING -->
+    <section class="screen" id="s-loading">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p><b>Scoring your answers…</b></p>
+        <p class="sub" style="font-size:15px">Comparing you against 4 work-from-home paths.</p>
+      </div>
+    </section>
+
+    <!-- 4. RESULT -->
+    <section class="screen" id="s-result"></section>
+
+  </div>
+  <p class="disclaimer">Results vary. Income figures reflect what some people in these roles earn and are not a promise or guarantee of earnings. Your results depend on your effort, experience and the job market.</p>
+</main>
+
+<script>
+/* ==========================================================
+   SETTINGS: fill these in before going live
+   ========================================================== */
+const CONFIG = {
+  // Your Zapier / Make / GoHighLevel / CRM "catch hook" URL.
+  // Leave empty to test the page without sending anything.
+  webhookUrl: "",
+
+  // High tier button
+  callUrl: "[CALENDAR LINK]",
+  // Medium tier button
+  vslUrl: "[VSL LINK]",
+  vslMinutes: "[XX]",
+  // Low tier button (an existing YouTube video)
+  videoUrl: "[YOUTUBE VIDEO LINK]",
+  videoTitle: "How to Land Your First Remote Job",
+};
+
+/* ==========================================================
+   QUESTIONS + POINTS (0-3 each, max 21)
+   ========================================================== */
+const QUESTIONS = [
+  { id: "q1_situation", text: "What best describes your current work situation?", options: [
+    ["I'm working full-time, but I'm underpaid or burned out", 2],
+    ["I'm not working right now (between jobs, at home, or in school)", 1],
+    ["My job already has me working with numbers, reports, orders or customer info", 3],
+    ["I do part-time or gig work", 1],
+  ]},
+  { id: "q2_spreadsheets", text: "How comfortable are you with spreadsheets like Excel or Google Sheets?", options: [
+    ["Basic: I can type in info and make simple lists", 1],
+    ["Pretty good: I've built budgets, trackers or charts", 3],
+    ["I've never really used them", 0],
+    ["Comfortable: I can sort, filter and use simple formulas like SUM", 2],
+  ]},
+  { id: "q3_problems", text: "When you have to solve a problem, how do you usually approach it?", options: [
+    ["I look up the steps and follow them", 1],
+    ["I look at the facts or numbers first, then decide", 3],
+    ["I ask someone else to handle it", 0],
+    ["I break it into pieces and try things until it works", 2],
+  ]},
+  { id: "q4_time", text: "How much time could you realistically put into building a new skill each week?", options: [
+    ["3–5 hours", 1],
+    ["Less than 2 hours", 0],
+    ["10+ hours", 3],
+    ["5–10 hours", 2],
+  ]},
+  { id: "q5_priority", text: "What matters most to you right now?", options: [
+    ["A stable remote job with real benefits", 2],
+    ["Making some extra cash on the side, fast", 0],
+    ["A career that could replace or double my income", 3],
+    ["Flexibility: working from home on my own schedule", 1],
+  ]},
+  { id: "q6_personality", text: "Which of these sounds most like you?", options: [
+    ["I'm organized. I keep things on track.", 1, "organized"],
+    ["I'm curious. I like figuring out why things happen.", 3, "curious"],
+    ["I'm a people person. I'd rather talk than sit at a computer.", 0, "people"],
+    ["I notice details. I can tell when something looks off.", 2, "details"],
+  ]},
+  { id: "q7_data_interest", text: "Have you ever thought about a career in data, analytics, or tech?", options: [
+    ["It's crossed my mind", 2],
+    ["Never thought about it, but I'm open", 1],
+    ["Yes, I've looked into it or started learning", 3],
+    ["Not really. Tech isn't my thing.", 0],
+  ]},
+];
+
+const STRENGTH_LINES = {
+  organized: "You're organized. That's the #1 thing companies look for when they hand someone their numbers.",
+  curious: "You like figuring out <em>why</em> things happen. That's exactly what companies pay analysts to do.",
+  people: "You're good with people. That matters more than you think: the best number people can explain what they found.",
+  details: "You notice when something looks off. That's the skill that catches costly mistakes in a company's numbers.",
+};
+
+/* ==========================================================
+   SCORING
+   ========================================================== */
+function scoreAudit(answers) {
+  const total = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a][1], 0);
+  let tier = total >= 16 ? "high" : total >= 10 ? "medium" : "low";
+  let percent = Math.round(total / 21 * 100);
+
+  // Override rules: never used spreadsheets, or under 2 hrs/week -> max Medium
+  const neverSheets = QUESTIONS[1].options[answers[1]][1] === 0;
+  const noTime = QUESTIONS[3].options[answers[3]][1] === 0;
+  let capped = false;
+  if (tier === "high" && (neverSheets || noTime)) {
+    tier = "medium";
+    percent = Math.min(percent, 71);
+    capped = true;
+  }
+  const strengthKey = QUESTIONS[5].options[answers[5]][2];
+  return { total, percent, tier, capped, strengthKey };
+}
+
+/* ==========================================================
+   RESULT PAGES
+   ========================================================== */
+function resultHTML(r, name) {
+  const strength = `<div class="strength">${STRENGTH_LINES[r.strengthKey]}</div>`;
+  const dialColor = { high: "#12a150", medium: "#1f6feb", low: "#f59e0b" }[r.tier];
+  const dial = `
+    <div class="score">
+      <div class="dial" style="--p:${r.percent};--dial-color:${dialColor}"><div>${r.percent}%</div></div>
+      <small>Your Data Analytics Fit Score</small>
+    </div>`;
+
+  if (r.tier === "high") return `${dial}
+    <h1>You're closer to a $100K remote career than you think.</h1>
+    <p>Hi ${name},</p>
+    <p>Your answers put you in the top group of people who take this audit.</p>
+    <p>You already think in a way most companies pay a lot for. You look at the facts. You like knowing <em>why</em>. You're not scared of a spreadsheet.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="skills">
+      <li class="top"><b>🥇 Business number analysis</b><span>Best fit. Highest income ceiling.</span></li>
+      <li><b>🥈 Freelance research</b></li>
+      <li><b>🥉 Virtual assisting</b></li>
+    </ul>
+    <h3>What "business number analysis" actually means</h3>
+    <p>Companies are full of numbers: sales, customers, costs, orders. Most of them don't know what those numbers are telling them.</p>
+    <p>People who can look at those numbers and say "here's what's working, here's what's not, here's what to do next" get paid well, and a lot of them do it from home. Experienced people in these roles can earn $100K or more.</p>
+    <p>You don't need a degree in it. You need the right next steps in the right order.</p>
+    <div class="cta">
+      <p><b>Your next step:</b> Book a free 20-minute Clarity Call. We'll look at your results together and map out what your path to a remote analytics role could look like, including how long it would realistically take <em>you</em>.</p>
+      <a class="btn green" href="${CONFIG.callUrl}" data-cta="clarity_call">Book My Free Clarity Call →</a>
+      <p class="note">No pressure, no hard sell. If it's not a fit, we'll tell you.</p>
+    </div>`;
+
+  if (r.tier === "medium") return `${dial}
+    <h1>You already have pieces of a high-income remote skill.</h1>
+    <p>Hi ${name},</p>
+    <p>Good news: you're further along than most people who take this audit.</p>
+    <p>You've got some of the habits that remote companies pay for. You're just missing a few pieces to turn them into real income.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="skills">
+      <li><b>Data entry / virtual assisting / freelance research</b><span>You could start here now.</span></li>
+      <li class="top"><b>Business number analysis</b><span>Your strongest long-term play.</span></li>
+    </ul>
+    <h3>Here's the honest truth about those first three</h3>
+    <p>They're real jobs, and you could probably land one. But most of them top out around $15–$25 an hour, and you're competing with thousands of people for each gig.</p>
+    <p><b>Business number analysis</b> is different. You'd be the person who looks at a company's numbers and tells them what to do next. It uses the same skills you already have, taken one step further, and the pay ceiling is a lot higher.</p>
+    <div class="cta">
+      <p><b>Your next step:</b> Watch this short video. It shows how regular people (no tech background) go from "decent with spreadsheets" to getting paid to analyze business numbers from home.</p>
+      <a class="btn" href="${CONFIG.vslUrl}" data-cta="vsl">▶ Watch the Free Video →</a>
+      <p class="note">About ${CONFIG.vslMinutes} minutes. Watch it before you apply to another $15/hour gig.</p>
+    </div>`;
+
+  return `${dial}
+    <h1>You're just getting started.</h1>
+    <p>Hi ${name},</p>
+    <p>That's not a bad thing. Everyone who works from home started exactly where you are now.</p>
+    <p>Your best move right now isn't to chase the highest-paying skill. It's to land your <b>first</b> remote paycheck, then build from there.</p>
+    ${strength}
+    <h3>Your best-fit remote skills</h3>
+    <ul class="skills">
+      <li class="top"><b>1. Beginner remote work</b><span>Like customer support or online admin. Easiest to start.</span></li>
+      <li><b>2. Data entry</b><span>A great first step. It gets you comfortable with spreadsheets.</span></li>
+      <li><b>3. Business number analysis</b><span>Your "next level" once you've got the basics.</span></li>
+    </ul>
+    <h3>Here's the path that works</h3>
+    <div class="steps">
+      <p><b>Step 1:</b> Get a simple remote job and get comfortable working online.</p>
+      <p><b>Step 2:</b> Get good with spreadsheets. (Data entry teaches you this while paying you.)</p>
+      <p><b>Step 3:</b> Learn to analyze business numbers. That's where the $100K jobs are.</p>
+    </div>
+    <div class="cta">
+      <p><b>Your next step:</b> Watch this free video. It walks you through how to land your first remote job, even with no experience.</p>
+      <a class="btn" href="${CONFIG.videoUrl}" data-cta="youtube_video">▶ Watch: ${CONFIG.videoTitle} →</a>
+      <p class="note">Free. Opens on YouTube.</p>
+    </div>`;
+}
+
+/* ==========================================================
+   SENDING LEADS (form-encoded POST, works with most webhook tools)
+   ========================================================== */
+const params = new URLSearchParams(location.search);
+const lead = {
+  lead_id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)),
+  page_url: location.href.split("?")[0],
+};
+["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
+  if (params.get(k)) lead[k] = params.get(k);
+});
+
+function send(event, data) {
+  const payload = { event, submitted_at: new Date().toISOString(), ...lead, ...data };
+  if (!CONFIG.webhookUrl) { console.log("[test mode] would send:", payload); return; }
+  try {
+    fetch(CONFIG.webhookUrl, {
+      method: "POST",
+      mode: "no-cors",
+      keepalive: true,
+      body: new URLSearchParams(payload),
+    });
+  } catch (e) { console.warn("Lead send failed", e); }
+}
+
+/* ==========================================================
+   PAGE FLOW
+   ========================================================== */
+const $ = id => document.getElementById(id);
+const answers = [];
+let current = 0;
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+const escapeHTML = s => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+$("optin").addEventListener("submit", e => {
+  e.preventDefault();
+  const first = $("first_name").value.trim();
+  const email = $("email").value.trim();
+  if (!first) return showErr("Please enter your first name.", "first_name");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showErr("Please enter a valid email so we can send your results.", "email");
+  $("optin-err").textContent = "";
+  lead.first_name = first;
+  lead.email = email;
+  send("optin", {});
+  renderQuestion();
+  show("s-quiz");
+});
+
+function showErr(msg, field) {
+  $("optin-err").textContent = msg;
+  $(field).focus();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  $("qcount").textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  $("bar").style.width = `${(current / QUESTIONS.length) * 100}%`;
+  $("back").hidden = current === 0;
+  $("qtext").textContent = q.text;
+  $("opts").innerHTML = "";
+  q.options.forEach(([label], i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt" + (answers[current] === i ? " picked" : "");
+    b.textContent = label;
+    b.addEventListener("click", () => pick(i, b));
+    $("opts").appendChild(b);
+  });
+}
+
+let locked = false;
+function pick(i, btn) {
+  if (locked) return;
+  locked = true;
+  answers[current] = i;
+  btn.classList.add("picked");
+  setTimeout(() => {
+    locked = false;
+    if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+    else finish();
+  }, 220);
+}
+
+$("back").addEventListener("click", () => {
+  if (current > 0) { current--; renderQuestion(); }
+});
+
+function finish() {
+  $("bar").style.width = "100%";
+  const r = scoreAudit(answers);
+  const answerData = {};
+  QUESTIONS.forEach((q, i) => { answerData[q.id] = q.options[answers[i]][0]; });
+
+  send("audit_complete", {
+    audit_score: r.percent,
+    audit_points: r.total,
+    audit_tier: r.tier,
+    audit_capped: r.capped ? "yes" : "no",
+    strength_line: STRENGTH_LINES[r.strengthKey].replace(/<[^>]+>/g, ""),
+    ...answerData,
+  });
+
+  show("s-loading");
+  setTimeout(() => {
+    $("s-result").innerHTML = resultHTML(r, escapeHTML(lead.first_name));
+    $("s-result").querySelectorAll("[data-cta]").forEach(a =>
+      a.addEventListener("click", () => send("cta_click", { cta: a.dataset.cta, audit_tier: r.tier }))
+    );
+    show("s-result");
+  }, 1400);
+}
+</script>
+</body>
+</html>

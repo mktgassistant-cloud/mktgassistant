@@ -471,6 +471,8 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 3. Quiz tool sends tags + fields to the ESP, which fires the matching Email 1.
 4. Calendar bookings tag the subscriber `booked-clarity-call` to stop the sequence.
 
+**The page:** `funnels/skill-audit/index.html` is the whole funnel in one file: opt-in → 7 questions → scored result page. Fill in the `CONFIG` block at the top of the script (webhook URL, calendar, VSL and YouTube links). It sends three events to the webhook as form fields: `optin` (name, email, UTMs), `audit_complete` (score, tier, strength line, every answer) and `cta_click`. All three share a `lead_id`.
+
 **What to track first:**
 - Opt-in rate (visitors → emails)
 - Audit completion rate (emails → finished all 7)

@@ -118,7 +118,7 @@ If your goal is to replace your income and eventually scale into six figures, th
 
 **Your next step:** Download the free guide below. It breaks down the top 10 remote/WFH jobs you can start with now, plus the fastest path from each one into a higher-income skill.
 
-> **[ Get the Free Remote Jobs Guide → ]** → `[TOP 10 REMOTE JOBS PDF LINK]`
+> **[ Get the Free Remote Jobs Guide → ]** → `https://drive.google.com/file/d/1GElm5hkxd_9Zwro2ihG4PSfp-1XkFla5/view`
 
 ### Medium (8–14)
 
@@ -173,7 +173,7 @@ Here's the part most people miss: admin and data entry tends to top out around $
 
 Start with the free guide. It breaks down the top 10 remote jobs you can start now, plus the fastest path from each one into higher-paying work.
 
-**[Get the Free Remote Jobs Guide →]([TOP 10 REMOTE JOBS PDF LINK])**
+**[Get the Free Remote Jobs Guide →](https://drive.google.com/file/d/1GElm5hkxd_9Zwro2ihG4PSfp-1XkFla5/view)**
 
 Talk soon,
 [SENDER NAME]

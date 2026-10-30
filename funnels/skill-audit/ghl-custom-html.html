@@ -199,15 +199,16 @@ const SCALE = [
   ["Can do it confidently", 2],
   ["Could teach someone else", 3],
 ];
-const skill = (id, text) => ({ id, text, options: SCALE });
+// label = how the skill is named back to them on the result page
+const skill = (id, text, label) => ({ id, text, label, options: SCALE });
 const QUESTIONS = [
-  skill("q1_spreadsheets", "Cleaning up messy spreadsheets and making the numbers make sense"),
-  skill("q2_records", "Pulling answers from a database or a big pile of records"),
-  skill("q3_charts", "Building simple dashboards or charts that tell a story"),
-  skill("q4_trends", "Using basic math and stats to spot trends in business numbers"),
-  skill("q5_explaining", "Explaining what the numbers mean to someone who doesn't like math"),
-  skill("q6_problems", "Turning a confusing business problem into a clear question you can answer with data"),
-  skill("q7_ai_tools", "Using AI tools or simple coding to speed up your analysis"),
+  skill("q1_spreadsheets", "Cleaning up a messy list or spreadsheet so it actually makes sense (like a budget, contact list or inventory)", "cleaning up messy numbers"),
+  skill("q2_records", "Digging through a pile of emails, receipts or orders to find the one answer you need", "digging answers out of a pile of records"),
+  skill("q3_charts", "Turning numbers into a simple chart or summary someone can understand at a glance", "turning numbers into something people can understand"),
+  skill("q4_trends", "Spotting a pattern in numbers, like which months you spend the most or which products sell best", "spotting patterns in numbers"),
+  skill("q5_explaining", "Explaining something complicated to someone in plain English", "explaining things in plain English"),
+  skill("q6_problems", "Figuring out what the real problem is before jumping to a fix", "finding the real problem before jumping to a fix"),
+  skill("q7_ai_tools", "Using AI tools like ChatGPT to get work done faster", "using AI tools to work faster"),
 ];
 const MAX_POINTS = 21;
 
@@ -219,13 +220,31 @@ function scoreAudit(answers) {
   const total = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a][1], 0);
   const tier = total >= 15 ? "high" : total >= 8 ? "medium" : "low";
   const percent = Math.round(total / MAX_POINTS * 100);
-  return { total, percent, tier };
+  const ratings = answers.map((a, i) => QUESTIONS[i].options[a][1]);
+  return { total, percent, tier, strengths: topSkills(ratings) };
+}
+
+// Up to 3 skills they rated 2+ (highest first), as indexes into QUESTIONS
+function topSkills(ratings) {
+  return ratings
+    .map((rating, i) => ({ rating, i }))
+    .filter(x => x.rating >= 2)
+    .sort((a, b) => b.rating - a.rating || a.i - b.i)
+    .slice(0, 3)
+    .map(x => x.i);
+}
+
+function listSkills(indexes) {
+  const labels = (indexes || []).map(i => QUESTIONS[i] && QUESTIONS[i].label).filter(Boolean);
+  if (labels.length < 2) return labels[0] || "";
+  return labels.slice(0, -1).join(", ") + " and " + labels[labels.length - 1];
 }
 
 /* ==========================================================
    RESULT PAGES
    ========================================================== */
 function resultHTML(r, name) {
+  const skills = listSkills(r.strengths);
   const hi = name ? `<p>${name}, here's your result.</p>` : "";
   const dialColor = { high: "#37ca37", medium: "#667eea" }[r.tier];
   const dial = `
@@ -239,8 +258,11 @@ function resultHTML(r, name) {
     <h1>You're built for Data Analytics</h1>
     <p class="dcb-sub">You have the highest probability of landing a $100K+ remote career in this field. Let's map it out.</p>
     ${hi}
-    <p>Your answers show the combination that matters most: you're comfortable with numbers, you solve problems by looking for root causes, and you're willing to put real time behind a career change.</p>
-    <p>That's not common. Most people say they want out of their situation but won't do the work. You will.</p>
+    <p>${skills
+      ? `Your answers show the combination that matters most. You're already confident at ${skills}.`
+      : "Your answers show the combination that matters most: you're already confident with the core skills on this list."}
+      That's the heart of what data analysts do every day: take messy numbers, figure out what they mean, and explain it so a business can act.</p>
+    <p>That's not common. Most people who take this audit can't say that.</p>
     <p>The fastest way to turn this into an actual offer is to get a personalized roadmap. Not a generic course. A straight-line plan based on your background, your timeline, and the exact skills that get people hired right now.</p>
     <div class="dcb-cta">
       <p><b>Your next step:</b> Book a free Career Clarity Call. We'll look at where you are, where you want to be, and whether our program is the right fit. If it's not, you'll still walk away with a clear game plan.</p>
@@ -252,7 +274,10 @@ function resultHTML(r, name) {
     <h1>Data Analytics</h1>
     <p class="dcb-sub">You already have the mindset and some of the pieces. Here's how to turn that into a real remote career.</p>
     ${hi}
-    <p>Based on your answers, you're not starting from zero. You think in patterns, you're open to tech, and you can put real hours behind a goal. That's the exact profile of someone who can break into data analytics without a CS degree.</p>
+    <p>Based on your answers, you're not starting from zero. ${skills
+      ? `You're already good at ${skills}. Those are real pieces of data analytics work.`
+      : "You already have real pieces of data analytics work."}
+      That's the exact profile of someone who can break into data analytics without a CS degree.</p>
     <p>The difference between people who make $80K+ in this field and people who stay stuck isn't intelligence. It's knowing which skills actually matter, which ones to ignore, and how to position yourself so companies trust you before you've even been hired.</p>
     <div class="dcb-cta">
       <p><b>Your next step:</b> Watch the free training. It walks you through the exact roadmap from where you are now to a $100K+ data + AI career, including the mistakes that slow most people down.</p>
@@ -295,7 +320,9 @@ function loadResult() {
   const tier = params.get("audit_tier");
   if (!["high", "medium", "low"].includes(tier)) return null;
   const percent = Math.max(0, Math.min(100, parseInt(params.get("audit_score"), 10) || 0));
-  return { tier, percent };
+  // The answers come back too (q1_spreadsheets=2 ...), so the skills can be named
+  const ratings = QUESTIONS.map(q => parseInt(params.get(q.id), 10) || 0);
+  return { tier, percent, strengths: topSkills(ratings) };
 }
 
 // First name: from the URL if the redirect passes it, otherwise from the

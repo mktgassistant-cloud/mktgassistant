@@ -67,6 +67,8 @@ RESULT      Tier headline · subhead · body · one CTA button
 
 Each question is a skill the visitor rates themselves on. Above every question: **"Be honest: how good are you at this right now?"**
 
+The 7 skills are the core of data analytics work, written as things people already do in everyday life. Cold traffic from data-entry and side-hustle videos can honestly rate themselves above zero, and nothing reads as SQL, BI tools or coding. The "named back as" label is how the Medium and High result pages describe the skills each person rated highest.
+
 | Answer | Points |
 |---|---|
 | Never done it | 0 |
@@ -74,15 +76,15 @@ Each question is a skill the visitor rates themselves on. Above every question: 
 | Can do it confidently | 2 |
 | Could teach someone else | 3 |
 
-| # | Skill | Hidden field |
-|---|---|---|
-| 1 | Cleaning up messy spreadsheets and making the numbers make sense | `q1_spreadsheets` |
-| 2 | Pulling answers from a database or a big pile of records | `q2_records` |
-| 3 | Building simple dashboards or charts that tell a story | `q3_charts` |
-| 4 | Using basic math and stats to spot trends in business numbers | `q4_trends` |
-| 5 | Explaining what the numbers mean to someone who doesn't like math | `q5_explaining` |
-| 6 | Turning a confusing business problem into a clear question you can answer with data | `q6_problems` |
-| 7 | Using AI tools or simple coding to speed up your analysis | `q7_ai_tools` |
+| # | Skill (as shown) | Named back as | Hidden field |
+|---|---|---|---|
+| 1 | Cleaning up a messy list or spreadsheet so it actually makes sense (like a budget, contact list or inventory) | cleaning up messy numbers | `q1_spreadsheets` |
+| 2 | Digging through a pile of emails, receipts or orders to find the one answer you need | digging answers out of a pile of records | `q2_records` |
+| 3 | Turning numbers into a simple chart or summary someone can understand at a glance | turning numbers into something people can understand | `q3_charts` |
+| 4 | Spotting a pattern in numbers, like which months you spend the most or which products sell best | spotting patterns in numbers | `q4_trends` |
+| 5 | Explaining something complicated to someone in plain English | explaining things in plain English | `q5_explaining` |
+| 6 | Figuring out what the real problem is before jumping to a fix | finding the real problem before jumping to a fix | `q6_problems` |
+| 7 | Using AI tools like ChatGPT to get work done faster | using AI tools to work faster | `q7_ai_tools` |
 
 **Total possible: 21.**
 
@@ -99,6 +101,8 @@ Each question is a skill the visitor rates themselves on. Above every question: 
 ## 3. Result pages
 
 Each page: eyebrow, headline, subhead, the visitor's name ("Jamie, here's your result."), body, one CTA.
+
+`{{top skills}}` = up to 3 skills the person rated 2 or 3, highest first, joined like "spotting patterns in numbers, explaining things in plain English and using AI tools to work faster." Medium and High always have at least one.
 
 ### Low (0–7)
 
@@ -122,7 +126,7 @@ If your goal is to replace your income and eventually scale into six figures, th
 **Headline:** Data Analytics
 **Subhead:** You already have the mindset and some of the pieces. Here's how to turn that into a real remote career.
 
-Based on your answers, you're not starting from zero. You think in patterns, you're open to tech, and you can put real hours behind a goal. That's the exact profile of someone who can break into data analytics without a CS degree.
+Based on your answers, you're not starting from zero. You're already good at {{top skills}}. Those are real pieces of data analytics work. That's the exact profile of someone who can break into data analytics without a CS degree.
 
 The difference between people who make $80K+ in this field and people who stay stuck isn't intelligence. It's knowing which skills actually matter, which ones to ignore, and how to position yourself so companies trust you before you've even been hired.
 
@@ -136,9 +140,9 @@ The difference between people who make $80K+ in this field and people who stay s
 **Headline:** You're built for Data Analytics
 **Subhead:** You have the highest probability of landing a $100K+ remote career in this field. Let's map it out.
 
-Your answers show the combination that matters most: you're comfortable with numbers, you solve problems by looking for root causes, and you're willing to put real time behind a career change.
+Your answers show the combination that matters most. You're already confident at {{top skills}}. That's the heart of what data analysts do every day: take messy numbers, figure out what they mean, and explain it so a business can act.
 
-That's not common. Most people say they want out of their situation but won't do the work. You will.
+That's not common. Most people who take this audit can't say that.
 
 The fastest way to turn this into an actual offer is to get a personalized roadmap. Not a generic course. A straight-line plan based on your background, your timeline, and the exact skills that get people hired right now.
 

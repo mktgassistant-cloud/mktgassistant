@@ -229,7 +229,7 @@ All three pages use the same layout. Only the words and the single button change
 **CTA per tier**
 - **High → Book a Clarity Call.** These people are ready to talk. Skip the extra step.
 - **Medium → Watch the VSL.** They need the "why data" story first. The VSL ends with the Clarity Call link.
-- **Low → Free Remote Job Starter Guide.** Get them a quick win and keep them in nurture longer.
+- **Low → Watch an existing YouTube video** on landing a first remote job. Nothing new to build: it keeps them watching you and in nurture longer. (Swap in a Remote Job Starter Guide later.)
 
 ---
 
@@ -321,10 +321,10 @@ Step 2: Get good with spreadsheets. (Data entry teaches you this while paying yo
 Step 3: Learn to analyze business numbers. That's where the $100K jobs are.
 
 **Your next step:**
-Grab the free Remote Job Starter Guide. It shows you where to find legit beginner remote jobs, how to spot scams, and how to get hired with no experience.
+Watch this free video. It walks you through how to land your first remote job, even with no experience.
 
-> ### [ Send Me the Free Starter Guide → ]
-> Free. Lands in your inbox in about a minute.
+> ### [ ▶ Watch: [VIDEO TITLE] → ]
+> Free. Links to [YOUTUBE VIDEO LINK].
 
 ---
 
@@ -407,7 +407,7 @@ P.S. At the end of the video there's a link to book a free Clarity Call if you w
 
 ### 4C. LOW — Email 1 (immediate)
 
-**Subject:** {{first_name}}, your skill audit results + your free guide
+**Subject:** {{first_name}}, your skill audit results ({{score}}%)
 **Preview text:** Here's where to start.
 
 Hi {{first_name}},
@@ -424,14 +424,11 @@ Your smartest move right now is to land your **first** remote paycheck. Then bui
 
 {{strength_line}}
 
-To help you get that first win, here's your free Remote Job Starter Guide:
+To help you get that first win, start with this video:
 
-**[Get the Remote Job Starter Guide →]([STARTER GUIDE LINK])**
+**[Watch: [VIDEO TITLE] →]([YOUTUBE VIDEO LINK])**
 
-Inside:
-- Where to find legit beginner remote jobs
-- How to spot work-from-home scams
-- How to get hired with zero experience
+It walks you through how to land your first remote job, even with no experience.
 
 I'll send you a few more tips over the next couple of weeks to help you level up.
 
@@ -457,7 +454,7 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 
 **Exit rules:** Stop the sequence as soon as someone books a call. Non-bookers move to long-term nurture after the last email.
 
-**Low tier:** Email 1 → starter guide, then straight into long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
+**Low tier:** Email 1 → YouTube video, then straight into long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
 
 ---
 
@@ -478,6 +475,6 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 - Opt-in rate (visitors → emails)
 - Audit completion rate (emails → finished all 7)
 - Tier split. If more than ~40% land in High, raise the High cutoff to 17.
-- High: call booking rate. Medium: VSL play rate → call booking rate. Low: guide click rate.
+- High: call booking rate. Medium: VSL play rate → call booking rate. Low: video click rate.
 
 **Compliance:** Keep the earnings disclaimer on the opt-in page and all result pages. Never say "you will earn $100K." Say "could," "some people earn," or "the path to."

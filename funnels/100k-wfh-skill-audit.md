@@ -148,7 +148,7 @@ The fastest way to turn this into an actual offer is to get a personalized roadm
 
 **Your next step:** Book a free Career Clarity Call. We'll look at where you are, where you want to be, and whether our program is the right fit. If it's not, you'll still walk away with a clear game plan.
 
-> **[ Book Your Clarity Call → ]** → `[CALENDAR LINK]`
+> **[ Book Your Clarity Call → ]** → `https://datacareerblueprint.com`
 
 ---
 
@@ -219,7 +219,7 @@ The fastest way to turn that into an actual offer is a personalized plan, not a 
 
 Book a free Career Clarity Call and we'll map it out together:
 
-**[Book Your Clarity Call →]([CALENDAR LINK])**
+**[Book Your Clarity Call →](https://datacareerblueprint.com)**
 
 If it's not a fit, you'll still walk away with a clear game plan.
 

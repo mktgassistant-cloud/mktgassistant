@@ -1,408 +1,261 @@
 # The $100K Work-From-Home Skill Audit — Lead Magnet Funnel
 
-**Traffic:** Cold YouTube viewers coming from side-hustle, work-from-home and data-entry content.
+**Traffic:** Cold YouTube viewers coming from side-hustle, work-from-home and data-entry content. Low awareness, not looking for a data career yet.
 **YouTube hook:** "Which Remote/WFH Skill Could Pay You $100K?"
 **Job of this funnel:** Get the email. Show each person which remote skill they have the best shot at. Make data analytics the clear top path for the people who fit it.
 
-**Copy rules for every asset below**
-- Say "analyzing business numbers to help companies make decisions," not "data analyst."
-- Don't mention SQL, Power BI, Tableau or Python anywhere in the audit or on the result pages.
-- Keep it short. One idea per line. A 5th-grade reader should get it on the first pass.
-- One CTA per page. No sidebars, no extra links.
+**Copy rules**
+- Frame data work as "analyzing business numbers to help companies make decisions." Don't lead with SQL, BI tools or the "data analyst" job title.
+- Mass-market, simple, fast, outcome-focused.
+- Under 8 questions. One CTA per result page.
+- Same core email sequence for everyone. Only the opening angle changes by tier.
+
+**Live page:** `funnels/skill-audit/ghl-custom-html.html`, pasted into a Custom HTML/Javascript element on https://datacareerblueprint.com/mass-market-opt-in-page. That file holds the final copy; this doc mirrors it.
 
 **Contents**
-1. [Opt-in page](#1-opt-in-page)
+1. [Opt-in page copy and structure](#1-opt-in-page-copy-and-structure)
 2. [Audit questions and scoring](#2-audit-questions-and-scoring)
-3. [Result pages (3 tiers)](#3-result-pages)
+3. [Result pages](#3-result-pages)
 4. [First follow-up email per tier](#4-first-follow-up-email-per-tier)
-5. [Sequence roadmap (for later)](#5-sequence-roadmap-for-later)
-6. [Build notes](#6-build-notes)
+5. [Sequence roadmap](#5-sequence-roadmap)
+6. [GoHighLevel setup](#6-gohighlevel-setup)
 
 Placeholders are in `[BRACKETS]`.
 
 ---
 
-## 1. Opt-in page
+## 1. Opt-in page copy and structure
 
-> **Updated:** the live page is now quiz-first. Landing (headline, subhead, "Start My 60-Second Audit") → 10 questions → email gate ("Where should we send your result?", first name + email, "Show Me My Highest-Paying Remote Skill") → result. The final copy lives in `funnels/skill-audit/ghl-custom-html.html`. The opt-in copy below is the original email-first version.
-
-Put everything above the fold on mobile: headline, bullets, form, button. Most of this traffic comes from YouTube on a phone.
-
-### Layout (top to bottom)
+Quiz first, email gate last. Everything is on one page; the screens swap in place.
 
 ```
-[Small eyebrow text]   FREE 60-SECOND AUDIT
-[Headline]
-[Subheadline]
-[3 bullets with check icons]
-[Form: First name | Email]
-[Button]
-[Trust line]
--------------- below the fold (optional) --------------
-[What you'll find out: 3 skill "cards"]
-[Short note from the host + photo]
-[Repeat button]
-[Earnings disclaimer in small print]
+[Logo]
+LANDING     Eyebrow · Headline · Subheadline · Button · small trust line
+   ↓ click
+QUESTIONS   7 screens, one question each, progress bar, Back link
+   ↓ after Q7
+EMAIL GATE  Headline · line of copy · GoHighLevel form (first name, email) · trust line
+   ↓ submit → form redirects to ?step=results
+RESULT      Tier headline · subhead · body · one CTA button
+[Earnings disclaimer under every screen]
 ```
 
-### Copy
+### Landing
 
-**Eyebrow:** FREE 60-SECOND AUDIT
+- **Eyebrow:** FREE 60-SECOND AUDIT
+- **Headline:** The $100K Work-From-Home Skill Audit
+- **Subheadline:** Find out which remote skill you already have the best shot at - and which one could actually replace your income.
+- **Button:** Start My 60-Second Audit →
+- **Under the button:** Free. 7 quick questions. No tech background needed.
 
-**Headline:**
-# The $100K Work-From-Home Skill Audit
+### Email gate (after question 7)
 
-**Subheadline:**
-Find out which remote skill you already have the best shot at, and which one could actually replace your income.
+- **Eyebrow:** ✓ AUDIT COMPLETE
+- **Headline:** Where should we send your result?
+- **Copy:** Enter your first name and email to see your result now. We'll send you a copy too.
+- **Fields:** First name, email
+- **Button:** Show Me My Highest-Paying Remote Skill
+- **Trust line:** No spam. Unsubscribe anytime.
 
-**Bullets:**
-- ✅ Takes about 60 seconds
-- ✅ No tech background needed
-- ✅ Get your personalized skill score + next steps
+### Disclaimer (small print, every screen)
 
-**Form fields:**
-- First name: placeholder text "Your first name"
-- Email: placeholder text "Your best email (we'll send your results here)"
-
-**Button:**
-> **Show Me My Highest-Paying Remote Skill →**
-
-**Trust line (under the button):**
-No spam. Unsubscribe anytime.
-
-### Below the fold (optional, for people who scroll)
-
-**Section header:** Your audit compares 4 real work-from-home paths
-
-| Skill | What it looks like |
-|---|---|
-| Data entry | Typing and updating info for companies |
-| Virtual assisting | Keeping someone's inbox, calendar and tasks on track |
-| Freelance research | Finding and organizing info for clients |
-| Business number analysis | Looking at a company's numbers and telling them what to do next |
-
-Line under the table:
-> Most people pick the first remote job they see. This audit shows you which one fits **you**, and which one has the highest ceiling.
-
-**Host note (2–3 lines, with photo):**
-> "I made this audit because most people chasing work-from-home jobs end up stuck at $15 an hour. Some of them already have what it takes to earn a lot more. They just don't know it yet. Take 60 seconds and find out where you stand." — [HOST NAME]
-
-**Repeat button:** Show Me My Highest-Paying Remote Skill →
-
-**Footer disclaimer (small print):**
 > Results vary. Income figures reflect what some people in these roles earn and are not a promise or guarantee of earnings. Your results depend on your effort, experience and the job market.
 
 ---
 
 ## 2. Audit questions and scoring
 
-10 questions, one per screen, with a progress bar. The questions are built to create urgency and self-awareness, not just to score. The full answer text and points are in `funnels/skill-audit/ghl-custom-html.html` (`QUESTIONS`).
+Each question is a skill the visitor rates themselves on. Above every question: **"Be honest: how good are you at this right now?"**
 
-| # | Question | Scoring |
+| Answer | Points |
+|---|---|
+| Never done it | 0 |
+| Tried it once or twice | 1 |
+| Can do it confidently | 2 |
+| Could teach someone else | 3 |
+
+| # | Skill | Hidden field |
 |---|---|---|
-| 1 | What's your biggest reason for wanting a work-from-home skill right now? | 3 / 2 / 1 / 0 |
-| 2 | How much time could you realistically put into building a new skill each week? | 2 / 1 / 0 / 0 |
-| 3 | When you have to solve a problem at work or home, how do you usually approach it? | 3 / 2 / 1 / 0 |
-| 4 | How comfortable are you with spreadsheets like Excel or Google Sheets? | 3 / 2 / 1 / 0 |
-| 5 | Which of these tasks sounds most interesting to you? | 3 / 2 / 1 / 0 |
-| 6 | What best describes your current work situation? | Not scored (messaging) |
-| 7 | Have you ever thought about a career in data, analytics, or tech? | 3 / 2 / 1 / 0 |
-| 8 | What's the highest income you've made in a single year so far? | 2 / 1 / 0 / 0 |
-| 9 | How long have you been thinking about making a change? | 2 / 1 / 0 / 0 |
-| 10 | If you could land a remote career making $80K to $150K in the next 6 to 12 months, what's the main thing stopping you? | Not scored (messaging) |
+| 1 | Cleaning up messy spreadsheets and making the numbers make sense | `q1_spreadsheets` |
+| 2 | Pulling answers from a database or a big pile of records | `q2_records` |
+| 3 | Building simple dashboards or charts that tell a story | `q3_charts` |
+| 4 | Using basic math and stats to spot trends in business numbers | `q4_trends` |
+| 5 | Explaining what the numbers mean to someone who doesn't like math | `q5_explaining` |
+| 6 | Turning a confusing business problem into a clear question you can answer with data | `q6_problems` |
+| 7 | Using AI tools or simple coding to speed up your analysis | `q7_ai_tools` |
 
-Points are listed in the order the answers appear. **Max = 21.** Q6 and Q10 go into GoHighLevel as hidden fields, so emails can speak to the person's situation and main objection.
+**Total possible: 21.**
 
-### Tiers
-
-| Total (0–21) | Tier | Result headline | CTA |
+| Points | Tier | Result headline | CTA |
 |---|---|---|---|
-| 0–9 | **Low** | Your fastest remote skill: Admin / Data Entry | Free "Top 10 Remote Jobs" PDF guide |
-| 10–15 | **Medium** | Your highest-leverage skill: Data Analytics | Watch the free training (VSL) |
-| 16–21 | **High** | You're built for Data Analytics | Book a Clarity Call |
+| 0–7 | **Low** | Your fastest remote skill: Admin / Data Entry | Get the Free Remote Jobs Guide |
+| 8–14 | **Medium** | Your highest-leverage skill: Data Analytics | Watch the Free Training |
+| 15–21 | **High** | You're built for Data Analytics | Book Your Clarity Call |
 
-**Override rule:** "Less than 2 hours" (Q2) or "I avoid them" (Q4) → highest possible tier is Medium. This keeps the call calendar for people who are ready.
-
-**Score shown:** Data Analytics Fit Score = `round(total ÷ 21 × 100)`. It's shown on Medium and High only. The Low page leads with the skill, not a low number. A capped result shows at most 71%.
+**Score shown:** Data Analytics Fit Score = `round(points ÷ 21 × 100)`, shown on Medium and High only. The Low page leads with the skill instead of a low number.
 
 ---
 
 ## 3. Result pages
 
-> **Updated:** the live result pages use the named-skill tiers and copy from section 2 (Admin / Data Entry, Data Analytics, "You're built for Data Analytics"). Their final copy is in `funnels/skill-audit/ghl-custom-html.html`, in `resultHTML()`. The Low page hides the score dial. The versions below are the originals.
+Each page: eyebrow, headline, subhead, the visitor's name ("Jamie, here's your result."), body, one CTA.
 
-All three pages use the same layout. Only the words and the single button change.
+### Low (0–7)
 
-```
-[Score dial: "Your Data Analytics Fit Score: XX%"]
-[Tier headline]
-[Hi {{first_name}}, + 2–3 short lines]
-[{{strength_line}}]
-["Your best-fit remote skills" ranked list (3 items)]
-[Why this matters (3 short lines)]
-[ONE CTA block]
-[Small print disclaimer]
-```
+**Eyebrow:** YOUR FASTEST REMOTE SKILL
+**Headline:** Admin / Data Entry
+**Subhead:** This is the easiest remote skill to land quickly - no tech background needed. But if you want to get to $100K, the next step up is data analytics.
 
-**CTA per tier**
-- **High → Book a Clarity Call.** These people are ready to talk. Skip the extra step.
-- **Medium → Watch the VSL.** They need the "why data" story first. The VSL ends with the Clarity Call link.
-- **Low → Watch an existing YouTube video** on landing a first remote job. Nothing new to build: it keeps them watching you and in nurture longer. (Swap in a Remote Job Starter Guide later.)
+Most people start here because it pays faster than waiting tables, gig work, or retail. The roles are real, the hours are flexible, and you can get in without a degree.
 
----
+The trade-off is the ceiling. Most admin and data entry work tops out around $40K to $55K.
 
-### 3A. HIGH result page (score 16–21)
+If your goal is to replace your income and eventually scale into six figures, the move is to add one high-value skill on top of this. Data analytics is the cleanest upgrade because companies already pay $80K to $120K for people who can turn raw numbers into decisions.
 
-**Score:** Your Data Analytics Fit Score: **{{score}}%**
+**Your next step:** Download the free guide below. It breaks down the top 10 remote/WFH jobs you can start with now, plus the fastest path from each one into a higher-income skill.
 
-# You're closer to a $100K remote career than you think.
+> **[ Get the Free Remote Jobs Guide → ]** → `[TOP 10 REMOTE JOBS PDF LINK]`
 
-Hi {{first_name}},
+### Medium (8–14)
 
-Your answers put you in the top group of people who take this audit.
+**Score dial** · **Eyebrow:** YOUR HIGHEST-LEVERAGE SKILL
+**Headline:** Data Analytics
+**Subhead:** You already have the mindset and some of the pieces. Here's how to turn that into a real remote career.
 
-You already think in a way most companies pay a lot for. You look at the facts. You like knowing *why*. You're not scared of a spreadsheet.
+Based on your answers, you're not starting from zero. You think in patterns, you're open to tech, and you can put real hours behind a goal. That's the exact profile of someone who can break into data analytics without a CS degree.
 
-{{strength_line}}
+The difference between people who make $80K+ in this field and people who stay stuck isn't intelligence. It's knowing which skills actually matter, which ones to ignore, and how to position yourself so companies trust you before you've even been hired.
 
-**Your best-fit remote skills:**
-1. 🥇 **Business number analysis** (Best fit. Highest income ceiling.)
-2. 🥈 Freelance research
-3. 🥉 Virtual assisting
+**Your next step:** Watch the free training. It walks you through the exact roadmap from where you are now to a $100K+ data + AI career, including the mistakes that slow most people down.
 
-**What "business number analysis" actually means:**
-Companies are full of numbers: sales, customers, costs, orders. Most of them don't know what those numbers are telling them. People who can look at those numbers and say "here's what's working, here's what's not, here's what to do next" get paid well, and a lot of them do it from home. Experienced people in these roles can earn $100K or more.
+> **[ ▶ Watch the Free Training → ]** → `[VSL LINK]`
 
-You don't need a degree in it. You need the right next steps in the right order.
+### High (15–21)
 
-**Your next step:**
-Book a free 20-minute Clarity Call. We'll look at your audit results together and map out what your path to a remote analytics role could look like, including how long it would realistically take *you*.
+**Score dial** · **Eyebrow:** YOUR RESULT
+**Headline:** You're built for Data Analytics
+**Subhead:** You have the highest probability of landing a $100K+ remote career in this field. Let's map it out.
 
-> ### [ Book My Free Clarity Call → ]
-> No pressure, no hard sell. If it's not a fit, we'll tell you.
+Your answers show the combination that matters most: you're comfortable with numbers, you solve problems by looking for root causes, and you're willing to put real time behind a career change.
 
----
+That's not common. Most people say they want out of their situation but won't do the work. You will.
 
-### 3B. MEDIUM result page (score 10–15, or capped from High)
+The fastest way to turn this into an actual offer is to get a personalized roadmap. Not a generic course. A straight-line plan based on your background, your timeline, and the exact skills that get people hired right now.
 
-**Score:** Your Data Analytics Fit Score: **{{score}}%**
+**Your next step:** Book a free Career Clarity Call. We'll look at where you are, where you want to be, and whether our program is the right fit. If it's not, you'll still walk away with a clear game plan.
 
-# You already have pieces of a high-income remote skill.
-
-Hi {{first_name}},
-
-Good news: you're further along than most people who take this audit.
-
-You've got some of the habits that remote companies pay for. You're just missing a few pieces to turn them into real income.
-
-{{strength_line}}
-
-**Your best-fit remote skills:**
-1. **Data entry / virtual assisting / freelance research** (You could start here now.)
-2. **Business number analysis** (Your strongest long-term play.)
-
-**Here's the honest truth about those first three:**
-They're real jobs, and you could probably land one. But most of them top out around $15–$25 an hour, and you're competing with thousands of people for each gig.
-
-**Business number analysis** is different. You'd be the person who looks at a company's numbers and tells them what to do next. It uses the same skills you already have, taken one step further, and the pay ceiling is a lot higher.
-
-**Your next step:**
-Watch this short video. It shows how regular people (no tech background) go from "decent with spreadsheets" to getting paid to analyze business numbers from home.
-
-> ### [ ▶ Watch the Free Video → ]
-> About [XX] minutes. Watch it before you apply to another $15/hour gig.
-
----
-
-### 3C. LOW result page (score 0–9)
-
-**Score:** Your Data Analytics Fit Score: **{{score}}%**
-
-# You're just getting started.
-
-Hi {{first_name}},
-
-That's not a bad thing. Everyone who works from home started exactly where you are now.
-
-Your best move right now isn't to chase the highest-paying skill. It's to land your **first** remote paycheck, then build from there.
-
-{{strength_line}}
-
-**Your best-fit remote skills:**
-1. **Beginner remote work** like customer support or online admin (Easiest to start.)
-2. **Data entry** (A great first step. It gets you comfortable with spreadsheets.)
-3. **Business number analysis** (Your "next level" once you've got the basics.)
-
-**Here's the path that works:**
-Step 1: Get a simple remote job and get comfortable working online.
-Step 2: Get good with spreadsheets. (Data entry teaches you this while paying you.)
-Step 3: Learn to analyze business numbers. That's where the $100K jobs are.
-
-**Your next step:**
-Watch this free video. It walks you through how to land your first remote job, even with no experience.
-
-> ### [ ▶ Watch: [VIDEO TITLE] → ]
-> Free. Links to [YOUTUBE VIDEO LINK].
-
----
-
-**Small print on all three pages:**
-> Income figures are examples of what some people in these roles earn. They are not a promise or guarantee. Your results depend on your effort, background and the job market.
+> **[ Book Your Clarity Call → ]** → `[CALENDAR LINK]`
 
 ---
 
 ## 4. First follow-up email per tier
 
-Send **immediately** after the person finishes the audit. Its only job is to deliver the result and repeat the same one CTA from the result page. That way, people who closed the tab can still act.
+Sent the moment the form is submitted, by the GoHighLevel workflow. Same structure for every tier: deliver the result, one reason it matters, the same single CTA as the result page. Only the opening angle changes.
 
----
+### 4A. Low — Email 1 (immediate)
 
-### 4A. HIGH — Email 1 (immediate)
+**Subject:** {{contact.first_name}}, your fastest remote skill
+**Preview:** It's not the one most people guess.
 
-**Subject:** {{first_name}}, your skill audit results ({{score}}%)
-**Preview text:** You're closer than you think.
-
-Hi {{first_name}},
+Hi {{contact.first_name}},
 
 Your $100K Work-From-Home Skill Audit is in.
 
-**Your Data Analytics Fit Score: {{score}}%**
+**Your fastest remote skill: Admin / Data Entry.**
 
-That puts you in the top group of people who take this audit.
+That's good news. It's the easiest remote work to land quickly, with no degree and no tech background. It usually pays better than gig work or retail, and the hours are flexible.
 
-Here's what that means in plain English: of all the remote skills we looked at, the one you have the best shot at is also the one that pays the most:
+Here's the part most people miss: admin and data entry tends to top out around $40K to $55K. The people who get to six figures add one more skill on top. For most of them, that's analyzing business numbers to help companies make decisions.
 
-**Analyzing business numbers to help companies make decisions.**
+Start with the free guide. It breaks down the top 10 remote jobs you can start now, plus the fastest path from each one into higher-paying work.
 
-Every company has numbers: sales, customers, costs. Most don't know what those numbers are telling them. The people who can figure it out get paid well, and lots of them do it from home.
-
-{{strength_line}}
-
-The next step is a free 20-minute Clarity Call. We'll go over your results and map out what your path could look like, including a realistic timeline for you.
-
-**[Book my free Clarity Call →]([CALENDAR LINK])**
-
-No pressure. If it's not a fit, we'll tell you straight.
+**[Get the Free Remote Jobs Guide →]([TOP 10 REMOTE JOBS PDF LINK])**
 
 Talk soon,
 [SENDER NAME]
 
-P.S. Spots on the calendar fill up each week. If you're even a little curious, grab a time now. You can always reschedule.
+### 4B. Medium — Email 1 (immediate)
 
----
+**Subject:** {{contact.first_name}}, your highest-leverage skill
+**Preview:** You're not starting from zero.
 
-### 4B. MEDIUM — Email 1 (immediate)
-
-**Subject:** {{first_name}}, your skill audit results ({{score}}%)
-**Preview text:** You already have more than you think.
-
-Hi {{first_name}},
+Hi {{contact.first_name}},
 
 Your $100K Work-From-Home Skill Audit is in.
 
-**Your Data Analytics Fit Score: {{score}}%**
+**Your highest-leverage skill: Data Analytics.**
 
-Good news: you already have pieces of a high-income remote skill.
+In plain English, that means analyzing a company's numbers and telling them what's working and what to do next. It's laptop work, a lot of it is remote, and experienced people in it can earn $80K and up.
 
-Right now you could probably land data entry, virtual assistant or research work. Those are real jobs. But most top out around $15–$25 an hour.
+Your answers show you're not starting from zero. You already have some of the pieces. What separates the people who get hired from the ones who stay stuck isn't intelligence. It's knowing which skills matter, which to ignore, and how to get companies to trust you before you've been hired.
 
-Your results showed something better. You have the starting habits for **analyzing business numbers to help companies make decisions.** It's the same kind of work, one step further, and the pay ceiling is much higher.
+That's exactly what the free training covers:
 
-{{strength_line}}
+**[Watch the Free Training →]([VSL LINK])**
 
-I put together a short video that shows how regular people, with no tech background, make that jump.
-
-**[Watch the free video →]([VSL LINK])**
-
-Watch it before you apply to your next $15/hour gig. It might change which one you go after.
+Watch it before you apply to another $15/hour job.
 
 Talk soon,
 [SENDER NAME]
 
-P.S. At the end of the video there's a link to book a free Clarity Call if you want help mapping out your own path.
+### 4C. High — Email 1 (immediate)
 
----
+**Subject:** {{contact.first_name}}, you scored in the top group
+**Preview:** Let's map out your path.
 
-### 4C. LOW — Email 1 (immediate)
-
-**Subject:** {{first_name}}, your skill audit results ({{score}}%)
-**Preview text:** Here's where to start.
-
-Hi {{first_name}},
+Hi {{contact.first_name}},
 
 Your $100K Work-From-Home Skill Audit is in.
 
-**Your Data Analytics Fit Score: {{score}}%**
+**Your result: You're built for Data Analytics.**
 
-Your result: **You're just getting started.**
+That puts you in the top group of people who take this audit. You already have the skills that matter most for analyzing business numbers and helping companies make decisions, and that's the work companies pay $100K+ for when you're experienced.
 
-That's not a bad thing. Everyone who works from home started right where you are.
+The fastest way to turn that into an actual offer is a personalized plan, not a generic course. One based on your background, your timeline, and the skills that get people hired right now.
 
-Your smartest move right now is to land your **first** remote paycheck. Then build up to the higher-paying stuff, like analyzing business numbers for companies. That's where the $100K jobs are, and it's a realistic next level once you have the basics.
+Book a free Career Clarity Call and we'll map it out together:
 
-{{strength_line}}
+**[Book Your Clarity Call →]([CALENDAR LINK])**
 
-To help you get that first win, here's your free guide:
-
-**[Get the Top 10 Remote Jobs guide →]([TOP 10 REMOTE JOBS PDF LINK])**
-
-What each job pays, where to find them, and how to get hired with no experience.
-
-I'll send you a few more tips over the next couple of weeks to help you level up.
+If it's not a fit, you'll still walk away with a clear game plan.
 
 Talk soon,
 [SENDER NAME]
 
+P.S. Calendar spots fill up each week. If you're even a little curious, grab a time now. You can always reschedule.
+
 ---
 
-## 5. Sequence roadmap (for later)
+## 5. Sequence roadmap
 
-Not part of this deliverable. Listed here so Email 1 fits the plan.
-
-**High + Medium non-bookers** get the **same** core sequence. Only the first line of each email changes by tier (e.g., High: "You scored in the top group…" / Medium: "You already have pieces of this…").
+For High and Medium people who don't book. Same core emails for everyone; only the first line changes by tier ("You scored in the top group…" vs. "You already have some of the pieces…").
 
 | Day | Email | Objection it answers | CTA |
 |---|---|---|---|
 | 0 | Email 1 (above) | Result delivery | Tier CTA |
-| 1 | Why data? | "Why this skill and not VA or data entry?" | VSL |
-| 3 | Why now? | "Can't I just do this later?" | VSL / Call |
+| 1 | Why data? | "Why this skill and not admin or VA work?" | Training |
+| 3 | Why now? | "Can't I just do this later?" | Training / Call |
 | 5 | Why me? | "People like me don't get these jobs." (student story) | Call |
 | 7–8 | What if I'm not technical? | "I'm not a computer person." | Call |
 | 9–10 | (Optional) Last call | Gentle close | Call |
 
-**Exit rules:** Stop the sequence as soon as someone books a call. Non-bookers move to long-term nurture after the last email.
-
-**Low tier:** Email 1 → Top 10 Remote Jobs guide, then straight into long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
+**Exit rules:** stop the sequence when someone books a call. Non-bookers move to long-term nurture after the last email.
+**Low tier:** Email 1 → guide, then long-term nurture with remote-job tips. Every few weeks, send a "ready for the next level?" email that invites them to retake the audit.
 
 ---
 
-## 6. Build notes
+## 6. GoHighLevel setup
 
-**Tags / custom fields (Kit or any ESP):**
-- Tags: `audit-wfh-low`, `audit-wfh-medium`, `audit-wfh-high`
-- Custom fields: `audit_score` (0–100), `audit_tier`, `strength_line`
-- Optional: store Q1 and Q4 answers. They're useful for sales calls and later segmenting.
+**Form "Mass Market Lead Mag Opt In"** (`jHLG6cDRBPe9IeZiC6m4`)
+- Fields: First name + Email. Remove Phone, or make it optional.
+- Button text: "Show Me My Highest-Paying Remote Skill".
+- Hidden fields (query keys): `audit_tier` (high / medium / low), `audit_score` (0–100), and optionally `q1_spreadsheets` … `q7_ai_tools` (0–3 each). The page passes these into the form.
+- **On Submit → Redirect URL:** `https://datacareerblueprint.com/mass-market-opt-in-page?step=results`, then **Save**. The page shows the result after the redirect. GoHighLevel also passes the hidden-field values along with the redirect, so the result still shows if the browser didn't save it.
 
-**Flow:**
-1. Opt-in captures first name + email **before** the questions. (The request is to get the email first. Expect a lower opt-in rate but higher quality leads. Test putting the email gate after Q7 later if opt-ins are weak.)
-2. Quiz tool calculates the score, applies the 2 override rules and redirects to the right result page with `first_name`, `score` and `strength_line` in the URL or session.
-3. Quiz tool sends tags + fields to the ESP, which fires the matching Email 1.
-4. Calendar bookings tag the subscriber `booked-clarity-call` to stop the sequence.
+**Page:** the "mass market opt in" funnel step. Section full width, 0 padding. One Custom HTML/Javascript element with the contents of `ghl-custom-html.html`. Fill in the `CONFIG` block (calendar, VSL and its length, guide link).
 
-**The page:** `funnels/skill-audit/ghl-custom-html.html` is the whole funnel, styled to match datacareerblueprint.com. Paste it into a Custom HTML/Javascript element on https://datacareerblueprint.com/mass-market-opt-in-page. Styles are scoped to `#dcb-audit` and the script is self-contained, so it won't clash with the GoHighLevel page.
+**Workflow:** trigger "Form Submitted" (this form) → If/Else on Audit Tier → add tag `audit-wfh-high` / `-medium` / `-low` → send that tier's Email 1 → wait → core sequence. A calendar booking adds `booked-clarity-call` and removes them from the sequence.
 
-**Flow (quiz first):** landing (headline, bullets, "Show Me My Highest-Paying Remote Skill" button) → 7 questions → "Your results are ready!" + GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`) → result page.
+**What to track first:** landing → started audit, started → finished Q7, finished → opted in, the tier split, then per tier: call bookings (High), training views (Medium), guide clicks (Low). If more than about 40% land in High, raise the High cutoff.
 
-**GoHighLevel setup:**
-- Add hidden fields to the form with these query keys. The page passes them into the form, so every contact arrives with its result: `audit_tier` (high / medium / low), `audit_score` (0–100), and optionally the 10 answers (`q1_reason` … `q10_blocker`). `q6_situation` and `q10_blocker` are the most useful for emails.
-- Form **On Submit → Redirect URL**: `https://datacareerblueprint.com/mass-market-opt-in-page?step=results`. (It currently redirects to the Roadmap PDF.) The page saves the result in the browser and shows it after the redirect. If the form shows a thank-you message instead, the page still shows the result in place.
-- Form fields: First name + Email only (remove Phone or make it optional). Button text: "Show Me My Highest-Paying Remote Skill".
-- Workflow: trigger "Form Submitted" (this form) → If/Else on Audit Tier → add tag `audit-wfh-high` / `-medium` / `-low` → send that tier's Email 1.
-
-**What to track first:**
-- Opt-in rate (visitors → emails)
-- Audit completion rate (emails → finished all 7)
-- Tier split. If more than ~40% land in High, raise the High cutoff to 17.
-- High: call booking rate. Medium: VSL play rate → call booking rate. Low: guide click rate.
-
-**Compliance:** Keep the earnings disclaimer on the opt-in page and all result pages. Never say "you will earn $100K." Say "could," "some people earn," or "the path to."
+**Compliance:** keep the earnings disclaimer on every screen. Never say "you will earn $100K." Say "can," "could," or "some people earn."

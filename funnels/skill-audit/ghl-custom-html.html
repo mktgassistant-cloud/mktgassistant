@@ -2,7 +2,7 @@
   $100K Work-From-Home Skill Audit
   Paste this whole file into a GoHighLevel "Custom HTML/Javascript" element
   on https://datacareerblueprint.com/mass-market-opt-in-page
-  Flow: landing -> 10 questions -> GoHighLevel form -> result page.
+  Flow: landing -> 7 questions -> GoHighLevel form -> result page.
   Settings to fill in are in the CONFIG block near the bottom.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +72,7 @@
   #dcb-audit .dcb-progress { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--muted); margin-bottom: 8px; }
   #dcb-audit .dcb-bar { height: 6px; background: rgba(255, 255, 255, .08); border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
   #dcb-audit .dcb-bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--violet)); transition: width .3s ease; }
+  #dcb-audit .dcb-ask { color: var(--coral); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
   #dcb-audit .dcb-opts { display: grid; gap: 10px; }
   #dcb-audit .dcb-opt {
     display: block; width: 100%; text-align: left; font: inherit; font-size: 17px; line-height: 1.45; color: var(--ink);
@@ -126,16 +127,17 @@
       <h1>The $100K Work-From-Home Skill Audit</h1>
       <p class="dcb-sub">Find out which remote skill you already have the best shot at - and which one could actually replace your income.</p>
       <button class="dcb-btn" id="dcb-start" type="button">Start My 60-Second Audit <span class="dcb-arrow">→</span></button>
-      <p class="dcb-trust">Free. 10 quick questions. No tech background needed.</p>
+      <p class="dcb-trust">Free. 7 quick questions. No tech background needed.</p>
     </section>
 
     <!-- 2. QUIZ -->
     <section class="dcb-screen dcb-panel" id="dcb-quiz">
       <div class="dcb-progress">
         <button class="dcb-back" id="dcb-back" type="button">← Back</button>
-        <span id="dcb-qcount">Question 1 of 10</span>
+        <span id="dcb-qcount">Question 1 of 7</span>
       </div>
       <div class="dcb-bar"><span id="dcb-bar"></span></div>
+      <p class="dcb-ask">Be honest: how good are you at this right now?</p>
       <h2 id="dcb-qtext"></h2>
       <div class="dcb-opts" id="dcb-opts"></div>
     </section>
@@ -188,93 +190,36 @@ const CONFIG = {
 };
 
 /* ==========================================================
-   QUESTIONS + POINTS (max 21)
-   Q1, 3, 4, 5, 7: 3 / 2 / 1 / 0
-   Q2, 8, 9:       2 / 1 / 0 / 0
-   Q6, Q10:        not scored (used for messaging only)
+   QUESTIONS + POINTS
+   7 skills, each self-rated 0-3. Max 21.
    ========================================================== */
+const SCALE = [
+  ["Never done it", 0],
+  ["Tried it once or twice", 1],
+  ["Can do it confidently", 2],
+  ["Could teach someone else", 3],
+];
+const skill = (id, text) => ({ id, text, options: SCALE });
 const QUESTIONS = [
-  { id: "q1_reason", text: "What's your biggest reason for wanting a work-from-home skill right now?", options: [
-    ["I'm tired of my job and want out", 3],
-    ["I need more income for my family", 2],
-    ["I want flexibility and control over my schedule", 1],
-    ["I'm unemployed or worried about my job", 0],
-  ]},
-  { id: "q2_time", text: "How much time could you realistically put into building a new skill each week?", options: [
-    ["10+ hours", 2],
-    ["5 to 10 hours", 1],
-    ["2 to 5 hours", 0],
-    ["Less than 2 hours", 0, "cap"],
-  ]},
-  { id: "q3_problems", text: "When you have to solve a problem at work or home, how do you usually approach it?", options: [
-    ["I look for patterns and try to understand the root cause", 3],
-    ["I ask someone who's done it before", 2],
-    ["I Google until I find something that works", 1],
-    ["I try one thing and hope it works out", 0],
-  ]},
-  { id: "q4_spreadsheets", text: "How comfortable are you with spreadsheets like Excel or Google Sheets?", options: [
-    ["I use them regularly for work or personal stuff", 3],
-    ["I know the basics", 2],
-    ["I've opened them but don't really use them", 1],
-    ["I avoid them", 0, "cap"],
-  ]},
-  { id: "q5_interest", text: "Which of these tasks sounds most interesting to you?", options: [
-    ["Finding trends in numbers and helping a business make better decisions", 3],
-    ["Talking to customers and closing sales", 2],
-    ["Writing content or designing graphics", 1],
-    ["Organizing files, schedules, or admin work", 0],
-  ]},
-  { id: "q6_situation", text: "What best describes your current work situation?", options: [
-    ["I work a 9-to-5 job I want to leave", null],
-    ["I do gig work, retail, warehouse, or shift work", null],
-    ["I'm a stay-at-home parent or caregiver", null],
-    ["I'm unemployed or between jobs", null],
-  ]},
-  { id: "q7_data_interest", text: "Have you ever thought about a career in data, analytics, or tech?", options: [
-    ["Yes, but I didn't think I was qualified", 3],
-    ["A little, but it seems complicated", 2],
-    ["No, but I'm open to it", 1],
-    ["Not interested at all", 0],
-  ]},
-  { id: "q8_income", text: "What's the highest income you've made in a single year so far?", options: [
-    ["$80K or more", 2],
-    ["$50K to $80K", 1],
-    ["$30K to $50K", 0],
-    ["Less than $30K", 0],
-  ]},
-  { id: "q9_how_long", text: "How long have you been thinking about making a change?", options: [
-    ["Over a year", 2],
-    ["A few months", 1],
-    ["A few weeks", 0],
-    ["I just started today", 0],
-  ]},
-  { id: "q10_blocker", text: "If you could land a remote career making $80K to $150K in the next 6 to 12 months, what's the main thing stopping you?", options: [
-    ["I don't know what skill to focus on", null],
-    ["I don't think I'm qualified or smart enough", null],
-    ["I don't have the time or money to go back to school", null],
-    ["I don't know where the real jobs are or how to get hired", null],
-  ]},
+  skill("q1_spreadsheets", "Cleaning up messy spreadsheets and making the numbers make sense"),
+  skill("q2_records", "Pulling answers from a database or a big pile of records"),
+  skill("q3_charts", "Building simple dashboards or charts that tell a story"),
+  skill("q4_trends", "Using basic math and stats to spot trends in business numbers"),
+  skill("q5_explaining", "Explaining what the numbers mean to someone who doesn't like math"),
+  skill("q6_problems", "Turning a confusing business problem into a clear question you can answer with data"),
+  skill("q7_ai_tools", "Using AI tools or simple coding to speed up your analysis"),
 ];
 const MAX_POINTS = 21;
 
 /* ==========================================================
    SCORING
-   Low 0-9, Medium 10-15, High 16-21
+   Low 0-7, Medium 8-14, High 15-21
    ========================================================== */
 function scoreAudit(answers) {
-  const picked = answers.map((a, i) => QUESTIONS[i].options[a]);
-  const total = picked.reduce((sum, [, pts]) => sum + (pts || 0), 0);
-  let tier = total >= 16 ? "high" : total >= 10 ? "medium" : "low";
-  let percent = Math.round(total / MAX_POINTS * 100);
-
-  // Override rule: under 2 hrs/week, or avoids spreadsheets -> max Medium
-  let capped = false;
-  if (tier === "high" && picked.some(o => o[2] === "cap")) {
-    tier = "medium";
-    percent = Math.min(percent, Math.round(15 / MAX_POINTS * 100));
-    capped = true;
-  }
-  return { total, percent, tier, capped };
+  const total = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a][1], 0);
+  const tier = total >= 15 ? "high" : total >= 8 ? "medium" : "low";
+  const percent = Math.round(total / MAX_POINTS * 100);
+  return { total, percent, tier };
 }
 
 /* ==========================================================
@@ -453,7 +398,7 @@ function finish() {
   el("bar").style.width = "100%";
   const r = scoreAudit(answers);
   const answerData = {};
-  QUESTIONS.forEach((q, i) => { answerData[q.id] = q.options[answers[i]][0]; });
+  QUESTIONS.forEach((q, i) => { answerData[q.id] = q.options[answers[i]][1]; });
   saveResult(r);
   mountForm(r, answerData);
   show("gate");

@@ -471,7 +471,11 @@ Not part of this deliverable. Listed here so Email 1 fits the plan.
 3. Quiz tool sends tags + fields to the ESP, which fires the matching Email 1.
 4. Calendar bookings tag the subscriber `booked-clarity-call` to stop the sequence.
 
-**The page:** `funnels/skill-audit/index.html` is the whole funnel in one file: opt-in → 7 questions → scored result page. Fill in the `CONFIG` block at the top of the script (webhook URL, calendar, VSL and YouTube links). It sends three events to the webhook as form fields: `optin` (name, email, UTMs), `audit_complete` (score, tier, strength line, every answer) and `cta_click`. All three share a `lead_id`.
+**The page:** `funnels/skill-audit/index.html` (+ `logo.png`) is the whole funnel, styled to match datacareerblueprint.com.
+- Step 1 embeds the GoHighLevel form "Mass Market Lead Mag Opt In" (`jHLG6cDRBPe9IeZiC6m4`), which creates the contact.
+- In GoHighLevel, set that form's **On Submit → Redirect URL** to this page with `?step=quiz` on the end, e.g. `https://YOUR-PAGE-URL/?step=quiz`. (It currently redirects to the Roadmap PDF.) If you can, add `&first_name={{contact.first_name}}&email={{contact.email}}` so the result page greets them by name and the quiz results can be matched to the contact. The page ignores those values if GoHighLevel doesn't fill them in.
+- Backup: if the redirect isn't set, the page also starts the quiz when the form reports a successful submit.
+- Quiz results go to `CONFIG.webhookUrl` (a GoHighLevel Workflow "Inbound Webhook" trigger) as `audit_complete` (email, score, tier, strength line, every answer) and `cta_click`.
 
 **What to track first:**
 - Opt-in rate (visitors → emails)

@@ -1,0 +1,315 @@
+<title>AI Analytics Engineer Bootcamp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="An 8-week live bootcamp for analysts who know SQL and want to become analytics engineers. 30 seats. Starts late January 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single long-read column, with the student's pipeline drawn as a lineage strip that the whole page hangs off. */
+:root {
+  --bg: #F3F5F8;
+  --surface: #FFFFFF;
+  --ink: #111827;
+  --muted: #566074;
+  --line: #D9DEE7;
+  --accent: #2443C9;
+  --accent-ink: #FFFFFF;
+  --signal: #E8A317;
+  --code-bg: #E9EDF5;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E131C; --surface: #161D2A; --ink: #EEF1F6; --muted: #A2ACBD; --line: #2A3344;
+    --accent: #7D95FF; --accent-ink: #0E131C; --signal: #F2B93B; --code-bg: #1C2433; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E131C; --surface: #161D2A; --ink: #EEF1F6; --muted: #A2ACBD; --line: #2A3344;
+  --accent: #7D95FF; --accent-ink: #0E131C; --signal: #F2B93B; --code-bg: #1C2433; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; }
+.read { max-width: 64ch; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.4rem, 6.4vw, 4.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); font-weight: 700; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--accent); }
+.eyebrow { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+section { padding-block: clamp(56px, 9vw, 96px); border-top: 1px solid var(--line); }
+.stack { display: grid; gap: 20px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--body); font-weight: 600; font-size: 1.05rem;
+  padding: 16px 26px; border-radius: 6px; text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px -8px var(--accent); }
+.btn:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+.btn svg { width: 18px; height: 18px; }
+.cta-note { font-size: 0.92rem; color: var(--muted); }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px; flex-wrap: wrap; }
+.brand { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+.seats { font-family: var(--mono); font-size: 0.82rem; display: inline-flex; align-items: center; gap: 8px; }
+.seats::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+
+/* Hero */
+.hero { padding-block: clamp(32px, 6vw, 72px) clamp(48px, 7vw, 80px); display: grid; gap: 28px; }
+.hero .lede { font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--muted); max-width: 58ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 28px; font-family: var(--mono); font-size: 0.88rem; }
+.facts span b { font-weight: 600; color: var(--ink); }
+.facts span { color: var(--muted); }
+
+/* Lineage strip: the signature element */
+.lineage { overflow-x: auto; margin-top: 8px; padding-bottom: 6px; }
+.lineage ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 0; min-width: 760px; }
+.lineage li { flex: 1; position: relative; padding: 14px 14px 14px 0; }
+.lineage li + li { padding-left: 22px; }
+.lineage li + li::before {
+  content: ""; position: absolute; left: 0; top: 27px; width: 14px; height: 2px; background: var(--line);
+}
+.node { font-family: var(--mono); font-size: 0.82rem; background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; display: inline-block; white-space: nowrap; }
+.lineage li:last-child .node { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.wk { display: block; margin-top: 8px; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+
+/* Who it's for */
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; align-items: start; }
+.two > * { min-width: 0; }
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ticks li { padding-left: 30px; position: relative; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 14px; height: 8px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
+.ticks.no li::before { width: 12px; height: 2px; border: 0; background: var(--muted); transform: none; top: 0.8em; }
+
+/* Weeks */
+.weeks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.weeks li { display: grid; grid-template-columns: 74px 1fr; gap: 20px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.weeks li > div { min-width: 0; }
+.weeks .n { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); padding-top: 2px; }
+.weeks .t { font-weight: 600; }
+.weeks .d { color: var(--muted); font-size: 0.97rem; }
+.weeks li.demo .t::after { content: "Demo Day"; margin-left: 10px; font-family: var(--mono); font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 3px; background: var(--signal); color: #1A1300; vertical-align: 2px; }
+
+/* Time + format */
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.cell { background: var(--surface); padding: 24px; display: grid; gap: 6px; align-content: start; }
+.cell .big { font-family: var(--display); font-weight: 700; font-size: 2rem; font-variant-numeric: tabular-nums; }
+.cell p { color: var(--muted); font-size: 0.95rem; }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.tools span { font-family: var(--mono); font-size: 0.82rem; border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; border-radius: 4px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 16px; }
+
+/* Call steps (a real sequence) */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 18px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 14px; }
+.steps li > div { min-width: 0; }
+.steps li::before { content: counter(s); font-family: var(--mono); font-weight: 600; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--accent); color: var(--accent); display: grid; place-items: center; font-size: 0.85rem; }
+
+/* FAQ */
+details { border-bottom: 1px solid var(--line); padding-block: 18px; }
+details:first-of-type { border-top: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--mono); color: var(--accent); font-size: 1.2rem; line-height: 1; }
+details[open] summary::after { content: "–"; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+details p { margin-top: 10px; color: var(--muted); }
+
+.final { text-align: left; display: grid; gap: 22px; }
+footer { padding-block: 32px 48px; color: var(--muted); font-size: 0.88rem; border-top: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="brand">Data in Motion</span>
+    <span class="seats">Cohort 1 &middot; 30 seats</span>
+  </header>
+
+  <div class="hero">
+    <span class="eyebrow">AI Analytics Engineer Bootcamp &middot; Live &middot; Starts late January 2027</span>
+    <h1>You already write SQL. Spend 8 weeks learning to build the pipeline behind the dashboard.</h1>
+    <p class="lede">A live, small-group bootcamp for analysts who want to move into analytics engineering. You'll build one real pipeline from a messy marketing export all the way to a stakeholder dashboard, and improve it every week until you present it at Demo Day.</p>
+    <div>
+      <a class="btn" href="https://osw86s5725y.typeform.com/to/uuvewuOd" target="_blank" rel="noopener">
+        Book your call
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <p class="cta-note">A short application, then you pick a time. The call is about 20 minutes.</p>
+    <div class="facts">
+      <span><b>8 weeks</b> core program</span>
+      <span><b>2 &times; 2-hr</b> live sessions a week</span>
+      <span><b>1:1</b> coaching with Kedeisha</span>
+      <span><b>Optional</b> 4-week internship</span>
+    </div>
+
+    <div class="lineage" aria-label="The pipeline you build, week by week">
+      <ol>
+        <li><span class="node">raw.hyros_export</span><span class="wk">Week 1</span></li>
+        <li><span class="node">+ youtube, meta_spend</span><span class="wk">Weeks 2&ndash;3</span></li>
+        <li><span class="node">fct_leads &middot; dim_channel</span><span class="wk">Week 4</span></li>
+        <li><span class="node">tests &amp; docs</span><span class="wk">Week 5</span></li>
+        <li><span class="node">scheduled job</span><span class="wk">Week 6</span></li>
+        <li><span class="node">Tableau dashboard</span><span class="wk">Weeks 7&ndash;8</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <section>
+    <div class="two">
+      <div class="stack">
+        <span class="eyebrow">Who this is for</span>
+        <h2>A good fit if you're the analyst who keeps fixing the data before you can analyze it.</h2>
+      </div>
+      <div class="stack">
+        <ul class="ticks">
+          <li>You know SQL basics (SELECT, JOIN, GROUP BY) and you want to go a level deeper.</li>
+          <li>You've rebuilt the same spreadsheet or report by hand more times than you'd like to admit.</li>
+          <li>You want a portfolio project you can walk a hiring manager through, line by line.</li>
+          <li>You can give it about 8 to 10 hours a week for two months.</li>
+        </ul>
+        <p class="cta-note">Changing careers and still new to SQL? You can still join. You'll do the pre-work first, and we'll talk on the call about whether this cohort or the next one makes more sense.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="stack" style="gap:32px">
+      <div class="stack read">
+        <span class="eyebrow">What you'll build</span>
+        <h2>One pipeline, upgraded every week</h2>
+        <p>Every student works on the same fictional company. You start with a raw HYROS export in week one and get it onto a chart that same week. Then you keep adding sources, structure, and safeguards until it looks like something a data team would actually run.</p>
+      </div>
+      <ol class="weeks">
+        <li><span class="n">Wk 0</span><div><div class="t">Setup and pre-work</div><div class="d">Accounts, tools, and a SQL warm-up. Plan on 4 to 6 hours.</div></div></li>
+        <li><span class="n">Wk 1</span><div><div class="t">End to end on day one</div><div class="d">Take a raw HYROS export into Databricks and out to a Tableau chart.</div></div></li>
+        <li><span class="n">Wk 2</span><div><div class="t">Add YouTube exports</div><div class="d">Bring in a second source and line it up with the first.</div></div></li>
+        <li><span class="n">Wk 3</span><div><div class="t">Add Meta ad spend</div><div class="d">Calculate cost per lead and CAC, the numbers marketing leaders ask for every Monday.</div></div></li>
+        <li><span class="n">Wk 4</span><div><div class="t">Model it as a star schema</div><div class="d">Fact and dimension tables that other people can query without calling you.</div></div></li>
+        <li><span class="n">Wk 5</span><div><div class="t">Tests, data dictionary, access rules</div><div class="d">Catch bad data before your stakeholders do, and document what each field means.</div></div></li>
+        <li><span class="n">Wk 6</span><div><div class="t">Automate it</div><div class="d">Schedule the pipeline with Lakeflow Jobs and practice handling a broken run.</div></div></li>
+        <li><span class="n">Wk 7</span><div><div class="t">Stakeholder dashboard</div><div class="d">Build the dashboard a marketing team would open first thing in the morning.</div></div></li>
+        <li class="demo"><span class="n">Wk 8</span><div><div class="t">A/B test analysis</div><div class="d">Analyze a real experiment, start using Python, and present your full pipeline live to Kedeisha.</div></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="stack" style="gap:32px">
+      <div class="stack read">
+        <span class="eyebrow">How it runs</span>
+        <h2>Live, with real people, on a schedule you can plan around</h2>
+      </div>
+      <div class="grid3">
+        <div class="cell"><span class="big">4 hrs</span><p>Live teaching each week, split across two 2-hour sessions.</p></div>
+        <div class="cell"><span class="big">4&ndash;6 hrs</span><p>Build time each week, working on your own pipeline.</p></div>
+        <div class="cell"><span class="big">Weekly</span><p>Office hours for when you get stuck between sessions.</p></div>
+        <div class="cell"><span class="big">90 min</span><p>A one-on-one career coaching session with Kedeisha.</p></div>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">The stack you'll use</span>
+        <div class="tools">
+          <span>Databricks Free Edition</span><span>Spark SQL</span><span>Delta tables</span><span>Unity Catalog</span><span>Lakeflow Jobs</span><span>Tableau</span><span>GitHub</span><span>Claude</span><span>Python (week 8)</span>
+        </div>
+        <p class="cta-note">Everything runs on free tiers, so you won't need a company account or a budget to follow along.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div class="panel">
+        <span class="eyebrow">After the core 8 weeks</span>
+        <h3>Optional 4-week internship</h3>
+        <p>Two 2-week sprints on a brand new growth data source, at about 10 hours a week. It ends with a handoff and a final presentation, and you leave with a resume-ready write-up of the work. It's priced separately, and we'll go over it on the call.</p>
+      </div>
+      <div class="panel">
+        <span class="eyebrow">Your instructor</span>
+        <h3>Kedeisha, founder of Data in Motion</h3>
+        <p>Kedeisha runs the live Q&amp;A, does every student's one-on-one coaching session, and sits in the room for Demo Day. Cohort 1 is capped at 30 people so that she can actually do all three.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div class="stack">
+        <span class="eyebrow">The call</span>
+        <h2>What happens when you book</h2>
+        <p class="cta-note">No pressure and no long pitch. If it isn't the right fit, we'll tell you.</p>
+      </div>
+      <ol class="steps">
+        <li><div><b>Answer a few questions.</b> Your current role, your SQL comfort level, and what you want out of this. It takes a couple of minutes.</div></li>
+        <li><div><b>Pick a time.</b> Calls run about 20 minutes over video.</div></li>
+        <li><div><b>We talk through your goals.</b> We'll look at where you are now and whether this cohort gets you where you want to go.</div></li>
+        <li><div><b>You decide.</b> If it's a fit, we'll cover pricing, payment options, and how to hold your seat.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="stack read" style="max-width:760px">
+      <span class="eyebrow">Questions</span>
+      <h2>Before you book</h2>
+      <div>
+        <details>
+          <summary>How much SQL do I need?</summary>
+          <p>If you can write a query with a JOIN and a GROUP BY, you're ready. If that still feels shaky, the pre-work in week 0 is there to close the gap, and we'll be straight with you on the call about whether it's enough.</p>
+        </details>
+        <details>
+          <summary>Can I do this with a full-time job?</summary>
+          <p>That's who it's built for. Plan on roughly 8 to 10 hours a week: two live sessions, plus build time you schedule yourself. Weeks with a new data source tend to run a little heavier.</p>
+        </details>
+        <details>
+          <summary>Do I need to know Python?</summary>
+          <p>No. The program is SQL first. Python comes in during week 8 for the A/B test analysis, and we start from the basics there.</p>
+        </details>
+        <details>
+          <summary>What does it cost?</summary>
+          <p>We go over pricing and payment options on the call, once we know the program fits your goals. The internship is priced separately and is optional.</p>
+        </details>
+        <details>
+          <summary>When does it start?</summary>
+          <p>Cohort 1 kicks off in late January 2027. Week 0 setup and pre-work happens right before the first live session, and we'll send exact dates when you book.</p>
+        </details>
+        <details>
+          <summary>What do I walk away with?</summary>
+          <p>A working, tested, automated pipeline in your own GitHub, a stakeholder dashboard, a Demo Day presentation you've already given once, and (if you do the internship) a write-up you can put straight on your resume.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="final">
+      <span class="eyebrow">Cohort 1 &middot; 30 seats &middot; Late January 2027</span>
+      <h2 class="read">Book a 20-minute call and we'll map out what the next 8 weeks would look like for you.</h2>
+      <div>
+        <a class="btn" href="https://osw86s5725y.typeform.com/to/uuvewuOd" target="_blank" rel="noopener">
+          Book your call
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>Data in Motion &middot; datainmotion.co</footer>
+</div>
